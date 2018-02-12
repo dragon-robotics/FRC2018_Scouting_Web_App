@@ -1,0 +1,28 @@
+<mat-card>
+	<!-- Week Dropdown -->
+	<mat-form-field>
+		<mat-select placeholder="Week" [(value)]="selectedWeek">
+			<mat-option value="week1">Week 1</mat-option>
+			<mat-option value="week2">Week 2</mat-option>
+			<mat-option value="week3">Week 3</mat-option>
+		</mat-select>
+	</mat-form-field>
+
+	<!-- Event Dropdown -->
+	<mat-form-field>
+		<mat-select placeholder="Event" [(value)]="selectedEvent">
+			<mat-option value="event1">AZ North</mat-option>
+			<mat-option value="event2">Some Other Regional</mat-option>
+			<mat-option value="event3">Michigan Regional 16</mat-option>
+		</mat-select>
+	</mat-form-field>
+
+	<!-- Team Dropdown -->
+	<mat-form-field>
+		<mat-select placeholder="Team" [(value)]="selectedTeam">
+			<mat-option value="team1">2375</mat-option>
+			<mat-option value="team2">6652</mat-option>
+			<mat-option value="team3">1492</mat-option>
+		</mat-select>
+	</mat-form-field>
+</mat-card>
