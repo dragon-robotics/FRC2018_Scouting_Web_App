@@ -1,139 +1,215 @@
+
 <mat-card>
-
-	<!-- Week Dropdown -->
-	<mat-form-field>
-		<mat-select placeholder="Week" [(value)]="selectedWeek">
-			<mat-option value="week1">Week 1</mat-option>
-			<mat-option value="week2">Week 2</mat-option>
-			<mat-option value="week3">Week 3</mat-option>
-		</mat-select>
-	</mat-form-field>
-	<!-- Event Dropdown -->
-	<mat-form-field>
-		<mat-select placeholder="Event" [(value)]="selectedEvent">
-			<mat-option value="event1">AZ North</mat-option>
-			<mat-option value="event2">Some Other Regional</mat-option>
-			<mat-option value="event3">Michigan Regional 16</mat-option>
-		</mat-select>
-	</mat-form-field>
-
-	<br>
-
 	<!-- Team Dropdown -->
 	<mat-form-field>
 		<mat-select placeholder="Team" [(value)]="selectedTeam">
-			<mat-option value="team1">2375</mat-option>
-			<mat-option value="team2">6652</mat-option>
-			<mat-option value="team3">1492</mat-option>
+			<mat-option *ngFor="let team of teams" [value]="team">
+				{{team}}
+			</mat-option>
 		</mat-select>
 	</mat-form-field>
+
+	<!-- Event Dropdown -->
+	<mat-form-field>
+		<mat-select placeholder="Event" [(value)]="selectedEvent">
+			<mat-option *ngFor="let event of events" [value]="event">
+				{{event}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+
 	<!-- Match Dropdown -->
 	<mat-form-field>
 		<mat-select placeholder="Match" [(value)]="selectedMatch">
-			<mat-option value="match1">Qual 3</mat-option>
-			<mat-option value="match2">Qual 10</mat-option>
-			<mat-option value="match3">Qual 17</mat-option>
+			<mat-option *ngFor="let match of matches" [value]="match">
+				{{match}}
+			</mat-option>
 		</mat-select>
 	</mat-form-field>
 
+	<mat-accordion class="example-headers-align">
+		<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					Pre-Match
+				</mat-panel-title>
+			</mat-expansion-panel-header>
+			
+			<h2>Robot Readiness</h2>
+			<mat-radio-group>
+				<mat-radio-button value="functional" checked>Good To Go</mat-radio-button>
+				<mat-radio-button value="noShow">No Show</mat-radio-button>
+				<mat-radio-button value="disabled">Disabled</mat-radio-button>
+				<mat-radio-button value="nonfunctional">Non-functional</mat-radio-button>
+			</mat-radio-group>
 
-	<h2>Initial Robot Configuration</h2>
-	<section>
-		<mat-radio-group>
-			<mat-radio-button value="left">Left</mat-radio-button>
-			<mat-radio-button value="middle">Middle</mat-radio-button>
-			<mat-radio-button value="right">Right</mat-radio-button>
-		</mat-radio-group>
-	</section>
+			<h2>Initial Robot Placement</h2>
+			<section>
+				<mat-radio-group>
+					<mat-radio-button value="left">Left</mat-radio-button>
+					<mat-radio-button value="middle">Middle</mat-radio-button>
+					<mat-radio-button value="right">Right</mat-radio-button>
+				</mat-radio-group>
+			</section>
 
-	<h2>Field configuration</h2>
-	<section>
-		<mat-button-toggle class="field-config-width">Left Opponent Switch</mat-button-toggle>
-		<mat-button-toggle class="field-config-width">Right Opponent Switch</mat-button-toggle>
-		<br>
-		<mat-button-toggle class="field-config-width">Left Scale</mat-button-toggle>
-		<mat-button-toggle class="field-config-width">Right Scale</mat-button-toggle>
-		<br>
-		<mat-button-toggle class="field-config-width">Left Alliance Switch</mat-button-toggle>
-		<mat-button-toggle class="field-config-width">Right Alliance Switch</mat-button-toggle>	
-	</section>
+			<h2>Field configuration</h2>
+			<section>
+				<mat-grid-list class="field-config" cols="1" rowHeight="fit">
+					<mat-grid-tile>
+						<mat-button-toggle-group>
+							<mat-button-toggle>LO Switch</mat-button-toggle>
+							<mat-button-toggle>RO Switch</mat-button-toggle>
+						</mat-button-toggle-group>
+					</mat-grid-tile>
+					<mat-grid-tile>
+						<mat-button-toggle-group>
+							<mat-button-toggle>L Scale</mat-button-toggle>
+							<mat-button-toggle>R Scale</mat-button-toggle>
+						</mat-button-toggle-group>
+					</mat-grid-tile>
+					<mat-grid-tile>
+						<mat-button-toggle-group>
+							<mat-button-toggle>LA Switch</mat-button-toggle>
+							<mat-button-toggle>RA Switch</mat-button-toggle>
+						</mat-button-toggle-group>
+					</mat-grid-tile>
+				</mat-grid-list>
+				<br>
+				<br>
+			</section>
 
-	<h2>Autonomous</h2>
-	<section>
-		<mat-checkbox>Crossed the line?</mat-checkbox>
-		<br>
-	    <mat-checkbox>Switch?</mat-checkbox>
-		<br>
-	    <mat-checkbox>Scale?</mat-checkbox>	    
-	</section>
+			<mat-action-row>
+				<button mat-button color="primary" (click)="nextStep()">Next</button>
+			</mat-action-row>
+		</mat-expansion-panel>
 
-	<h2>TeleOp - Power Cube</h2>
-<!-- 	<section>
-		<mat-form-field class="form">
-			<input matInput  [(ngModel)]="CubeOnAllySwitch" placeholder="# of Cubes on Alliance Switch">
-		</mat-form-field>
-		<br>
+		<mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle="true">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					Auto
+				</mat-panel-title>
+			</mat-expansion-panel-header>
 
-		<mat-form-field class="form">
-			<input matInput  [(ngModel)]="CubeOnEnemyScale" placeholder="# of Cubes on Enemy Switch">
-		</mat-form-field>
-		<br>
+			<section>
+				<mat-checkbox>Crossed the line?</mat-checkbox>
+				<br>
+				<button mat-icon-button><i class="material-icons">remove</i></button>
+				<mat-form-field>
+					<input matInput type="number" placeholder="# of cubes in Switch">
+				</mat-form-field>
+				<button mat-icon-button><i class="material-icons">add</i></button>
+				<br>
+				<button mat-icon-button><i class="material-icons">remove</i></button>
+				<mat-form-field>
+					<input matInput type="number" placeholder="# of cubes in Scale">
+				</mat-form-field>
+				<button mat-icon-button><i class="material-icons">add</i></button>
+			</section>
 
-		<mat-form-field class="form">
-			<input matInput  [(ngModel)]="CubeOnScale" placeholder="# of Cubes on Scale">
-		</mat-form-field>
-		<br>
+			<mat-action-row>
+				<button mat-button color="warn" (click)="prevStep()">Previous</button>
+				<button mat-button color="primary" (click)="nextStep()">Next</button>
+			</mat-action-row>
+		</mat-expansion-panel>
 
-		<mat-form-field class="form">
-			<input matInput  [(ngModel)]="CubeOnVault" placeholder="# of Cubes on Vault">
-		</mat-form-field>
-		<br>
-	</section> -->
-	<div class="example-container mat-elevation-z8">
-	  <mat-table #table [dataSource]="dataSource">
+		<mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle="true">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					Teleop
+				</mat-panel-title>
+			</mat-expansion-panel-header>
 
-	    <!--- Note that these columns can be defined in any order.
-	          The actual rendered columns are set as a property on the row definition" -->
+			<h2>Power Cube</h2>
+			<section>
+				
+				<mat-form-field>
+					<mat-select placeholder="Source">
+						<mat-option *ngFor="let source of cubeSources" [value]="source">
+							{{source}}
+						</mat-option>
+					</mat-select>					
+				</mat-form-field>
 
-	    <!-- Position Column -->
-	    <ng-container matColumnDef="cube">
-	      <mat-header-cell *matHeaderCellDef> Cube </mat-header-cell>
-	      <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-	    </ng-container>
+				<mat-form-field>
+					<mat-select placeholder="Cube Pickup Orientation">
+						<mat-option *ngFor="let orientation of cubeOrientations" [value]="orientation">
+							{{orientation}}
+						</mat-option>
+					</mat-select>					
+				</mat-form-field>
+				
+				<mat-form-field>
+					<mat-select placeholder="Destination">
+						<mat-option *ngFor="let destination of cubeDestinations" [value]="destination">
+							{{destination}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
 
-	    <!-- Name Column -->
-	    <ng-container matColumnDef="source">
-	      <mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
-	      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-	    </ng-container>
+				<button mat-raised-button (click)="addCycle()">Add Cycle</button>	
+			</section>
 
-	    <!-- Weight Column -->
-	    <ng-container matColumnDef="destination">
-	      <mat-header-cell *matHeaderCellDef> Destination </mat-header-cell>
-	      <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
-	    </ng-container>
+			<div class="example-container mat-elevation-z8">
+				<mat-table #table [dataSource]="dataSource">
 
-	    <!-- Symbol Column -->
-	    <ng-container matColumnDef="time">
-	      <mat-header-cell *matHeaderCellDef> Time (seconds) </mat-header-cell>
-	      <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
-	    </ng-container>
+					<!--- Note that these columns can be defined in any order.
+					      The actual rendered columns are set as a property on the row definition" -->
 
-	    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-	    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-	  </mat-table>
-	</div>
+					<!-- Position Column -->
+					<ng-container matColumnDef="cycle">
+						<mat-header-cell *matHeaderCellDef> Cycle </mat-header-cell>
+						<mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+					</ng-container>
+
+					<!-- Name Column -->
+					<ng-container matColumnDef="source">
+						<mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
+						<mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+					</ng-container>
+
+					<!-- Weight Column -->
+					<ng-container matColumnDef="orientation">
+						<mat-header-cell *matHeaderCellDef> Orientation </mat-header-cell>
+						<mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+					</ng-container>
+
+					<!-- Weight Column -->
+					<ng-container matColumnDef="destination">
+						<mat-header-cell *matHeaderCellDef> Destination </mat-header-cell>
+						<mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+					</ng-container>
+
+					<!-- Symbol Column -->
+					<ng-container matColumnDef="time">
+						<mat-header-cell *matHeaderCellDef> Time (seconds) </mat-header-cell>
+						<mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
+					</ng-container>
+
+					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+					<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+				</mat-table>
+			</div>
+
+			<h2>Climbing</h2>
+			<section>
+				<mat-radio-group class="example-radio-group" [(ngModel)]="climbingType">
+					<mat-radio-button class="example-radio-button" *ngFor="let climbType of climbTypes" [value]="climbType">
+						{{climbType}}
+					</mat-radio-button>
+				</mat-radio-group>
+			</section>
+			<br>
+
+			<mat-action-row>
+				<button mat-button color="warn" (click)="prevStep()">Previous</button>
+				<button mat-button color="primary" (click)="nextStep()">End</button>
+			</mat-action-row>
+
+		</mat-expansion-panel>
+	</mat-accordion>
 
 
-	<h2>TeleOp - Climbing</h2>
-	<section>
-		<mat-radio-group class="example-radio-group" [(ngModel)]="favoriteSeason">
-			<mat-radio-button class="example-radio-button" *ngFor="let climbType of climbTypes" [value]="climbType">
-			{{climbType}}
-			</mat-radio-button>
-		</mat-radio-group>
-	</section>
-	<br>
+
 
 	<mat-form-field class="form">
 		<textarea matInput placeholder="Additional Comments/Notes"></textarea>
