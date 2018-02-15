@@ -36,7 +36,6 @@ export class ScoutingFormComponent implements OnInit {
 		'source',
 		'orientation',
 		'destination',
-		'time'
 	];
 
 	climbTypes = [

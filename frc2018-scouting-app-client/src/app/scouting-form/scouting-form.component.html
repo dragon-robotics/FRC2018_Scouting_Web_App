@@ -131,7 +131,7 @@
 				</mat-form-field>
 
 				<mat-form-field>
-					<mat-select placeholder="Cube Pickup Orientation">
+					<mat-select placeholder="Pickup Orientation">
 						<mat-option *ngFor="let orientation of cubeOrientations" [value]="orientation">
 							{{orientation}}
 						</mat-option>
@@ -177,12 +177,6 @@
 					<ng-container matColumnDef="destination">
 						<mat-header-cell *matHeaderCellDef> Destination </mat-header-cell>
 						<mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
-					</ng-container>
-
-					<!-- Symbol Column -->
-					<ng-container matColumnDef="time">
-						<mat-header-cell *matHeaderCellDef> Time (seconds) </mat-header-cell>
-						<mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
 					</ng-container>
 
 					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -11,13 +11,14 @@ from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 
 import { FormsModule }    from '@angular/forms';
-import { HttpClientModule }    from '@angular/common/http';
+import { HttpClient, HttpClientModule }    from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { ScoutingFormComponent } from './scouting-form/scouting-form.component';
 import { StatisticsDashboardComponent } from './statistics-dashboard/statistics-dashboard.component';
 
 import { AppRoutingModule } from './app-routing.module';
+import { ScoutingDataService } from './scouting-data.service';
 
 @NgModule({
   imports: [
@@ -33,7 +34,7 @@ import { AppRoutingModule } from './app-routing.module';
     ScoutingFormComponent,
     StatisticsDashboardComponent
   ],
-  providers: [],
+  providers: [ScoutingDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
