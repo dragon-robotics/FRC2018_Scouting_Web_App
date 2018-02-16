@@ -123,7 +123,7 @@
 			<section>
 				
 				<mat-form-field>
-					<mat-select placeholder="Source">
+					<mat-select placeholder="Source" [(value)]="selectedSource">
 						<mat-option *ngFor="let source of cubeSources" [value]="source">
 							{{source}}
 						</mat-option>
@@ -131,7 +131,7 @@
 				</mat-form-field>
 
 				<mat-form-field>
-					<mat-select placeholder="Pickup Orientation">
+					<mat-select placeholder="Pickup Orientation" [(value)]="selectedOrientation">
 						<mat-option *ngFor="let orientation of cubeOrientations" [value]="orientation">
 							{{orientation}}
 						</mat-option>
@@ -139,50 +139,20 @@
 				</mat-form-field>
 				
 				<mat-form-field>
-					<mat-select placeholder="Destination">
+					<mat-select placeholder="Destination" [(value)]="selectedDestination">
 						<mat-option *ngFor="let destination of cubeDestinations" [value]="destination">
 							{{destination}}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>
 
-				<button mat-raised-button (click)="addCycle()">Add Cycle</button>	
+				<button mat-raised-button (click)="addCycle(datatableElement)">Add Cycle</button>	
 			</section>
-
-			<div class="example-container mat-elevation-z8">
-				<mat-table #table [dataSource]="dataSource">
-
-					<!--- Note that these columns can be defined in any order.
-					      The actual rendered columns are set as a property on the row definition" -->
-
-					<!-- Position Column -->
-					<ng-container matColumnDef="cycle">
-						<mat-header-cell *matHeaderCellDef> Cycle </mat-header-cell>
-						<mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-					</ng-container>
-
-					<!-- Name Column -->
-					<ng-container matColumnDef="source">
-						<mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
-						<mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-					</ng-container>
-
-					<!-- Weight Column -->
-					<ng-container matColumnDef="orientation">
-						<mat-header-cell *matHeaderCellDef> Orientation </mat-header-cell>
-						<mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
-					</ng-container>
-
-					<!-- Weight Column -->
-					<ng-container matColumnDef="destination">
-						<mat-header-cell *matHeaderCellDef> Destination </mat-header-cell>
-						<mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
-					</ng-container>
-
-					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-					<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-				</mat-table>
-			</div>
+			
+			<mat-card>	
+				<table datatable [dtOptions]="dtOptions" class="display cell-border compact hover" style="width:100%">
+				</table>
+			</mat-card>
 
 			<h2>Climbing</h2>
 			<section>
@@ -202,13 +172,10 @@
 		</mat-expansion-panel>
 	</mat-accordion>
 
-
-
-
 	<mat-form-field class="form">
 		<textarea matInput placeholder="Additional Comments/Notes"></textarea>
 	</mat-form-field>
 	<br>
-	<button mat-raised-button (click)="submitForm()">Submit</button>
+	<button mat-raised-button (click)="saveForm()">Save Form</button>
 
 </mat-card>

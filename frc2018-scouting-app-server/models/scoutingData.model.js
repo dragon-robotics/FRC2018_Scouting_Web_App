@@ -3,10 +3,10 @@ var mongoosePaginate = require('mongoose-paginate')
 
 
 var ScoutingDataSchema = new mongoose.Schema({
-		team: Number,						// Indiate Team Number
-		event: String,						// Indicates the event name 
-		match: String,						// Indicate the Match Number
-		matchData: {
+	team: Number,						// Indiate Team Number
+	event: String,						// Indicates the event name 
+	match: String,						// Indicate the Match Number
+	matchData: {
 		readyCode: Number,				// 0 - Ready, 1 - No Show, 2 - Disabled, 3 - Non-functional
 		robotPlacement: Number,			// 0 - Left, 1 - Middle, 2 - Right
 		fieldConfig: Number,			// 0 - LOS,LS,LAS; 1 - LOS,RS,LAS; 2 - ROS,LS,RAS; 3 - ROS,RS,RAS;

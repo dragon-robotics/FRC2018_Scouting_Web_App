@@ -7,6 +7,8 @@ import {
   NoopAnimationsModule } 
 from '@angular/platform-browser/animations'; 
 
+import { DataTablesModule } from 'angular-datatables';
+
 // Our Angular Material Modules
 import { MaterialModule } from './material.module';
 
@@ -28,6 +30,7 @@ import { ScoutingDataService } from './scouting-data.service';
     HttpClientModule,
     AppRoutingModule,
     MaterialModule,
+    DataTablesModule,
   ],
   declarations: [
     AppComponent,

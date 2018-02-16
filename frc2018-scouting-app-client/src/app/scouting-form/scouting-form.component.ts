@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
+import { FormsModule } from '@angular/forms';
+import { DataTableDirective } from 'angular-datatables';
 
 @Component({
   selector: 'app-scouting-form',
@@ -6,6 +10,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./scouting-form.component.css']
 })
 export class ScoutingFormComponent implements OnInit {
+
+	selectedSource: string;
+	selectedOrientation: string;
+	selectedDestination: string;
+	
+	@ViewChild(DataTableDirective)
+  	private datatableElement: DataTableDirective;
 
 	teams = [
 		'2375',		
@@ -21,7 +32,7 @@ export class ScoutingFormComponent implements OnInit {
 		'Qual 10',
 		'Qual 12',
 		'Qual 18',
-		'Qual 24',		
+		'Qual 24',
 		'Qual 33',
 		'Qual 39',
 		'Qual 41',
@@ -32,6 +43,7 @@ export class ScoutingFormComponent implements OnInit {
 	];
 
 	displayedColumns = [
+		'select',
 		'cycle',
 		'source',
 		'orientation',
@@ -82,9 +94,62 @@ export class ScoutingFormComponent implements OnInit {
 	this.step--;
 	}
 
+	/** Adds the row to the datatable **/
+	addCycle(datatableElement: DataTableDirective): void {
+		let source = this.selectedSource;
+		let orientation = this.selectedOrientation;
+		let destination = this.selectedDestination;
+
+		datatableElement.dtInstance.then((dtInstance: DataTables.Api) =>
+			dtInstance.row.add({
+				cycle: dtInstance.data().count()+1,
+				source: source,
+				orientation: orientation,
+				destination: destination,
+			}).draw()
+		);
+	}
+
 	constructor() { }
 
-	ngOnInit() {
+	dtOptions: any = {};
+
+	ngOnInit(): void {
+		this.dtOptions = {
+			dom: 'Brt',
+			buttons: [{
+				text: "Remove Selected Rows",
+				action: function (e, dt, node, config){
+					dt.rows('.selected').remove();
+					let counter = 1;
+					dt.rows().every(function(){
+						var d = this.data();
+						d.cycle = counter++;
+						this.invalidate();
+					})
+					dt.draw();
+				}
+			}],
+			select: {
+				style: "multi",
+			},
+			columns: [{
+				title: "Cycle",
+				data: "cycle",
+			},{
+				title: "Source",
+				data: "source",
+			},{
+				title: "Orientation",
+				data: "orientation",
+			},{
+				title: "Destination",
+				data: "destination",				
+			},],
+			lengthMenu: [[-1],["All"]],	// Displays all rows
+			scrollY: "35vh",
+			scrollCollapse: true,
+		};
 	}
 
 }
