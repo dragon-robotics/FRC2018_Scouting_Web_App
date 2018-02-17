@@ -2,29 +2,38 @@
 <mat-card>
 	<!-- Team Dropdown -->
 	<mat-form-field>
-		<mat-select placeholder="Team" [(value)]="selectedTeam">
+		<mat-select placeholder="Team" [(value)]="selectedTeam" [formControl]="selectTeam" required>
 			<mat-option *ngFor="let team of teams" [value]="team">
 				{{team}}
 			</mat-option>
 		</mat-select>
+		<mat-error *ngIf="selectTeam.hasError('required')">
+			Team is required!
+		</mat-error>
 	</mat-form-field>
 
 	<!-- Event Dropdown -->
 	<mat-form-field>
-		<mat-select placeholder="Event" [(value)]="selectedEvent">
+		<mat-select placeholder="Event" [(value)]="selectedEvent" [formControl]="selectEvent" required>
 			<mat-option *ngFor="let event of events" [value]="event">
 				{{event}}
 			</mat-option>
 		</mat-select>
+		<mat-error *ngIf="selectEvent.hasError('required')">
+			Event is required!
+		</mat-error>
 	</mat-form-field>
 
 	<!-- Match Dropdown -->
 	<mat-form-field>
-		<mat-select placeholder="Match" [(value)]="selectedMatch">
+		<mat-select placeholder="Match" [(value)]="selectedMatch" [formControl]="selectMatch" required>
 			<mat-option *ngFor="let match of matches" [value]="match">
 				{{match}}
 			</mat-option>
 		</mat-select>
+		<mat-error *ngIf="selectMatch.hasError('required')">
+			Match is required!
+		</mat-error>		
 	</mat-form-field>
 
 	<mat-accordion class="example-headers-align">
@@ -36,46 +45,36 @@
 			</mat-expansion-panel-header>
 			
 			<h2>Robot Readiness</h2>
-			<mat-radio-group>
-				<mat-radio-button value="functional" checked>Good To Go</mat-radio-button>
-				<mat-radio-button value="noShow">No Show</mat-radio-button>
-				<mat-radio-button value="disabled">Disabled</mat-radio-button>
-				<mat-radio-button value="nonfunctional">Non-functional</mat-radio-button>
+			<mat-radio-group [formControl]="robotReadinessRadioGroup" [(ngModel)]="robotReadiness" required>
+				<mat-radio-button value=0>Good To Go</mat-radio-button>
+				<mat-radio-button value=1>No Show</mat-radio-button>
+				<mat-radio-button value=2>Disabled</mat-radio-button>
+				<mat-radio-button value=3>Non-functional</mat-radio-button>
 			</mat-radio-group>
 
 			<h2>Initial Robot Placement</h2>
-			<section>
-				<mat-radio-group>
-					<mat-radio-button value="left">Left</mat-radio-button>
-					<mat-radio-button value="middle">Middle</mat-radio-button>
-					<mat-radio-button value="right">Right</mat-radio-button>
-				</mat-radio-group>
-			</section>
+			<mat-radio-group [formControl]="initialRobotPlacementRadioGroup" [(ngModel)]="initialRobotPlacement" required>
+				<mat-radio-button value=0>Left</mat-radio-button>
+				<mat-radio-button value=1>Middle</mat-radio-button>
+				<mat-radio-button value=2>Right</mat-radio-button>
+			</mat-radio-group>
 
 			<h2>Field configuration</h2>
 			<section>
-				<mat-grid-list class="field-config" cols="1" rowHeight="fit">
-					<mat-grid-tile>
-						<mat-button-toggle-group>
-							<mat-button-toggle>LO Switch</mat-button-toggle>
-							<mat-button-toggle>RO Switch</mat-button-toggle>
-						</mat-button-toggle-group>
-					</mat-grid-tile>
-					<mat-grid-tile>
-						<mat-button-toggle-group>
-							<mat-button-toggle>L Scale</mat-button-toggle>
-							<mat-button-toggle>R Scale</mat-button-toggle>
-						</mat-button-toggle-group>
-					</mat-grid-tile>
-					<mat-grid-tile>
-						<mat-button-toggle-group>
-							<mat-button-toggle>LA Switch</mat-button-toggle>
-							<mat-button-toggle>RA Switch</mat-button-toggle>
-						</mat-button-toggle-group>
-					</mat-grid-tile>
-				</mat-grid-list>
+				<mat-button-toggle-group [(ngModel)]="opponentSwitchToggleGroup">
+					<mat-button-toggle class="field-config" value="lo">LO Switch</mat-button-toggle>
+					<mat-button-toggle class="field-config" value="ro">RO Switch</mat-button-toggle>
+				</mat-button-toggle-group>
 				<br>
+				<mat-button-toggle-group [(ngModel)]="scaleToggleGroup">
+					<mat-button-toggle class="field-config" value="ls">L Scale</mat-button-toggle>
+					<mat-button-toggle class="field-config" value="rs">R Scale</mat-button-toggle>
+				</mat-button-toggle-group>
 				<br>
+				<mat-button-toggle-group [(ngModel)]="allianceSwitchToggleGroup">
+					<mat-button-toggle class="field-config" value="la">LA Switch</mat-button-toggle>
+					<mat-button-toggle class="field-config" value="ra">RA Switch</mat-button-toggle>
+				</mat-button-toggle-group>
 			</section>
 
 			<mat-action-row>
@@ -91,19 +90,42 @@
 			</mat-expansion-panel-header>
 
 			<section>
-				<mat-checkbox>Crossed the line?</mat-checkbox>
-				<br>
-				<button mat-icon-button><i class="material-icons">remove</i></button>
+				<mat-checkbox [(ngModel)]="crossedTheLine">Crossed the line?</mat-checkbox>
+				<br><br>
 				<mat-form-field>
-					<input matInput type="number" placeholder="# of cubes in Switch">
+					<input 	matInput 
+							type="number"
+							min = 0
+							placeholder="# of cubes in Switch"
+							[(ngModel)]="autoSwitchCubeCount"
+							[formControl] = "autoSwitchCubeCountInput"
+							required>
+					<mat-error *ngIf="autoSwitchCubeCountInput.hasError('required')">
+						Cube count is required!
+					</mat-error>
+					<mat-error *ngIf="autoSwitchCubeCount < 0">
+						Cube count can't be less than 0
+					</mat-error>
 				</mat-form-field>
-				<button mat-icon-button><i class="material-icons">add</i></button>
 				<br>
-				<button mat-icon-button><i class="material-icons">remove</i></button>
 				<mat-form-field>
-					<input matInput type="number" placeholder="# of cubes in Scale">
+					<input 	matInput 
+							type="number"
+							min = 0
+							placeholder="# of cubes in Scale"
+							[(ngModel)]="autoScaleCubeCount"
+							[formControl] = "autoScaleCubeCountInput"
+							required>
+					<mat-error *ngIf="autoScaleCubeCountInput.errors">
+						Cube count is required!
+					</mat-error>
+					<mat-error *ngIf="autoScaleCubeCount < 0">
+						Cube count can't be less than 0
+					</mat-error>
+					<mat-error *ngIf="autoScaleCubeCount > 0">
+						Cube count can't be less than 0
+					</mat-error>
 				</mat-form-field>
-				<button mat-icon-button><i class="material-icons">add</i></button>
 			</section>
 
 			<mat-action-row>
@@ -123,30 +145,43 @@
 			<section>
 				
 				<mat-form-field>
-					<mat-select placeholder="Source" [(value)]="selectedSource">
+					<mat-select placeholder="Source" [(value)]="selectedSource" [formControl]="selectSource" required>
 						<mat-option *ngFor="let source of cubeSources" [value]="source">
 							{{source}}
 						</mat-option>
-					</mat-select>					
+					</mat-select>
+					<mat-error *ngIf="selectSource.hasError('required')">
+						Source is required!
+					</mat-error>
 				</mat-form-field>
 
 				<mat-form-field>
-					<mat-select placeholder="Pickup Orientation" [(value)]="selectedOrientation">
+					<mat-select placeholder="Pickup Orientation" [(value)]="selectedOrientation" [formControl]="selectOrientation" required>
 						<mat-option *ngFor="let orientation of cubeOrientations" [value]="orientation">
 							{{orientation}}
 						</mat-option>
-					</mat-select>					
+					</mat-select>
+					<mat-error *ngIf="selectOrientation.hasError('required')">
+						Orientation is required!
+					</mat-error>
 				</mat-form-field>
 				
 				<mat-form-field>
-					<mat-select placeholder="Destination" [(value)]="selectedDestination">
+					<mat-select placeholder="Destination" [(value)]="selectedDestination" [formControl]="selectDestination" required>
 						<mat-option *ngFor="let destination of cubeDestinations" [value]="destination">
 							{{destination}}
 						</mat-option>
 					</mat-select>
+					<mat-error *ngIf="selectDestination.hasError('required')">
+						Destination is required!
+					</mat-error>					
 				</mat-form-field>
 
-				<button mat-raised-button (click)="addCycle(datatableElement)">Add Cycle</button>	
+				<button 	mat-raised-button 
+							[disabled]="selectDestination.invalid || selectSource.invalid || selectOrientation.invalid" 
+							(click)="addCycle(datatableElement)">
+					Add Cycle
+				</button>	
 			</section>
 			
 			<mat-card>	
@@ -156,8 +191,12 @@
 
 			<h2>Climbing</h2>
 			<section>
-				<mat-radio-group class="example-radio-group" [(ngModel)]="climbingType">
-					<mat-radio-button class="example-radio-button" *ngFor="let climbType of climbTypes" [value]="climbType">
+				<mat-radio-group 
+					class="example-radio-group" 
+					[(ngModel)]="climbingType" 
+					[formControl]="climbingRadioGroup" 
+					required>
+					<mat-radio-button class="example-radio-button" *ngFor="let climbType of climbTypes; let i = index" [value]="i">
 						{{climbType}}
 					</mat-radio-button>
 				</mat-radio-group>
@@ -172,10 +211,29 @@
 		</mat-expansion-panel>
 	</mat-accordion>
 
+	<br>
 	<mat-form-field class="form">
-		<textarea matInput placeholder="Additional Comments/Notes"></textarea>
+		<textarea 	matInput 
+					placeholder="Additional Comments/Notes"
+					(value)="comments"></textarea>
 	</mat-form-field>
 	<br>
-	<button mat-raised-button (click)="saveForm()">Save Form</button>
+	<!-- This button will save the form data for the database -->
+	<button mat-raised-button 
+			[disabled] = "
+				selectTeam.invalid
+				|| selectEvent.invalid
+				|| selectMatch.invalid
+				|| robotReadinessRadioGroup.invalid
+				|| initialRobotPlacementRadioGroup.invalid
+				|| autoSwitchCubeCountInput.invalid
+				|| autoScaleCubeCountInput.invalid
+				|| (datatableElement.dtInstance | async)?.row().count() < 1
+				|| climbingRadioGroup.invalid
+			"
+			(click)="saveForm()">
+		Save Form
+	</button>
 
 </mat-card>
+

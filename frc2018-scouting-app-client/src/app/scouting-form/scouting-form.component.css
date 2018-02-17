@@ -4,19 +4,13 @@
   width: 100%;
 }
 
-.half-width {
-  width: 50%;
-
-}
-
 .field-config{
-	width: 75%;
-	height: 8em;
+	min-width: 100px;
+  max-width: 200px;
 }
 
 .cube-field{
 	width: 50%;
-	height: 10em;
 }
 
 .example-radio-group {

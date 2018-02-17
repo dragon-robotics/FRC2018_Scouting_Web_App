@@ -12,7 +12,7 @@ import { DataTablesModule } from 'angular-datatables';
 // Our Angular Material Modules
 import { MaterialModule } from './material.module';
 
-import { FormsModule }    from '@angular/forms';
+import { FormsModule, ReactiveFormsModule }    from '@angular/forms';
 import { HttpClient, HttpClientModule }    from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -27,6 +27,7 @@ import { ScoutingDataService } from './scouting-data.service';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     MaterialModule,
