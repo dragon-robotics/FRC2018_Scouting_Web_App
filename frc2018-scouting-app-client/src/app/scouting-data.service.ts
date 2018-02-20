@@ -1,29 +1,47 @@
-import ScoutingData from './models/scoutingData.model';
+import { ScoutingData } from './models/scoutingData.model';
+import { }
 import { Observable } from 'rxjs/Rx';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import {Response} from '@angular/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 
 import 'rxjs/add/operator/map';
 
+const httpOptions = {
+	headers: new HttpHeaders({
+		'X-TBA-Auth-Key': 'dS9knumpOPRZJkI1FvSCSYhdnIj9dk2mfpqPMb50JbCQc9roaG9Hl3oZKTRYYOe0',
+	})
+};
+
 @Injectable()
 export class ScoutingDataService {
 
-	api_url = 'http://localhost:3000';						// Start of the URL
-	scoutingDataURL = `${this.api_url}/api/scoutingData`;	// Appends Initial URL with api URL 	
+	api_url = 'http://192.168.50.195:3000';					// Start of the URL
+	scoutingDataURL = `${this.api_url}/api/scoutingData`;	// Appends Initial URL with api URL
 
 	constructor(
 		private http: HttpClient
 	) { }
 
+	/* Blue Alliance Information */
+	getTeamEventInfo(): Observable<ScoutingData[]>{
+		return this.http.get(this.scoutingDataURL)
+		.map(res  => {
+			//Maps the response object sent from the server
+			return res["data"].docs as ScoutingData[];
+		})
+	}
+
+	/* Scouting Data Information */
 	// Creates scouting data, takes a scouting data object
 	createScoutingData(scoutingData: ScoutingData): Observable<any>{
 		// returns the observable of http post request
 		return this.http.post(`${this.scoutingDataURL}`, scoutingData);
 	}
 
-	// Grabs scouting data, takes no argument
-	getScoutingData(): Observable<ScoutingData[]>{
+	// Grabs scouting form data from a specific match
+	// Takes team, event, and match as arguments
+	getFormScoutingData(): Observable<ScoutingData[]>{
 		return this.http.get(this.scoutingDataURL)
 		.map(res  => {
 			//Maps the response object sent from the server

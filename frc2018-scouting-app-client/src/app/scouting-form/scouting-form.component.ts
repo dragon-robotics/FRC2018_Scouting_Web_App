@@ -4,6 +4,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { FormsModule } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { FormControl, Validators } from '@angular/forms';
+import { ScoutingDataService } from '../scouting-data.service';
+import { ScoutingData } from '../models/scoutingData.model'
 
 @Component({
   selector: 'app-scouting-form',
@@ -12,6 +14,7 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class ScoutingFormComponent implements OnInit {
 
+	scoutingData: ScoutingData = new ScoutingData();
 
 	// Select team, event, match
 	selectTeam = new FormControl('', [Validators.required]);
@@ -28,8 +31,8 @@ export class ScoutingFormComponent implements OnInit {
 	initialRobotPlacementRadioGroup = new FormControl('', [Validators.required]);	// Used to check if input is valid
 
 	// Robot readiness and initial robot placement
-	robotReadiness: string;
-	initialRobotPlacement: string;
+	robotReadiness: number;
+	initialRobotPlacement: number;
 
 	// Field Configuration
 	opponentSwitchToggleGroup: string;
@@ -58,7 +61,7 @@ export class ScoutingFormComponent implements OnInit {
 	selectedDestination: string;	// Selected destination from user selection
 
 	// Climbing
-	climbingType: string;												// Grabs radio button index
+	climbingType: number;												// Grabs radio button index
 	climbingRadioGroup = new FormControl('', [Validators.required]);	// Used to check if radio button is checked
 
 	// Comments
@@ -69,7 +72,7 @@ export class ScoutingFormComponent implements OnInit {
   	private datatableElement: DataTableDirective;
 
 	teams = [
-		'2375',		
+		2375,		
 	];
 
 	events = [
@@ -167,14 +170,6 @@ export class ScoutingFormComponent implements OnInit {
 
 	/* Save form information to database */
 	saveForm(){
-		// Team, Event, Match Information
-		console.log(this.selectedTeam);		// Selected Team
-		console.log(this.selectedEvent);	// Selected Event
-		console.log(this.selectedMatch);	// Selected Match
-
-		// Pre-Match Information
-		console.log(this.robotReadiness);			// Robot Readiness Index
-		console.log(this.initialRobotPlacement);	// Initial Robot Placement Index
 
 		/* There are four states
 			- LO, LS, LA = 0
@@ -183,23 +178,23 @@ export class ScoutingFormComponent implements OnInit {
 			- RO, RS, RA = 3 
 		*/
 		let fieldConfig = this.opponentSwitchToggleGroup+this.scaleToggleGroup+this.allianceSwitchToggleGroup;
-		let value = 0;
+		let fieldConfigValue: number = 0;
 
 		switch(fieldConfig){
 			case "lolsla":{
-				value = 0;
+				fieldConfigValue = 0;
 				break;
 			}
 			case "lorsla":{
-				value = 1;
+				fieldConfigValue = 1;
 				break;
 			}
 			case "rolsra":{
-				value = 2;
+				fieldConfigValue = 2;
 				break;
 			}
 			case "rorsra":{
-				value = 3;
+				fieldConfigValue = 3;
 				break;
 			}
 			default:{
@@ -207,23 +202,39 @@ export class ScoutingFormComponent implements OnInit {
 				break;
 			}
 		}
-		console.log(value);						// Field configuration code
-
-		// Auto Information
-		console.log(this.crossedTheLine);		// Crossing the auto line?
-		console.log(this.autoSwitchCubeCount);	// Number of Cubes in Alliance Switch during Auto
-		console.log(this.autoScaleCubeCount);	// Number of Cubes in Alliance Scale during Auto
 
 		// Teleop Information
 		this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) =>
-			console.log(dtInstance.data())
-		);	// Datatable data
+			{
+				this.scoutingData.team = +this.selectedTeam;
+				this.scoutingData.event = this.selectedEvent;
+				this.scoutingData.match = this.selectedMatch;
 
-		// Climbing Information
-		console.log(this.climbingType);	// How the robot climbed at the end of the match
+				this.scoutingData.matchData = {
+					readyCode: this.robotReadiness,
+					robotPlacement: this.initialRobotPlacement,
+					fieldConfig: fieldConfigValue,
+					autoLine: this.crossedTheLine,
+					autoSwitchCubeCount: this.autoSwitchCubeCount,
+					autoScaleCubeCount: this.autoScaleCubeCount,
+					cyclePaths: dtInstance.data().toArray(),
+					climbing: this.climbingType,
+				}; 
+
+				this.scoutingData.comments = this.comments;
+
+				// This is going to be kind of cool
+				this.scoutingDataService.createScoutingData(this.scoutingData)
+					.subscribe((res) => {
+						console.log(res);
+				});
+			}
+		);	// Datatable data
 	}
 
-	constructor() { }
+	constructor(
+		private scoutingDataService: ScoutingDataService
+	) { }
 
 	dtOptions: any = {};
 

@@ -1,6 +1,6 @@
 import { Response } from '@angular/http';
 import { ScoutingDataService } from './scouting-data.service';
-import ScoutingData from './models/scoutingData.model';
+import { ScoutingData } from './models/scoutingData.model';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
