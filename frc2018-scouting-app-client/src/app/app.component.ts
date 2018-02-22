@@ -20,7 +20,7 @@ export class AppComponent {
 	scoutingDataList: ScoutingData[];
 
 	nGOnInit(): void{
-		this.scoutingDataService.getScoutingData()
+		this.scoutingDataService.getFormScoutingData()
 			.subscribe(scoutingDatas => {
 				this.scoutingDataList = scoutingDatas;
 				console.log(scoutingDatas);

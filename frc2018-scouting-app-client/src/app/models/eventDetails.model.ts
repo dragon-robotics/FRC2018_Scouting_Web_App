@@ -1,8 +1,5 @@
 /* Example Model */
 export class EventDetails {
-	match: string;
-	teams: {
-		teamNumber: number;
-		alliance: string;
-	}[];
+	team: string;
+	matches: string[];
 }

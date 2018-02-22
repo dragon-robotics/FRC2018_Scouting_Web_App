@@ -71,29 +71,17 @@ export class ScoutingFormComponent implements OnInit {
 	@ViewChild(DataTableDirective)
   	private datatableElement: DataTableDirective;
 
-	teams = [
-		2375,		
-	];
 
-	events = [
-		'AZ North',
-		'AZ West',
-	];
+	objectKeys = Object.keys;
+	
+	events = {
+		'AZ North': '2017azfl',
+		'AZ West': '2017azpx',
+		'Week 0': '2018week0',
+	};
 
-	matches = [
-		'Qual 3',
-		'Qual 10',
-		'Qual 12',
-		'Qual 18',
-		'Qual 24',
-		'Qual 33',
-		'Qual 39',
-		'Qual 41',
-		'Qual 55',
-		'Qual 64',
-		'Qual 71',
-		'Qual 80',
-	];
+	teams: number[];
+	matches: string[];
 
 	displayedColumns = [
 		'select',
@@ -231,6 +219,33 @@ export class ScoutingFormComponent implements OnInit {
 			}
 		);	// Datatable data
 	}
+
+	getForm(){
+		// this.scoutingDataService.getTeamEventInfo()
+		// 	.subscribe((res) => {
+		// 		console.log(res);
+		// 	})
+	}
+
+	/* This function gets the team from events */
+	getTeamsAtEvent(){
+		let eventID = this.events[this.selectedEvent];
+		this.scoutingDataService.getTeamEventInfo(eventID)
+			.subscribe(teams => {
+				this.teams = teams;
+			})
+	}
+
+	/* This function gets the team from events */
+	getMatchesOfTeamsAtEvent(){
+		let eventID = this.events[this.selectedEvent];
+		let teamID = 'frc'+this.selectedTeam;
+		this.scoutingDataService.getMatchEventInfo(eventID, teamID)
+			.subscribe(matches => {
+				this.matches = matches;
+			})
+	}
+
 
 	constructor(
 		private scoutingDataService: ScoutingDataService

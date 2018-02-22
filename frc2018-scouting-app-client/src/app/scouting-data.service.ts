@@ -1,5 +1,5 @@
 import { ScoutingData } from './models/scoutingData.model';
-import { }
+import { EventDetails } from './models/eventDetails.model';
 import { Observable } from 'rxjs/Rx';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Response } from '@angular/http';
@@ -7,29 +7,24 @@ import { Injectable } from '@angular/core';
 
 import 'rxjs/add/operator/map';
 
-const httpOptions = {
-	headers: new HttpHeaders({
-		'X-TBA-Auth-Key': 'dS9knumpOPRZJkI1FvSCSYhdnIj9dk2mfpqPMb50JbCQc9roaG9Hl3oZKTRYYOe0',
-	})
-};
-
 @Injectable()
 export class ScoutingDataService {
 
 	api_url = 'http://192.168.50.195:3000';					// Start of the URL
 	scoutingDataURL = `${this.api_url}/api/scoutingData`;	// Appends Initial URL with api URL
+	eventDetailsURL = `${this.api_url}/api/eventDetails`;	// Appends Initial URL with api URL
 
 	constructor(
 		private http: HttpClient
 	) { }
 
 	/* Blue Alliance Information */
-	getTeamEventInfo(): Observable<ScoutingData[]>{
-		return this.http.get(this.scoutingDataURL)
-		.map(res  => {
-			//Maps the response object sent from the server
-			return res["data"].docs as ScoutingData[];
-		})
+	getTeamEventInfo(event: string): Observable<any>{
+		return this.http.get(this.eventDetailsURL+'/'+event);
+	}
+
+	getMatchEventInfo(event: string, team: string): Observable<any>{
+		return this.http.get(this.eventDetailsURL+'/'+event+'/'+team);
 	}
 
 	/* Scouting Data Information */

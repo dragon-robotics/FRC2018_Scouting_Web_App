@@ -1,26 +1,34 @@
 
 <mat-card>
+	<!-- Event Dropdown -->
+	<mat-form-field>
+		<mat-select placeholder="Event" 
+					[(value)]="selectedEvent"
+					[formControl]="selectEvent"
+					(selectionChange) = "getTeamsAtEvent()"
+					required>
+			<mat-option *ngFor="let event of objectKeys(events)" [value]="event">
+				{{event}}
+			</mat-option>
+		</mat-select>
+		<mat-error *ngIf="selectEvent.hasError('required')">
+			Event is required!
+		</mat-error>
+	</mat-form-field>
+
 	<!-- Team Dropdown -->
 	<mat-form-field>
-		<mat-select placeholder="Team" [(value)]="selectedTeam" [formControl]="selectTeam" required>
+		<mat-select placeholder="Team"
+					[(value)]="selectedTeam"
+					[formControl]="selectTeam"
+					(selectionChange) = "getMatchesOfTeamsAtEvent()"
+					required>
 			<mat-option *ngFor="let team of teams" [value]="team">
 				{{team}}
 			</mat-option>
 		</mat-select>
 		<mat-error *ngIf="selectTeam.hasError('required')">
 			Team is required!
-		</mat-error>
-	</mat-form-field>
-
-	<!-- Event Dropdown -->
-	<mat-form-field>
-		<mat-select placeholder="Event" [(value)]="selectedEvent" [formControl]="selectEvent" required>
-			<mat-option *ngFor="let event of events" [value]="event">
-				{{event}}
-			</mat-option>
-		</mat-select>
-		<mat-error *ngIf="selectEvent.hasError('required')">
-			Event is required!
 		</mat-error>
 	</mat-form-field>
 
@@ -234,6 +242,8 @@
 			(click)="saveForm()">
 		Save Form
 	</button>
+
+	<button mat-raised-button (click)="getForm()">Get Form Test</button>
 
 </mat-card>
 
