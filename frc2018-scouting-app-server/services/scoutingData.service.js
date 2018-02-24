@@ -1,8 +1,60 @@
 // Getting the Newly created Mongoose Model we just created 
-var ScoutingData = require('../models/scoutingData.model')
+var ScoutingData = require('../models/scoutingData.model');
+var _ = require('lodash');
 
 // Saving the context of this module inside the _the variable
-_this = this
+_this = this;
+
+var sourceDestinationMap = {
+        // Left Portal
+        "lp_los": 1,
+        "lp_ros": 1.5,
+        "lp_ls": 2,
+        "lp_rs": 2.5,
+        "lp_las": 3,
+        "lp_ras": 3.5,
+        "lp_aez": 4,
+        // Right Portal
+        "rp_los": 1.5,
+        "rp_ros": 1,
+        "rp_ls": 2.5,
+        "rp_rs": 2,
+        "rp_las": 3.5,
+        "rp_ras": 3,
+        "rp_aez": 4,
+        // Opponent Platform Zone
+        "opz_los": 0.5,
+        "opz_ros": 0.5,
+        "opz_ls": 1.25,
+        "opz_rs": 1.25,
+        "opz_las": 2.25,
+        "opz_ras": 2.25,
+        "opz_aez": 3.25,
+        // Alliance Platform Zone
+        "apz_los": 2.25,
+        "apz_ros": 2.25,
+        "apz_ls": 1.25,
+        "apz_rs": 1.25,
+        "apz_las": 0.5,
+        "apz_ras": 0.5,
+        "apz_aez": 1.5,
+        // Alliance Power Cube Zone
+        "apcz_los": 2.5,
+        "apcz_ros": 2.5,
+        "apcz_ls": 1.5,
+        "apcz_rs": 1.5,
+        "apcz_las": 0.5,
+        "apcz_ras": 0.5,
+        "apcz_aez": 4,
+        // Alliance Exchange Zone
+        "aez_los": 3,
+        "aez_ros": 3,
+        "aez_ls": 2,
+        "aez_rs": 2,
+        "aez_las": 1,
+        "aez_ras": 1,
+        "aez_aez": 0.5,
+};
 
 // Async function to get the To do List
 exports.getScoutingData = async function(query, page, limit){
@@ -30,19 +82,42 @@ exports.getScoutingData = async function(query, page, limit){
 
 exports.createScoutingData = async function(rawData){
     
-    // Creating a new Mongoose Object by using the new keyword
-    var newScoutingData = new ScoutingData({
-        team: rawData.team,
-        event: rawData.event,
-        match: rawData.match,
-        matchData: rawData.matchData,
-        comments: rawData.comments,
-    })
 
     try{
 
+        // /* Calculate additional match data metrics before adding to database */
+        // // Calculate Cubes Scored
+        // var cubesScored = rawData.cyclePaths.length;
+        // // Calculate Cycle Time
+        // var cycleTime = 135 / cubesScored;
+        // // Calculate Efficiency
+        // switch(rawData.matchData.fieldConfig){
+        //     case 0:         // LOS, LS, LAS
+        //         break;
+        //     case 1:         // LOS, RS, LAS
+        //         break;
+        //     case 2:         // ROS, LS, RAS
+        //         break;
+        //     case 3:         // ROS, RS, RAS
+        //         break;
+        // }
+
+        // // Calculate PickUp styles
+        // var pickUpCounts = _.countBy(rawData.matchData.cyclePaths, function(result){
+        //                         return result.pickUpOrientation;
+        //                     });
+
+        // Creating a new Mongoose Object by using the new keyword
+        var newScoutingData = new ScoutingData({
+            team: rawData.team,
+            event: rawData.event,
+            match: rawData.match,
+            matchData: rawData.matchData,
+            comments: rawData.comments,
+        })
+
         // Saving the Todo 
-        var savedScoutingData = await newScoutingData.save()
+        var savedScoutingData = await newScoutingData.save();
 
         return savedScoutingData;
     }catch(e){

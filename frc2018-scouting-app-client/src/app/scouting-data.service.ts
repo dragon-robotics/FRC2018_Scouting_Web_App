@@ -10,9 +10,12 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ScoutingDataService {
 
-	api_url = 'http://192.168.50.195:3000';					// Start of the URL
-	scoutingDataURL = `${this.api_url}/api/scoutingData`;	// Appends Initial URL with api URL
-	eventDetailsURL = `${this.api_url}/api/eventDetails`;	// Appends Initial URL with api URL
+	api_url = 'http://192.168.50.195:3000';										// Start of the URL
+	scoutingDataURL = `${this.api_url}/api/scoutingData`;						// Appends Initial URL with api URL
+	teamEventInfoURL = `${this.api_url}/api/teamEventInfo`;						// Appends Initial URL with api URL
+	teamMatchEventInfoURL = `${this.api_url}/api/teamMatchEventInfo`;			// Appends Initial URL with api URL
+	fieldConfigurationInfoURL = `${this.api_url}/api/fieldConfigurationInfo`;	// Appends Initial URL with api URL
+
 
 	constructor(
 		private http: HttpClient
@@ -20,12 +23,16 @@ export class ScoutingDataService {
 
 	/* Blue Alliance Information */
 	getTeamEventInfo(event: string): Observable<any>{
-		return this.http.get(this.eventDetailsURL+'/'+event);
+		return this.http.get(this.teamEventInfoURL+'/'+event);
 	}
 
-	getMatchEventInfo(event: string, team: string): Observable<any>{
-		return this.http.get(this.eventDetailsURL+'/'+event+'/'+team);
+	getTeamMatchEventInfo(event: string, team: string): Observable<any>{
+		return this.http.get(this.teamMatchEventInfoURL+'/'+event+'/'+team);
 	}
+
+	getFieldConfigurationInfo(event: string, matchID: string): Observable<any>{
+		return this.http.get(this.eventDetailsURL+'/'+event+'/'+matchID);
+	}	
 
 	/* Scouting Data Information */
 	// Creates scouting data, takes a scouting data object

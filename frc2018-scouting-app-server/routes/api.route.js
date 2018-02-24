@@ -8,7 +8,8 @@ var scoutingData = require('./api/scoutingData.route');
 
 
 router.use('/scoutingData', scoutingData);
-router.get('/eventDetails/:eventID', function(req, res){
+
+router.get('/teamEventInfo/:eventID', function(req, res){
 	var event = req.params.eventID;
 
 	requestPromise({
@@ -29,7 +30,7 @@ router.get('/eventDetails/:eventID', function(req, res){
 	});
 });
 
-router.get('/eventDetails/:eventID/:teamID', function(req, res){
+router.get('/teamMatchEventInfo/:eventID/:teamID', function(req, res){
 	var event = req.params.eventID;
 	var team = req.params.teamID;
 
@@ -81,5 +82,10 @@ router.get('/eventDetails/:eventID/:teamID', function(req, res){
 		res.send(matches);
 	});
 });
+
+router.get('/fieldConfigurationInfo/:eventID/:matchID', function(req, res){
+	var event = req.params.eventID;
+	var team = req.params.teamID;
+})
 
 module.exports = router;
