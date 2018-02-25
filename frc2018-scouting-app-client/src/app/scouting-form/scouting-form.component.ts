@@ -150,7 +150,7 @@ export class ScoutingFormComponent implements OnInit {
 			dtInstance.row.add({
 				cycle: dtInstance.data().count()+1,
 				source: source,
-				orientation: orientation,
+				pickUpOrientation: orientation,
 				destination: destination,
 			}).draw()
 		);
@@ -240,7 +240,7 @@ export class ScoutingFormComponent implements OnInit {
 	getMatchesOfTeamsAtEvent(){
 		let eventID = this.events[this.selectedEvent];
 		let teamID = 'frc'+this.selectedTeam;
-		this.scoutingDataService.getMatchEventInfo(eventID, teamID)
+		this.scoutingDataService.getTeamMatchEventInfo(eventID, teamID)
 			.subscribe(matches => {
 				this.matches = matches;
 			})
@@ -280,7 +280,7 @@ export class ScoutingFormComponent implements OnInit {
 				data: "source",
 			},{
 				title: "Orientation",
-				data: "orientation",
+				data: "pickUpOrientation",
 			},{
 				title: "Destination",
 				data: "destination",				

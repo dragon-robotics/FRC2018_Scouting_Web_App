@@ -22,8 +22,10 @@ var ScoutingDataSchema = new mongoose.Schema({
 		},],
 		cubesScored: Number, 			// Total number of cubes scored
 		cycleTime: Number, 				// Cycle Time (seconds / cube)
-		efficiencyRating: Number,		// Distance traveled / teleop time
-		pickUpRating: Number,			// Pickup ability
+		efficiency: Number,				// Distance traveled / teleop time
+		pickUpWide: Number,				// Pickup count for wide
+		pickUpDiag: Number,				// Pickup count for diagonal
+		pickUpTall: Number,				// Pickup count for tall
 		climbing: Number,				// 0 - No Climb, 1 - Self-Climb, 2 - Ramp Climb, 3 - One Robot Ramp Deploy, 4 - Two Robot Ramp Deploy
 	},
 	comments: String,					// Additional Comments

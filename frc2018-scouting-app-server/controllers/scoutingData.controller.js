@@ -55,7 +55,7 @@ exports.createScoutingData = async function(req, res, next){
         
         //Return an Error Response Message with Code and the Error Message.
         
-        return res.status(400).json({status: 400, message: "Scouting Data Creation was Unsuccesfull"})
+        return res.status(400).json({status: 400, message: "Scouting Data Creation was Unsuccesful"})
     }
 }
 

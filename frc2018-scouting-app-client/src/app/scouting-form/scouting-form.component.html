@@ -21,7 +21,7 @@
 		<mat-select placeholder="Team"
 					[(value)]="selectedTeam"
 					[formControl]="selectTeam"
-					(selectionChange) = "getTeamMatchEventInfo()"
+					(selectionChange) = "getMatchesOfTeamsAtEvent()"
 					required>
 			<mat-option *ngFor="let team of teams" [value]="team">
 				{{team}}
@@ -37,7 +37,6 @@
 		<mat-select placeholder="Match" 
 			[(value)]="selectedMatch" 
 			[formControl]="selectMatch"
-			(selectionChange) = "getFieldConfigurationOfTeam()"
 			required>
 			<mat-option *ngFor="let match of matches" [value]="match">
 				{{match}}

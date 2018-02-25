@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"ros_apz",
+				"ros_apz"
+			],
+			[
+				"source",
+				"sourceDestinationMap"
+			],
+			[
+				"pick",
+				"pickUpCounts"
+			],
+			[
+				"selec",
+				"selectedTeam\tproperty"
+			],
+			[
+				"Event",
+				"EventDetails\talias"
+			],
+			[
 				"fieldConfig",
 				"fieldConfigValue\tlet"
 			],
@@ -53,68 +73,57 @@
 			}
 		},
 		{
-			"file": "models/scoutingData.model.js",
-			"settings":
-			{
-				"buffer_size": 1256,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "var mongoose = require('mongoose')"
-			}
-		},
-		{
-			"file": "services/scoutingData.service.js",
-			"settings":
-			{
-				"buffer_size": 2670,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "// Gettign the Newly created Mongoose Model we jus"
-			}
-		},
-		{
-			"file": "controllers/scoutingData.controller.js",
-			"settings":
-			{
-				"buffer_size": 3204,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "// Accessing the Service that we just created"
-			}
-		},
-		{
 			"file": "routes/api/scoutingData.route.js",
 			"settings":
 			{
 				"buffer_size": 538,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "var express = require('express')"
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "routes/api.route.js",
 			"settings":
 			{
-				"buffer_size": 190,
+				"buffer_size": 2283,
 				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "var express = require('express')"
+				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "routes/users.route.js",
+			"file": "controllers/scoutingData.controller.js",
 			"settings":
 			{
-				"buffer_size": 203,
-				"line_ending": "Unix"
+				"buffer_size": 3203,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "// Accessing the Service that we just created"
+			}
+		},
+		{
+			"file": "services/scoutingData.service.js",
+			"settings":
+			{
+				"buffer_size": 38352,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "// Gettign the Newly created Mongoose Model we jus"
+			}
+		},
+		{
+			"file": "models/scoutingData.model.js",
+			"settings":
+			{
+				"buffer_size": 1593,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "var mongoose = require('mongoose')"
 			}
 		},
 		{
 			"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/scouting-form/scouting-form.component.ts",
 			"settings":
 			{
-				"buffer_size": 7085,
+				"buffer_size": 7659,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -123,16 +132,7 @@
 			"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/scouting-form/scouting-form.component.html",
 			"settings":
 			{
-				"buffer_size": 7876,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/material.module.ts",
-			"settings":
-			{
-				"buffer_size": 1135,
+				"buffer_size": 8100,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -141,19 +141,9 @@
 			"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/scouting-data.service.ts",
 			"settings":
 			{
-				"buffer_size": 2215,
+				"buffer_size": 2686,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/models/eventDetails.model.ts",
-			"settings":
-			{
-				"buffer_size": 123,
-				"encoding": "UTF-8",
-				"line_ending": "Unix",
-				"name": "class EventData {"
 			}
 		},
 		{
@@ -217,8 +207,18 @@
 	],
 	"file_history":
 	[
-		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/models/scoutingData.model.ts",
 		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/app.component.ts",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/models/eventDetails.model.ts",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/models/scoutingData.model.ts",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-server/node_modules/debug/src/browser.js",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/material.module.ts",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-server/routes/api/scoutingData.route.js",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-server/services/eventDetails.service.js",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-server/controllers/eventDetails.controller.js",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-server/models/eventDetails.model.js",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-server/routes/api/eventDetails.route.js",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-server/routes/api.route.js",
+		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-server/routes/users.route.js",
 		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/.angular-cli.json",
 		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/app.module.ts",
 		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/scouting-form/scouting-form.component.css",
@@ -227,7 +227,6 @@
 		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-server/package.json",
 		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/scouting-form/scouting-form.component.html",
 		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/app.component.html",
-		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/material.module.ts",
 		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/statistics-dashboard/statistics-dashboard.component.html",
 		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/styles.css",
 		"/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/app-routing.module.ts",
@@ -252,6 +251,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"prevDestToSrcDistance",
+			"prevDestToSrcPath",
+			"initialPath",
+			"order",
 			"http",
 			"scoutingData",
 			"climbingType",
@@ -304,7 +307,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -320,8 +323,8 @@
 						"selection":
 						[
 							[
-								422,
-								422
+								606,
+								606
 							]
 						],
 						"settings":
@@ -339,97 +342,6 @@
 				},
 				{
 					"buffer": 1,
-					"file": "models/scoutingData.model.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1256,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1256,
-								1256
-							]
-						],
-						"settings":
-						{
-							"auto_name": "var mongoose = require('mongoose')",
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 13.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "services/scoutingData.service.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2670,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1238,
-								1238
-							]
-						],
-						"settings":
-						{
-							"auto_name": "// Gettign the Newly created Mongoose Model we jus",
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 663.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "controllers/scoutingData.controller.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3204,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								117,
-								117
-							]
-						],
-						"settings":
-						{
-							"auto_name": "// Accessing the Service that we just created",
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "routes/api/scoutingData.route.js",
 					"semi_transient": false,
 					"settings":
@@ -447,94 +359,155 @@
 						],
 						"settings":
 						{
-							"auto_name": "var express = require('express')",
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 2,
 					"file": "routes/api.route.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 190,
+						"buffer_size": 2283,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								163,
-								163
+								263,
+								275
 							]
 						],
 						"settings":
 						{
-							"auto_name": "var express = require('express')",
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "routes/users.route.js",
+					"buffer": 3,
+					"file": "controllers/scoutingData.controller.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 203,
+						"buffer_size": 3203,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								203,
-								203
+								1901,
+								1901
 							]
 						],
 						"settings":
 						{
+							"auto_name": "// Accessing the Service that we just created",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 14.0,
+						"translation.y": 273.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "services/scoutingData.service.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 38352,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5521,
+								5521
+							]
+						],
+						"settings":
+						{
+							"auto_name": "// Gettign the Newly created Mongoose Model we jus",
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1781.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "models/scoutingData.model.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1593,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								890,
+								879
+							]
+						],
+						"settings":
+						{
+							"auto_name": "var mongoose = require('mongoose')",
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 4,
+			"selected": 0,
 			"sheets":
 			[
 				{
-					"buffer": 7,
+					"buffer": 6,
 					"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/scouting-form/scouting-form.component.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7085,
+						"buffer_size": 7659,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6216,
-								6216
+								3864,
+								3864
 							]
 						],
 						"settings":
@@ -544,27 +517,27 @@
 							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2471.0,
+						"translation.y": 1268.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 7,
 					"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/scouting-form/scouting-form.component.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7876,
+						"buffer_size": 8100,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1067,
-								1067
+								2496,
+								2496
 							]
 						],
 						"settings":
@@ -579,58 +552,27 @@
 							}
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 507.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
-					"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/material.module.ts",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1135,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								14,
-								14
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"use_tab_stops": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
+					"buffer": 8,
 					"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/scouting-data.service.ts",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2215,
+						"buffer_size": 2686,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								749,
-								749
+								1695,
+								1695
 							]
 						],
 						"settings":
@@ -645,44 +587,14 @@
 							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 39.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/models/eventDetails.model.ts",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 123,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								121,
-								121
-							]
-						],
-						"settings":
-						{
-							"auto_name": "class EventData {",
-							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
-							"use_tab_stops": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
+					"buffer": 9,
 					"file": "/home/frc/frc2018-scouting-mean-stack/frc2018-scouting-app-client/src/app/models/scoutingData.model.ts",
 					"semi_transient": false,
 					"settings":
@@ -694,8 +606,8 @@
 						"selection":
 						[
 							[
-								1749,
-								0
+								962,
+								962
 							]
 						],
 						"settings":
@@ -709,7 +621,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -721,7 +633,7 @@
 	},
 	"input":
 	{
-		"height": 33.0
+		"height": 41.0
 	},
 	"layout":
 	{
@@ -743,7 +655,7 @@
 		"cols":
 		[
 			0.0,
-			0.535441055,
+			0.744477199578,
 			1.0
 		],
 		"rows":
