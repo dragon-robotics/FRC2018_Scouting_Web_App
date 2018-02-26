@@ -21,6 +21,7 @@ import { StatisticsDashboardComponent } from './statistics-dashboard/statistics-
 
 import { AppRoutingModule } from './app-routing.module';
 import { ScoutingDataService } from './scouting-data.service';
+import { TeamStatisticsComponent } from './team-statistics/team-statistics.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { ScoutingDataService } from './scouting-data.service';
   declarations: [
     AppComponent,
     ScoutingFormComponent,
-    StatisticsDashboardComponent
+    StatisticsDashboardComponent,
+    TeamStatisticsComponent
   ],
   providers: [ScoutingDataService],
   bootstrap: [AppComponent]

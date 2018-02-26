@@ -743,11 +743,11 @@ exports.createScoutingData = async function(rawData){
                             });
 
         rawData.matchData.cubesScored = cubesScored;
-        rawData.matchData.cycleTime = cycleTime;
+        rawData.matchData.cycleTime = cycleTime ? cycleTime : NaN;
         rawData.matchData.efficiency = efficiency / 135;
-        rawData.matchData.pickUpWide = pickUpCounts["Wide"];
-        rawData.matchData.pickUpDiag = pickUpCounts["Diagonal"];
-        rawData.matchData.pickUpTall = pickUpCounts["Tall"];
+        rawData.matchData.pickUpWide = pickUpCounts["Wide"] ? pickUpCounts["Wide"] : 0;
+        rawData.matchData.pickUpDiag = pickUpCounts["Diagonal"] ? pickUpCounts["Diagonal"] : 0;
+        rawData.matchData.pickUpTall = pickUpCounts["Tall"] ? pickUpCounts["Tall"] : 0;
 
         // Creating a new Mongoose Object by using the new keyword
         var newScoutingData = new ScoutingData({

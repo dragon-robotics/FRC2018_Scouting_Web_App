@@ -230,6 +230,7 @@
 	</mat-form-field>
 	<br>
 	<!-- This button will save the form data for the database -->
+
 	<button mat-raised-button 
 			[disabled] = "
 				selectTeam.invalid
@@ -239,7 +240,7 @@
 				|| initialRobotPlacementRadioGroup.invalid
 				|| autoSwitchCubeCountInput.invalid
 				|| autoScaleCubeCountInput.invalid
-				|| (datatableElement.dtInstance | async)?.row().count() < 1
+				|| (datatableElement.dtInstance | async)?.row().count() < 0
 				|| climbingRadioGroup.invalid
 			"
 			(click)="saveForm()">

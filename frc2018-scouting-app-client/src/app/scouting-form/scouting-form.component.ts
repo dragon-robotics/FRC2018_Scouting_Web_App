@@ -221,10 +221,12 @@ export class ScoutingFormComponent implements OnInit {
 	}
 
 	getForm(){
-		// this.scoutingDataService.getTeamEventInfo()
-		// 	.subscribe((res) => {
-		// 		console.log(res);
-		// 	})
+		let eventID = this.events[this.selectedEvent];
+		let matchID = this.matches[this.selectedMatch];
+		this.scoutingDataService.getFieldConfigurationInfo(eventID, matchID)
+			.subscribe((res) => {
+				console.log(res);
+			})
 	}
 
 	/* This function gets the team from events */
@@ -289,6 +291,8 @@ export class ScoutingFormComponent implements OnInit {
 			scrollY: "35vh",
 			scrollCollapse: true,
 		};
+
+		
 	}
 
 }

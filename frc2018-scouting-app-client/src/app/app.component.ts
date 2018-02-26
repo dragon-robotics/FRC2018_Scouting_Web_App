@@ -15,15 +15,6 @@ export class AppComponent {
 		private scoutingDataService: ScoutingDataService
 	){}
 
-	public newScoutingData: ScoutingData = new ScoutingData();
-
-	scoutingDataList: ScoutingData[];
-
-	nGOnInit(): void{
-		this.scoutingDataService.getFormScoutingData()
-			.subscribe(scoutingDatas => {
-				this.scoutingDataList = scoutingDatas;
-				console.log(scoutingDatas);
-			})
+	nGOnInit(){
 	}
 }
