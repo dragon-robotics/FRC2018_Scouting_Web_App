@@ -137,6 +137,22 @@
 						Cube count can't be less than 0
 					</mat-error>
 				</mat-form-field>
+				<br>
+				<mat-form-field>
+					<input 	matInput 
+							type="number"
+							min = 0
+							placeholder="# of cubes in Exchange Zone"
+							[(ngModel)]="autoExchangeCubeCount"
+							[formControl] = "autoExchangeCubeCountInput"
+							required>
+					<mat-error *ngIf="autoExchangeCubeCountInput.errors">
+						Cube count is required!
+					</mat-error>
+					<mat-error *ngIf="autoExchangeCubeCount < 0">
+						Cube count can't be less than 0
+					</mat-error>
+				</mat-form-field>
 			</section>
 
 			<mat-action-row>
@@ -244,10 +260,7 @@
 				|| climbingRadioGroup.invalid
 			"
 			(click)="saveForm()">
-		Save Form
+		Insert Form
 	</button>
-
-	<button mat-raised-button (click)="getForm()">Get Form Test</button>
-
 </mat-card>
 

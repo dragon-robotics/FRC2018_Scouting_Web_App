@@ -10,6 +10,7 @@ export class ScoutingData {
     	autoLine: 				boolean;	// T - Crossed, F - Failed 
     	autoSwitchCubeCount: 	number;		// Number of Cubes in Alliance Switch	
     	autoScaleCubeCount:		number;		// Number of Cubes in Alliance Scale
+        autoExchangeCubeCount:  number;        // Number of Cubes in Alliance Scale
     	cyclePaths: {
             cycle:              number;     // Cycle Number
             source:             string;     // Source of Cube
@@ -17,6 +18,7 @@ export class ScoutingData {
             destination:        string;     // Destination of Cube
         }[];
     	climbing: 				number;		// 0 - No Climb, 1 - Self-Climb, 2 - Ramp Climb, 3 - One Robot Ramp Deploy, 4 - Two Robot Ramp Deploy
+        climbingType:           string;     // 0 - No Climb, 1 - Self-Climb, 2 - Ramp Climb, 3 - One Robot Ramp Deploy, 4 - Two Robot Ramp Deploy
     };
 	comments:					string;		// Additional Comments
 
@@ -31,6 +33,7 @@ export class ScoutingData {
             autoLine: false,
             autoSwitchCubeCount: -1,
             autoScaleCubeCount: -1,
+            autoExchangeCubeCount: -1,
             cyclePaths: [{
                 cycle: -1,
                 source: "",
@@ -38,6 +41,7 @@ export class ScoutingData {
                 destination: "",
             }],
             climbing: -1,
+            climbingType: "",
         };
         this.comments = "";
     }

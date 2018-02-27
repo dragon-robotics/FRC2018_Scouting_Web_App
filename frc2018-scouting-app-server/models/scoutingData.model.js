@@ -13,6 +13,7 @@ var ScoutingDataSchema = new mongoose.Schema({
 		autoLine: Boolean,				// T - Crossed, F - Failed
 		autoSwitchCubeCount: Number,	// Number of Cubes in Alliance Switch
 		autoScaleCubeCount: Number,		// Number of Cubes in Alliance Scale
+		autoExchangeCubeCount: Number,	// Number of Cubes in Exchange Zone
 		cyclePaths: 
 		[{
 			cycle: Number,				// Cycle Number
@@ -27,6 +28,7 @@ var ScoutingDataSchema = new mongoose.Schema({
 		pickUpDiag: Number,				// Pickup count for diagonal
 		pickUpTall: Number,				// Pickup count for tall
 		climbing: Number,				// 0 - No Climb, 1 - Self-Climb, 2 - Ramp Climb, 3 - One Robot Ramp Deploy, 4 - Two Robot Ramp Deploy
+		climbingType: String,			
 	},
 	comments: String,					// Additional Comments
 });

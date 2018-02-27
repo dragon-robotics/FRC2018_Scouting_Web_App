@@ -1,5 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FormsModule } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
@@ -45,10 +46,12 @@ export class ScoutingFormComponent implements OnInit {
 	// Auto scale/switch cube count input
 	autoSwitchCubeCountInput = new FormControl('', [Validators.required]);	// Used to check if input is valid
 	autoScaleCubeCountInput = new FormControl('', [Validators.required]);	// Used to check if input is valid
+	autoExchangeCubeCountInput = new FormControl('', [Validators.required]);	// Used to check if input is valid
 
 	// Auto scale/switch cube count
 	autoSwitchCubeCount: number;	// The number of cubes in the alliance switch during autonomous time 
 	autoScaleCubeCount: number;		// The number of cubes in the alliance scale during autonomous time
+	autoExchangeCubeCount: number;		// The number of cubes in the alliance scale during autonomous time
 
 	// Select cube source, orientation, and destination
 	selectSource = new FormControl('', [Validators.required]);		// Used to check if source value is valid
@@ -92,11 +95,13 @@ export class ScoutingFormComponent implements OnInit {
 	];
 
 	climbTypes = [
-		'No Climb',					// This is worth 0 point
-		'Self-Climb on Rung',		// This is worth 1 point
-		'Ramp Climb',				// This is worth 1 point
-		'One Robot Ramp Deploy',	// This is worth 2 points
-		'Two Robot Ramp Deploy',	// This is worth 3 points
+		'No Climb',						// This is worth 0 point
+		'Ramp Climb',					// This is worth 1 point
+		'One Robot Ramp Deploy',		// This is worth 2 points
+		'Self-Climb on Rung',			// This is worth 2.5 point
+		'Two Robot Ramp Deploy',		// This is worth 3 points
+		'One Robot Ramp Deploy Climb',	// This is worth 4 points
+		'Two Robot Ramp Deploy Climb',	// This is worth 5 points
 	];
 
 	cubeSources = [
@@ -112,6 +117,7 @@ export class ScoutingFormComponent implements OnInit {
 		'Wide',
 		'Diagonal',
 		'Tall',
+		'Drop Off'
 	];
 
 	cubeDestinations = [
@@ -194,6 +200,24 @@ export class ScoutingFormComponent implements OnInit {
 		// Teleop Information
 		this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) =>
 			{
+				// Calculate custom climbing score
+				let climbScore = 0;
+				if(this.climbingType == 0)
+					climbScore = 0;
+				else if (this.climbingType == 1)
+					climbScore = 1;
+				else if (this.climbingType == 2)
+					climbScore = 2;
+				else if (this.climbingType == 3)
+					climbScore = 2.5;
+				else if (this.climbingType == 4)
+					climbScore = 3;
+				else if (this.climbingType == 5)
+					climbScore = 4;
+				else if (this.climbingType == 6)
+					climbScore = 5;
+
+
 				this.scoutingData.team = +this.selectedTeam;
 				this.scoutingData.event = this.selectedEvent;
 				this.scoutingData.match = this.selectedMatch;
@@ -205,9 +229,11 @@ export class ScoutingFormComponent implements OnInit {
 					autoLine: this.crossedTheLine,
 					autoSwitchCubeCount: this.autoSwitchCubeCount,
 					autoScaleCubeCount: this.autoScaleCubeCount,
+					autoExchangeCubeCount: this.autoExchangeCubeCount,
 					cyclePaths: dtInstance.data().toArray(),
-					climbing: this.climbingType,
-				}; 
+					climbing: climbScore,
+					climbingType: this.climbTypes[this.climbingType],
+				};
 
 				this.scoutingData.comments = this.comments;
 
@@ -215,6 +241,9 @@ export class ScoutingFormComponent implements OnInit {
 				this.scoutingDataService.createScoutingData(this.scoutingData)
 					.subscribe((res) => {
 						console.log(res);
+						this.insertedFormSnackBar.open("Form data inserted into database", "OK",{
+							duration: 2000,
+						})
 				});
 			}
 		);	// Datatable data
@@ -250,7 +279,8 @@ export class ScoutingFormComponent implements OnInit {
 
 
 	constructor(
-		private scoutingDataService: ScoutingDataService
+		private scoutingDataService: ScoutingDataService,
+		public insertedFormSnackBar: MatSnackBar,
 	) { }
 
 	dtOptions: any = {};

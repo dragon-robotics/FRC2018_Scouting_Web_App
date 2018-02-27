@@ -748,6 +748,7 @@ exports.createScoutingData = async function(rawData){
         rawData.matchData.pickUpWide = pickUpCounts["Wide"] ? pickUpCounts["Wide"] : 0;
         rawData.matchData.pickUpDiag = pickUpCounts["Diagonal"] ? pickUpCounts["Diagonal"] : 0;
         rawData.matchData.pickUpTall = pickUpCounts["Tall"] ? pickUpCounts["Tall"] : 0;
+        rawData.matchData.pickUpTall = pickUpCounts["Drop Off"] ? pickUpCounts["Drop Off"] : 0;
 
         // Creating a new Mongoose Object by using the new keyword
         var newScoutingData = new ScoutingData({
