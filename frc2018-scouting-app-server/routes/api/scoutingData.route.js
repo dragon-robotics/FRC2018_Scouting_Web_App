@@ -9,13 +9,13 @@ var ScoutingDataController = require('../../controllers/scoutingData.controller'
 
 // Map each API to the Controller FUnctions
 
-router.get('/', ScoutingDataController.getScoutingData)
+router.get('/:search', ScoutingDataController.getScoutingData)
 
 router.post('/', ScoutingDataController.createScoutingData)
 
 router.put('/', ScoutingDataController.updateScoutingData)
 
-router.delete('/:id',ScoutingDataController.removeScoutingData)
+// router.delete('/:id',ScoutingDataController.removeScoutingData)
 
 
 // Export the Router

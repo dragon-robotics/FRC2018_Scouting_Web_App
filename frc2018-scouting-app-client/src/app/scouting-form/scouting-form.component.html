@@ -5,7 +5,7 @@
 		<mat-select placeholder="Event" 
 					[(value)]="selectedEvent"
 					[formControl]="selectEvent"
-					(selectionChange) = "getTeamsAtEvent()"
+					(selectionChange) = "getMatchesAndTeamsAtEvents()"
 					required>
 			<mat-option *ngFor="let event of objectKeys(events)" [value]="event">
 				{{event}}
@@ -16,35 +16,45 @@
 		</mat-error>
 	</mat-form-field>
 
-	<!-- Team Dropdown -->
-	<mat-form-field>
-		<mat-select placeholder="Team"
-					[(value)]="selectedTeam"
-					[formControl]="selectTeam"
-					(selectionChange) = "getMatchesOfTeamsAtEvent()"
-					required>
-			<mat-option *ngFor="let team of teams" [value]="team">
-				{{team}}
-			</mat-option>
-		</mat-select>
-		<mat-error *ngIf="selectTeam.hasError('required')">
-			Team is required!
-		</mat-error>
-	</mat-form-field>
-
 	<!-- Match Dropdown -->
 	<mat-form-field>
 		<mat-select placeholder="Match" 
 			[(value)]="selectedMatch" 
 			[formControl]="selectMatch"
+			(selectionChange) = "getTeams()"
 			required>
-			<mat-option *ngFor="let match of matches" [value]="match">
+			<mat-option *ngFor="let match of objectKeys(matchesAndTeams)" [value]="match">
 				{{match}}
 			</mat-option>
 		</mat-select>
 		<mat-error *ngIf="selectMatch.hasError('required')">
 			Match is required!
 		</mat-error>		
+	</mat-form-field>
+
+	<!-- Team Dropdown -->
+	<mat-form-field>
+		<mat-select placeholder="Team"
+					[(value)]="selectedTeam"
+					[formControl]="selectTeam"
+					(selectionChange) = "getForm()"
+					required>
+			<mat-optgroup   label="Blue Alliance">
+				<mat-option *ngFor="let team of blue_alliance"
+							[value]="team">
+					{{team}}
+				</mat-option>
+			</mat-optgroup>
+			<mat-optgroup   label="Red Alliance">
+				<mat-option  *ngFor="let team of red_alliance"
+							[value]="team">
+					{{team}}
+				</mat-option>
+			</mat-optgroup>
+		</mat-select>
+		<mat-error *ngIf="selectTeam.hasError('required')">
+			Team is required!
+		</mat-error>
 	</mat-form-field>
 
 	<mat-accordion class="example-headers-align">
@@ -55,8 +65,10 @@
 				</mat-panel-title>
 			</mat-expansion-panel-header>
 			
-			<h2>Robot Readiness</h2>
-			<mat-radio-group [formControl]="robotReadinessRadioGroup" [(ngModel)]="robotReadiness" required>
+			<h2>Robot Status</h2>
+			<mat-radio-group [formControl]="robotStatusRadioGroup"
+							 (change) = "noShow()" 
+							 [(ngModel)]="robotStatus" required>
 				<mat-radio-button value=0>Good To Go</mat-radio-button>
 				<mat-radio-button value=1>No Show</mat-radio-button>
 				<mat-radio-button value=2>Disabled</mat-radio-button>
@@ -70,21 +82,45 @@
 				<mat-radio-button value=2>Right</mat-radio-button>
 			</mat-radio-group>
 
-			<h2>Field configuration</h2>
+			<h2>Alliance Field Configuration</h2>
 			<section>
 				<mat-button-toggle-group [(ngModel)]="opponentSwitchToggleGroup">
-					<mat-button-toggle class="field-config" value="lo">LO Switch</mat-button-toggle>
-					<mat-button-toggle class="field-config" value="ro">RO Switch</mat-button-toggle>
+					<mat-button-toggle  class="field-config" 
+										value="lo" 
+										[(checked)]="leftOpponentSwitchToggle">
+									LO Switch
+					</mat-button-toggle>
+					<mat-button-toggle  class="field-config" 
+										value="ro"
+										[(checked)]="rightOpponentSwitchToggle">
+									RO Switch
+					</mat-button-toggle>
 				</mat-button-toggle-group>
 				<br>
 				<mat-button-toggle-group [(ngModel)]="scaleToggleGroup">
-					<mat-button-toggle class="field-config" value="ls">L Scale</mat-button-toggle>
-					<mat-button-toggle class="field-config" value="rs">R Scale</mat-button-toggle>
+					<mat-button-toggle  class="field-config" 
+										value="ls"
+										[(checked)]="leftScaleToggle">
+									L Scale
+					</mat-button-toggle>
+					<mat-button-toggle  class="field-config"
+										value="rs"
+										[(checked)]="rightScaleToggle">
+									R Scale
+					</mat-button-toggle>
 				</mat-button-toggle-group>
 				<br>
 				<mat-button-toggle-group [(ngModel)]="allianceSwitchToggleGroup">
-					<mat-button-toggle class="field-config" value="la">LA Switch</mat-button-toggle>
-					<mat-button-toggle class="field-config" value="ra">RA Switch</mat-button-toggle>
+					<mat-button-toggle  class="field-config" 
+										value="la"
+										[(checked)]="leftAllianceSwitchToggle">
+									LA Switch
+					</mat-button-toggle>
+					<mat-button-toggle  class="field-config" 
+										value="ra"
+										[(checked)]="rightAllianceSwitchToggle">
+									RA Switch
+					</mat-button-toggle>
 				</mat-button-toggle-group>
 			</section>
 
@@ -252,7 +288,7 @@
 				selectTeam.invalid
 				|| selectEvent.invalid
 				|| selectMatch.invalid
-				|| robotReadinessRadioGroup.invalid
+				|| robotStatusRadioGroup.invalid
 				|| initialRobotPlacementRadioGroup.invalid
 				|| autoSwitchCubeCountInput.invalid
 				|| autoScaleCubeCountInput.invalid
@@ -260,7 +296,7 @@
 				|| climbingRadioGroup.invalid
 			"
 			(click)="saveForm()">
-		Insert Form
+		Save Form
 	</button>
 </mat-card>
 

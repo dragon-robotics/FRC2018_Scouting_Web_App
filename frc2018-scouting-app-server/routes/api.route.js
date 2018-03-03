@@ -83,9 +83,77 @@ router.get('/teamMatchEventInfo/:eventID/:teamID', function(req, res){
 	});
 });
 
-router.get('/fieldConfigurationInfo/:eventID/:matchID', function(req, res){
+router.get('/getMatchAndTeamInfo/:eventID/', function(req, res){
 	var event = req.params.eventID;
-	var team = req.params.teamID;
+	
+	requestPromise({
+		method: 'GET',
+		url: 'https://www.thebluealliance.com/api/v3/event/'+event+'/matches/simple',
+		headers:{
+			'X-TBA-Auth-Key': 'dS9knumpOPRZJkI1FvSCSYhdnIj9dk2mfpqPMb50JbCQc9roaG9Hl3oZKTRYYOe0',
+		},
+	})
+	.then(function(result){
+		var order = {
+			"Qual": 1, 
+			"Elimination-Finals": 500,
+			"Quarter-Finals": 1000,
+			"Semi-Finals": 1500,
+			"Finals": 2000,
+			"Unknown": 2500,
+		}
+		var matches = _.chain(JSON.parse(result))
+					.map(function(match){
+						var comp_level = "";
+						switch(match.comp_level){
+							case 'qm':
+								comp_level = "Qual";
+								break;
+							case 'ef':
+								comp_level = "Elimination-Finals";
+								break;
+							case 'qf':
+								comp_level = "Quarter-Finals";
+								break;
+							case 'sf':
+								comp_level = "Semi-Finals";
+								break;
+							case 'f':
+								comp_level = "Finals";
+								break;
+							default:
+								comp_level = "Unknown";
+						}
+						
+						var matchObj = {};
+						var alliances = _.chain(match.alliances)
+										.mapValues(function(obj){
+											return obj.team_keys;
+										})
+										.mapValues(function(obj){
+											return _.map(obj, function(result){
+												return _.replace(result, "frc", "");
+											});
+										})
+										.value();
+						matchObj[comp_level+" "+match.match_number] = {
+							matchKey: match.key,
+							alliances: _.chain(alliances),
+						};
+						// matchObj[alliances] = match.alliances;
+						return matchObj;
+						// return {key: match.key, human: comp_level+" "+match.match_number};
+					})
+					.sortBy(function(unsortedMatches){
+						var match = _.head(_.keysIn(unsortedMatches));
+						return order[match.split(" ")[0]] + +match.split(" ")[1];
+					})
+					.reduce(function(result, value, key){
+						return _.merge(result, value);
+					}, {})
+					.value();
+		res.send(matches);
+	})
 })
 
 module.exports = router;

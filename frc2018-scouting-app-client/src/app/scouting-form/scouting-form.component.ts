@@ -6,7 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { FormControl, Validators } from '@angular/forms';
 import { ScoutingDataService } from '../scouting-data.service';
-import { ScoutingData } from '../models/scoutingData.model'
+import { ScoutingData } from '../models/scoutingData.model';
+import { MatchDetails } from '../models/matchDetails.model';
 
 @Component({
   selector: 'app-scouting-form',
@@ -16,6 +17,7 @@ import { ScoutingData } from '../models/scoutingData.model'
 export class ScoutingFormComponent implements OnInit {
 
 	scoutingData: ScoutingData = new ScoutingData();
+	_id: string = "";	// Used to store existing string, if populated, we will update instead of insert
 
 	// Select team, event, match
 	selectTeam = new FormControl('', [Validators.required]);
@@ -28,17 +30,26 @@ export class ScoutingFormComponent implements OnInit {
 	selectedMatch: string;
 
 	// Robot readiness and initial robot placement radio groups
-	robotReadinessRadioGroup = new FormControl('', [Validators.required]);	// Used to check if input is valid
+	robotStatusRadioGroup = new FormControl('', [Validators.required]);	// Used to check if input is valid
 	initialRobotPlacementRadioGroup = new FormControl('', [Validators.required]);	// Used to check if input is valid
 
 	// Robot readiness and initial robot placement
-	robotReadiness: number;
+	robotStatus: number;
 	initialRobotPlacement: number;
 
 	// Field Configuration
 	opponentSwitchToggleGroup: string;
 	scaleToggleGroup: string;
 	allianceSwitchToggleGroup: string;
+
+	leftOpponentSwitchToggle: boolean;
+	rightOpponentSwitchToggle: boolean;
+
+	leftScaleToggle: boolean;
+	rightScaleToggle: boolean;
+
+	leftAllianceSwitchToggle: boolean;
+	rightAllianceSwitchToggle: boolean;
 
 	// Crossed the line?
 	crossedTheLine: boolean;
@@ -78,13 +89,14 @@ export class ScoutingFormComponent implements OnInit {
 	objectKeys = Object.keys;
 	
 	events = {
-		'AZ North': '2017azfl',
-		'AZ West': '2017azpx',
+		// 'AZ North': '2017azfl',
+		// 'AZ West': '2017azpx',
 		'Week 0': '2018week0',
 	};
 
-	teams: number[];
-	matches: string[];
+	matchesAndTeams = {};
+	blue_alliance = [];
+	red_alliance = [];
 
 	displayedColumns = [
 		'select',
@@ -100,8 +112,8 @@ export class ScoutingFormComponent implements OnInit {
 		'One Robot Ramp Deploy',		// This is worth 2 points
 		'Self-Climb on Rung',			// This is worth 2.5 point
 		'Two Robot Ramp Deploy',		// This is worth 3 points
-		'One Robot Ramp Deploy Climb',	// This is worth 4 points
-		'Two Robot Ramp Deploy Climb',	// This is worth 5 points
+		'One Robot Ramp Deploy + Rung Climb',	// This is worth 4 points
+		'Two Robot Ramp Deploy + Rung Climb',	// This is worth 5 points
 	];
 
 	cubeSources = [
@@ -223,7 +235,7 @@ export class ScoutingFormComponent implements OnInit {
 				this.scoutingData.match = this.selectedMatch;
 
 				this.scoutingData.matchData = {
-					readyCode: this.robotReadiness,
+					readyCode: this.robotStatus,
 					robotPlacement: this.initialRobotPlacement,
 					fieldConfig: fieldConfigValue,
 					autoLine: this.crossedTheLine,
@@ -237,46 +249,139 @@ export class ScoutingFormComponent implements OnInit {
 
 				this.scoutingData.comments = this.comments;
 
-				// This is going to be kind of cool
-				this.scoutingDataService.createScoutingData(this.scoutingData)
-					.subscribe((res) => {
-						console.log(res);
-						this.insertedFormSnackBar.open("Form data inserted into database", "OK",{
-							duration: 2000,
-						})
-				});
+				if(this._id === ""){
+					// We create a whole new database
+					this.scoutingDataService.createScoutingData(this.scoutingData)
+						.subscribe((res) => {
+							console.log(res);
+							this.insertedFormSnackBar.open("Form data inserted into database", "OK",{
+								duration: 2000,
+							})
+					});
+				}
+				else{
+					// We update the existing database
+					console.log(this._id);
+					this.scoutingData._id = this._id;
+					this.scoutingDataService.editScoutingData(this.scoutingData)
+						.subscribe((res) => {
+							console.log(res);
+							this.insertedFormSnackBar.open("Form data updated into database", "OK",{
+								duration: 2000,
+							})
+					});
+
+				}
+
 			}
 		);	// Datatable data
 	}
 
 	getForm(){
-		let eventID = this.events[this.selectedEvent];
-		let matchID = this.matches[this.selectedMatch];
-		this.scoutingDataService.getFieldConfigurationInfo(eventID, matchID)
+		let eventID = this.selectedEvent;
+		let matchID = this.selectedMatch;
+		let teamID = this.selectedTeam;
+		this.scoutingDataService.getFormScoutingData(eventID, matchID, teamID)
 			.subscribe((res) => {
-				console.log(res);
+				this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) =>
+					{
+
+						let result = res[0];
+						if(result != null){
+							this._id = result._id;
+
+							this.robotStatus = result.matchData.readyCode;
+							this.initialRobotPlacement = result.matchData.robotPlacement;
+
+							switch(result.matchData.fieldConfig){
+								case 0:
+									this.opponentSwitchToggleGroup = "lo";
+									this.scaleToggleGroup = "ls";
+									this.allianceSwitchToggleGroup = "la";
+									break;
+								case 1:
+									this.opponentSwitchToggleGroup = "lo";
+									this.scaleToggleGroup = "rs";
+									this.allianceSwitchToggleGroup = "la";
+									break;
+								case 2:
+									this.opponentSwitchToggleGroup = "ro";
+									this.scaleToggleGroup = "ls";
+									this.allianceSwitchToggleGroup = "ra";
+									break;
+								case 3:
+									this.opponentSwitchToggleGroup = "ro";
+									this.scaleToggleGroup = "rs";
+									this.allianceSwitchToggleGroup = "ra";
+									break;
+								default:
+									break;																								
+							}
+
+							this.crossedTheLine = result.matchData.autoLine;
+							this.autoSwitchCubeCount = result.matchData.autoSwitchCubeCount;
+							this.autoScaleCubeCount = result.matchData.autoScaleCubeCount;
+							this.autoExchangeCubeCount = result.matchData.autoExchangeCubeCount;
+
+							dtInstance.clear().draw();
+							dtInstance.rows.add(result.matchData.cyclePaths).draw();
+							this.climbingType = this.climbTypes.indexOf(result.matchData.climbingType);
+							this.comments = result.comments;
+						}
+						else{
+							this.robotStatusRadioGroup.reset();
+							this.initialRobotPlacementRadioGroup.reset();
+
+							this.leftOpponentSwitchToggle = false;
+							this.rightOpponentSwitchToggle = false;
+
+							this.leftScaleToggle = false;
+							this.rightScaleToggle = false;
+
+							this.leftAllianceSwitchToggle = false;
+							this.rightAllianceSwitchToggle = false;
+
+							this.autoExchangeCubeCountInput.reset();
+							this.autoScaleCubeCountInput.reset();
+							this.autoSwitchCubeCountInput.reset();
+							dtInstance.clear().draw();
+							this.climbingRadioGroup.reset();
+							this.comments = "";
+						}
+					}
+				);	// Datatable data
+				
 			})
 	}
 
 	/* This function gets the team from events */
-	getTeamsAtEvent(){
+	getMatchesAndTeamsAtEvents(){
 		let eventID = this.events[this.selectedEvent];
-		this.scoutingDataService.getTeamEventInfo(eventID)
-			.subscribe(teams => {
-				this.teams = teams;
+		this.scoutingDataService.getMatchAndTeamInfo(eventID)
+			.subscribe(matchesAndTeams => {
+				this.matchesAndTeams = matchesAndTeams;
 			})
 	}
 
 	/* This function gets the team from events */
-	getMatchesOfTeamsAtEvent(){
-		let eventID = this.events[this.selectedEvent];
-		let teamID = 'frc'+this.selectedTeam;
-		this.scoutingDataService.getTeamMatchEventInfo(eventID, teamID)
-			.subscribe(matches => {
-				this.matches = matches;
-			})
+	getTeams(){
+		this.blue_alliance = this.matchesAndTeams[this.selectedMatch].alliances.blue;
+		this.red_alliance = this.matchesAndTeams[this.selectedMatch].alliances.red;
 	}
 
+	/* This function will autofill the form information if a team is a no show at the qual */
+	noShow(){
+		console.log("I'm here")
+		if(this.robotStatus == 1){
+			this.initialRobotPlacement = 0;
+
+			this.crossedTheLine = false;
+			this.autoSwitchCubeCount = 0;
+			this.autoScaleCubeCount = 0;
+			this.autoExchangeCubeCount = 0;
+			this.climbingType = 0;
+		}
+	}
 
 	constructor(
 		private scoutingDataService: ScoutingDataService,
@@ -321,8 +426,6 @@ export class ScoutingFormComponent implements OnInit {
 			scrollY: "35vh",
 			scrollCollapse: true,
 		};
-
-		
 	}
 
 }

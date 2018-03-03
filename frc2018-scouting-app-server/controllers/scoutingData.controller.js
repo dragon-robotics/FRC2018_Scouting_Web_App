@@ -1,6 +1,7 @@
 // Accessing the Service that we just created
 
 var ScoutingDataService = require('../services/scoutingData.service')
+var _ = require('lodash')
 
 // Saving the context of this module inside the _the variable
 
@@ -12,13 +13,42 @@ _this = this
 exports.getScoutingData = async function(req, res, next){
 
     // Check the existence of the query parameters, If the exists doesn't exists assign a default value
-    
-    var page = req.query.page ? req.query.page : 1
-    var limit = req.query.limit ? req.query.limit : 10; 
+
 
     try{
-    
-        var scoutingData = await ScoutingDataService.getScoutingData({}, page, limit)
+        var event = req.query.event;
+        var match = req.query.match;
+        var team = +req.query.team;
+        // var event = "Week 0";
+        // var match = "Qual 1";
+        // var team = 1729;
+
+        var query = [{ 
+            "$match": {
+                "match" : match,
+                "team" : team,
+                "event" : event,
+            },
+        },{ 
+            "$project": {
+                "_id" : 1,
+                "event" : 1,
+                "match" : 1,
+                "team" : 1,
+                "matchData.readyCode" : 1,
+                "matchData.robotPlacement" : 1,
+                "matchData.fieldConfig" : 1,
+                "matchData.autoLine" : 1,
+                "matchData.autoSwitchCubeCount" : 1,
+                "matchData.autoScaleCubeCount" : 1,
+                "matchData.autoExchangeCubeCount" : 1,
+                "matchData.cyclePaths" : 1,
+                "matchData.climbingType" : 1,
+                "comments" : 1,
+            }
+        }];
+
+        var scoutingData = await ScoutingDataService.getScoutingData(query)
         
         // Return the scoutingData list with the appropriate HTTP Status Code and Message.
         

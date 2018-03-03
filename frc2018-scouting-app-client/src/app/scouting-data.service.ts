@@ -1,5 +1,5 @@
 import { ScoutingData } from './models/scoutingData.model';
-import { EventDetails } from './models/eventDetails.model';
+// import { EventDetails } from './models/eventDetails.model';
 import { Observable } from 'rxjs/Rx';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Response } from '@angular/http';
@@ -15,7 +15,7 @@ export class ScoutingDataService {
 	scoutingDataURL = `${this.api_url}/api/scoutingData`;						// Appends Initial URL with api URL
 	teamEventInfoURL = `${this.api_url}/api/teamEventInfo`;						// Appends Initial URL with api URL
 	teamMatchEventInfoURL = `${this.api_url}/api/teamMatchEventInfo`;			// Appends Initial URL with api URL
-	fieldConfigurationInfoURL = `${this.api_url}/api/fieldConfigurationInfo`;	// Appends Initial URL with api URL
+	getMatchAndTeamInfoURL = `${this.api_url}/api/getMatchAndTeamInfo`;	// Appends Initial URL with api URL
 
 	constructor(
 		private http: HttpClient
@@ -30,8 +30,8 @@ export class ScoutingDataService {
 		return this.http.get(this.teamMatchEventInfoURL+'/'+event+'/'+team);
 	}
 
-	getFieldConfigurationInfo(event: string, matchID: string): Observable<any>{
-		return this.http.get(this.fieldConfigurationInfoURL+'/'+event+'/'+matchID);
+	getMatchAndTeamInfo(event: string): Observable<any>{
+		return this.http.get(this.getMatchAndTeamInfoURL+'/'+event+'/');
 	}	
 
 	/* Scouting Data Information */
@@ -43,11 +43,11 @@ export class ScoutingDataService {
 
 	// Grabs scouting form data from a specific match
 	// Takes team, event, and match as arguments
-	getFormScoutingData(): Observable<ScoutingData[]>{
-		return this.http.get(this.scoutingDataURL)
+	getFormScoutingData(event: string, match: string, team: number): Observable<ScoutingData[]>{
+		return this.http.get(this.scoutingDataURL+'/search?event='+event+'&match='+match+'&team='+team)
 		.map(res  => {
 			//Maps the response object sent from the server
-			return res["data"].docs as ScoutingData[];
+			return res["data"] as ScoutingData[];
 		})
 	}
 
