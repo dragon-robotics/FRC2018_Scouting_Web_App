@@ -97,6 +97,20 @@ var sourceDestinationMap = {
         "aez_aez": 0.25,
 };
 
+exports.getYPRData = async function(){
+    try {
+        var scoutingDatas = await ScoutingData.aggregate(query)
+        
+        // Return the todod list that was retured by the mongoose promise
+        return scoutingDatas;
+
+    } catch (e) {
+
+        // return a Error message describing the reason 
+        throw Error('Error while Paginating Todos')
+    }
+}
+
 // Async function to get the To do List
 exports.getScoutingData = async function(query){    
     // Try Catch the awaited promise to handle the error 
@@ -121,7 +135,7 @@ exports.createScoutingData = async function(rawData){
         // Calculate Cubes Scored
         var cubesScored = rawData.matchData.cyclePaths.length;
         // Calculate Cycle Time
-        var cycleTime = 135 / cubesScored;
+        var cycleTime = cubesScored / 135;
 
         // Calculate Efficiency
         var efficiency;
@@ -1396,7 +1410,7 @@ exports.updateScoutingData = async function(rawData){
                         });
 
     rawData.matchData.cubesScored = cubesScored;
-    rawData.matchData.cycleTime = cycleTime ? cycleTime : NaN;
+    rawData.matchData.cycleTime = cubesScored / 135;
     rawData.matchData.efficiency = efficiency / 135;
     rawData.matchData.pickUpWide = pickUpCounts["Wide"] ? pickUpCounts["Wide"] : 0;
     rawData.matchData.pickUpDiag = pickUpCounts["Diagonal"] ? pickUpCounts["Diagonal"] : 0;

@@ -23,6 +23,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ScoutingDataService } from './scouting-data.service';
 import { TeamStatisticsComponent } from './team-statistics/team-statistics.component';
 
+import { HighchartsModule } from './/highcharts.module';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -33,6 +35,7 @@ import { TeamStatisticsComponent } from './team-statistics/team-statistics.compo
     AppRoutingModule,
     MaterialModule,
     DataTablesModule,
+    HighchartsModule
   ],
   declarations: [
     AppComponent,
@@ -40,7 +43,9 @@ import { TeamStatisticsComponent } from './team-statistics/team-statistics.compo
     StatisticsDashboardComponent,
     TeamStatisticsComponent
   ],
-  providers: [ScoutingDataService],
+  providers: [
+    ScoutingDataService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

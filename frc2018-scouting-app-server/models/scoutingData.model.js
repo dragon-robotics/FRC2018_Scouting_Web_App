@@ -34,7 +34,20 @@ var ScoutingDataSchema = new mongoose.Schema({
 	comments: String,					// Additional Comments
 });
 
-ScoutingDataSchema.plugin(mongoosePaginate)
+var yprDataSchema = new mongoose.Schema({
+	event: String,
+	team: Number,
+	OPR: Number,
+	DPR: Number,
+	Pickup: Number,
+	NumOfCubes: Number,
+	CycleTime: Number,
+	Efficiency: Number,
+	Auto: Number,
+})
+
 const ScoutingData = mongoose.model('ScoutingData', ScoutingDataSchema)
+
+
 
 module.exports = ScoutingData;

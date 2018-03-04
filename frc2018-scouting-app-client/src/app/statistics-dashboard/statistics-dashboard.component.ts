@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
+import { Chart } from 'angular-highcharts';
 
 @Component({
 	selector: 'app-statistics-dashboard',
@@ -9,10 +10,54 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class StatisticsDashboardComponent implements OnInit {
 
-		// Select team, event, match
-	selectTeam = new FormControl('', [Validators.required]);
-	selectEvent = new FormControl('', [Validators.required]);
-	selectMatch = new FormControl('', [Validators.required]);
+	teamCharts : Chart[];
+
+	chart = new Chart({
+	    chart: {
+	        polar: true,
+	        type: 'line'
+	    },
+
+	    title: {
+	        text: 'YPR',
+	        x: -80
+	    },
+
+	    pane: {
+	        size: '80%'
+	    },
+
+	    xAxis: {
+	        categories: ['OPR', 'DPR', 'Cycle Time', 'Auto',
+	                'Pickup', 'Climb', "Efficiency", "Number of Cubes"],
+	        tickmarkPlacement: 'on',
+	        lineWidth: 0
+	    },
+
+	    yAxis: {
+	        gridLineInterpolation: 'polygon',
+	        lineWidth: 0,
+	        min: 0
+	    },
+
+	    tooltip: {
+	        shared: true,
+	        pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
+	    },
+
+	    legend: {
+	        align: 'right',
+	        verticalAlign: 'top',
+	        y: 70,
+	        layout: 'vertical'
+	    },
+
+	    series: [{
+	        name: 'Team A',
+	        data: [43000, 19000, 60000, 35000, 17000, 10000, 10238, 23400],
+	        pointPlacement: 'on'
+	    }]
+	});
 
 	constructor() { }
 

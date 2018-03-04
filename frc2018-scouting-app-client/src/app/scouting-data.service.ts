@@ -21,15 +21,12 @@ export class ScoutingDataService {
 		private http: HttpClient
 	) { }
 
+	/* YPR Information */
+	getYPR(){
+		
+	}
+
 	/* Blue Alliance Information */
-	getTeamEventInfo(event: string): Observable<any>{
-		return this.http.get(this.teamEventInfoURL+'/'+event);
-	}
-
-	getTeamMatchEventInfo(event: string, team: string): Observable<any>{
-		return this.http.get(this.teamMatchEventInfoURL+'/'+event+'/'+team);
-	}
-
 	getMatchAndTeamInfo(event: string): Observable<any>{
 		return this.http.get(this.getMatchAndTeamInfoURL+'/'+event+'/');
 	}	
@@ -44,7 +41,7 @@ export class ScoutingDataService {
 	// Grabs scouting form data from a specific match
 	// Takes team, event, and match as arguments
 	getFormScoutingData(event: string, match: string, team: number): Observable<ScoutingData[]>{
-		return this.http.get(this.scoutingDataURL+'/search?event='+event+'&match='+match+'&team='+team)
+		return this.http.get(this.scoutingDataURL+'/formData?event='+event+'&match='+match+'&team='+team)
 		.map(res  => {
 			//Maps the response object sent from the server
 			return res["data"] as ScoutingData[];
@@ -58,14 +55,14 @@ export class ScoutingDataService {
 		return this.http.put(editURL, scoutingData);
 	}
 
-	deleteScoutingData(id:string):any{
-		//Delete the object by the id
-		let deleteURL = `${this.scoutingDataURL}/${id}`
-		return this.http.delete(deleteURL)
-		.map(res  => {
-		  return res;
-		})
-	}
+	// deleteScoutingData(id:string):any{
+	// 	//Delete the object by the id
+	// 	let deleteURL = `${this.scoutingDataURL}/${id}`
+	// 	return this.http.delete(deleteURL)
+	// 	.map(res  => {
+	// 	  return res;
+	// 	})
+	// }
 
 	//Default Error handling method.
 	private handleError(error: any): Promise<any> {

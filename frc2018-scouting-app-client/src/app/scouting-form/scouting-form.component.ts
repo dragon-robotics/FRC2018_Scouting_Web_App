@@ -92,6 +92,7 @@ export class ScoutingFormComponent implements OnInit {
 		// 'AZ North': '2017azfl',
 		// 'AZ West': '2017azpx',
 		'Week 0': '2018week0',
+		'2018 Dallas Regional': '2018txda',
 	};
 
 	matchesAndTeams = {};
@@ -238,7 +239,7 @@ export class ScoutingFormComponent implements OnInit {
 					readyCode: this.robotStatus,
 					robotPlacement: this.initialRobotPlacement,
 					fieldConfig: fieldConfigValue,
-					autoLine: this.crossedTheLine,
+					autoLine: this.crossedTheLine ? true : false,
 					autoSwitchCubeCount: this.autoSwitchCubeCount,
 					autoScaleCubeCount: this.autoScaleCubeCount,
 					autoExchangeCubeCount: this.autoExchangeCubeCount,
@@ -318,7 +319,7 @@ export class ScoutingFormComponent implements OnInit {
 									break;																								
 							}
 
-							this.crossedTheLine = result.matchData.autoLine;
+							this.crossedTheLine = result.matchData.autoLine ? true : false;
 							this.autoSwitchCubeCount = result.matchData.autoSwitchCubeCount;
 							this.autoScaleCubeCount = result.matchData.autoScaleCubeCount;
 							this.autoExchangeCubeCount = result.matchData.autoExchangeCubeCount;
@@ -341,6 +342,7 @@ export class ScoutingFormComponent implements OnInit {
 							this.leftAllianceSwitchToggle = false;
 							this.rightAllianceSwitchToggle = false;
 
+							this.crossedTheLine = false;
 							this.autoExchangeCubeCountInput.reset();
 							this.autoScaleCubeCountInput.reset();
 							this.autoSwitchCubeCountInput.reset();
@@ -367,6 +369,7 @@ export class ScoutingFormComponent implements OnInit {
 	getTeams(){
 		this.blue_alliance = this.matchesAndTeams[this.selectedMatch].alliances.blue;
 		this.red_alliance = this.matchesAndTeams[this.selectedMatch].alliances.red;
+		console.log(this.matchesAndTeams);
 	}
 
 	/* This function will autofill the form information if a team is a no show at the qual */

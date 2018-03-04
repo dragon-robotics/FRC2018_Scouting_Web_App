@@ -8,6 +8,24 @@ var _ = require('lodash')
 _this = this
 
 
+exports.getYPRData = async function (req, res, next){
+    
+    try{
+        var yprData = await ScoutingDataService.getScoutingData({})
+        
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: yprData, message: "Succesfully Received Scouting Data"});
+        
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+        
+    }
+}
+
 // Async Controller function to get the To do List
 
 exports.getScoutingData = async function(req, res, next){

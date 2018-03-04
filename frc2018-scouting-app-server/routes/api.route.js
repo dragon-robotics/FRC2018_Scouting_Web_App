@@ -136,10 +136,18 @@ router.get('/getMatchAndTeamInfo/:eventID/', function(req, res){
 											});
 										})
 										.value();
-						matchObj[comp_level+" "+match.match_number] = {
-							matchKey: match.key,
-							alliances: _.chain(alliances),
-						};
+						if(comp_level == "Qual"){
+							matchObj[comp_level+" "+match.match_number] = {
+								matchKey: match.key,
+								alliances: _.chain(alliances),
+							};							
+						}
+						else{
+							matchObj[comp_level+" "+match.set_number+" Match "+match.match_number] = {
+								matchKey: match.key,
+								alliances: _.chain(alliances),
+							};							
+						}
 						// matchObj[alliances] = match.alliances;
 						return matchObj;
 						// return {key: match.key, human: comp_level+" "+match.match_number};
@@ -154,6 +162,10 @@ router.get('/getMatchAndTeamInfo/:eventID/', function(req, res){
 					.value();
 		res.send(matches);
 	})
+})
+
+router.get('/getOPRandDPRInfo/:eventID', function(req, res){
+	
 })
 
 module.exports = router;
