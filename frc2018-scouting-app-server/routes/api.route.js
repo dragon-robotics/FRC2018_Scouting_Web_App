@@ -164,8 +164,4 @@ router.get('/getMatchAndTeamInfo/:eventID/', function(req, res){
 	})
 })
 
-router.get('/getOPRandDPRInfo/:eventID', function(req, res){
-	
-})
-
 module.exports = router;

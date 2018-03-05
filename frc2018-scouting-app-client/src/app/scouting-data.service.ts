@@ -23,7 +23,7 @@ export class ScoutingDataService {
 
 	/* YPR Information */
 	getYPR(){
-		
+		return this.http.get(this.scoutingDataURL);
 	}
 
 	/* Blue Alliance Information */

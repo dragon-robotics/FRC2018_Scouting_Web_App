@@ -99,15 +99,92 @@ var sourceDestinationMap = {
 
 exports.getYPRData = async function(){
     try {
-        var scoutingDatas = await ScoutingData.aggregate(query)
-        
+        var query = [
+            {
+                "$project" : {
+                    "event": 1,
+                    "team": 1,
+                    "match": 1,
+                    "autoLine": "$matchData.autoLine",
+                    "autoSwitchCubeCount": "$matchData.autoSwitchCubeCount",
+                    "autoScaleCubeCount": "$matchData.autoScaleCubeCount", 
+                    "autoExchangeCubeCount": "$matchData.autoExchangeCubeCount", 
+                    "cubesScored": "$matchData.cubesScored",
+                    "cycleTime": "$matchData.cycleTime", 
+                    "efficiency": "$matchData.efficiency", 
+                    "pickUpWide": "$matchData.pickUpWide", 
+                    "pickUpDiag": "$matchData.pickUpDiag", 
+                    "pickUpTall": "$matchData.pickUpTall",
+                    "pickUpDropOff": "$matchData.pickUpDropOff",
+                    "climbing": "$matchData.climbing",                     
+                }
+            },
+            {
+                "$group" : {
+                    "_id": {"event": "$event", "team": "$team"},
+                    "avgAutoLine" : { "$avg": "$autoLine"},
+                    "avgAutoSwitchCubeCount" : { "$avg": "$autoSwitchCubeCount"},
+                    "avgAutoScaleCubeCount" : { "$avg": "$autoScaleCubeCount"},
+                    "avgAutoExchangeCubeCount" : { "$avg": "$autoExchangeCubeCount"},
+                    "avgCubesScored" : { "$avg": "$cubesScored"},
+                    "avgEfficiency" : { "$avg": "$efficiency"},
+                    "avgCycleTime" : { "$avg": "$cycleTime"},
+                    "avgClimbing" : { "$avg" : "$climbing"},
+                    "totalPickUpWide" : {"$sum" : "$pickUpWide"},
+                    "totalPickUpDiag" : {"$sum" : "$pickUpDiag"},
+                    "totalPickUpTall" : {"$sum" : "$pickUpTall"},
+                    "totalPickUpDropOff" : {"$sum" : "$pickUpDropOff"},
+                }
+            },
+            {
+                "$project" : {
+                    "_id" : 0,
+                    "event" : "$_id.event",
+                    "team" : "$_id.team",
+                    "avgAutoLine" : 1,
+                    "avgAutoSwitchCubeCount" : 1,
+                    "avgAutoScaleCubeCount" : 1,
+                    "avgAutoExchangeCubeCount" : 1,
+                    "avgCubesScored" : 1,
+                    "avgClimbing": 1,
+                    "avgEfficiency" : 1,
+                    "avgCycleTime" : 1,
+                    "totalPickUpWide" : 1,
+                    "totalPickUpDiag" : 1,
+                    "totalPickUpTall" : 1,
+                    "totalPickUpDropOff" : 1,
+                }
+            },
+        ];
+        var yprDatas = await ScoutingData.aggregate(query)
+
+        // Start calculating YPR using LODASH
+        var maxYPRDatas = _.chain(yprDatas)
+        .reduce(function(result, value, key, arr){
+            result["maxAvgAutoLine"] = key == 0 ? value.avgAutoLine : Math.max(arr[key-1].avgAutoLine, value.avgAutoLine);
+            result["maxAvgAutoSwitchCubeCount"] = key == 0 ? value.avgAutoSwitchCubeCount : Math.max(arr[key-1].avgAutoSwitchCubeCount, value.avgAutoSwitchCubeCount);
+            result["maxAvgAutoScaleCubeCount"] = key == 0 ? value.avgAutoScaleCubeCount : Math.max(arr[key-1].avgAutoScaleCubeCount, value.avgAutoScaleCubeCount);
+            result["maxAvgAutoExchangeCubeCount"] = key == 0 ? value.avgAutoExchangeCubeCount : Math.max(arr[key-1].avgAutoExchangeCubeCount, value.avgAutoExchangeCubeCount);
+            result["maxAvgCubesScored"] = key == 0 ? value.avgCubesScored : Math.max(arr[key-1].avgCubesScored, value.avgCubesScored);
+            result["maxAvgEfficiency"] = key == 0 ? value.avgEfficiency : Math.max(arr[key-1].avgEfficiency, value.avgEfficiency);
+            result["maxAvgCycleTime"] = key == 0 ? value.avgCycleTime : Math.max(arr[key-1].avgCycleTime, value.avgCycleTime);
+            return result;
+        }, {})
+        // .thru(function(maxResults){
+        //     return _.map(yprDatas, function(data){
+        //         return {
+        //             numberOfCubes
+        //         }
+        //     })
+        // })
+        .value();
+
         // Return the todod list that was retured by the mongoose promise
-        return scoutingDatas;
+        return maxYPRDatas;
 
     } catch (e) {
-
-        // return a Error message describing the reason 
-        throw Error('Error while Paginating Todos')
+        // return a Error message describing the reason
+        throw Error('Error while creating YPR')
     }
 }
 
@@ -1417,16 +1494,12 @@ exports.updateScoutingData = async function(rawData){
     rawData.matchData.pickUpTall = pickUpCounts["Tall"] ? pickUpCounts["Tall"] : 0;
     rawData.matchData.pickUpDropOff = pickUpCounts["Drop Off"] ? pickUpCounts["Drop Off"] : 0;
 
-
     //Edit the Todo Object
     oldScoutingData.team = rawData.team
     oldScoutingData.event = rawData.event
     oldScoutingData.match = rawData.match
     oldScoutingData.matchData = rawData.matchData
     oldScoutingData.comments = rawData.comments
-
-
-    console.log(oldScoutingData)
 
     try{
         var savedScoutingData = await oldScoutingData.save();

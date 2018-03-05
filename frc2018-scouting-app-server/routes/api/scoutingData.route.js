@@ -10,7 +10,7 @@ var ScoutingDataController = require('../../controllers/scoutingData.controller'
 // Map each API to the Controller FUnctions
 
 router.get('/:formData', ScoutingDataController.getScoutingData)
-router.get('/:ypr', ScoutingDataController.getScoutingData)
+router.get('/', ScoutingDataController.getYPRData)
 
 router.post('/', ScoutingDataController.createScoutingData)
 

@@ -11,7 +11,7 @@ _this = this
 exports.getYPRData = async function (req, res, next){
     
     try{
-        var yprData = await ScoutingDataService.getScoutingData({})
+        var yprData = await ScoutingDataService.getYPRData({})
         
         // Return the scoutingData list with the appropriate HTTP Status Code and Message.
         

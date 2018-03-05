@@ -239,7 +239,7 @@ export class ScoutingFormComponent implements OnInit {
 					readyCode: this.robotStatus,
 					robotPlacement: this.initialRobotPlacement,
 					fieldConfig: fieldConfigValue,
-					autoLine: this.crossedTheLine ? true : false,
+					autoLine: this.crossedTheLine ? 1 : 0,
 					autoSwitchCubeCount: this.autoSwitchCubeCount,
 					autoScaleCubeCount: this.autoScaleCubeCount,
 					autoExchangeCubeCount: this.autoExchangeCubeCount,
@@ -319,7 +319,7 @@ export class ScoutingFormComponent implements OnInit {
 									break;																								
 							}
 
-							this.crossedTheLine = result.matchData.autoLine ? true : false;
+							this.crossedTheLine = result.matchData.autoLine == 1 ? true : false;
 							this.autoSwitchCubeCount = result.matchData.autoSwitchCubeCount;
 							this.autoScaleCubeCount = result.matchData.autoScaleCubeCount;
 							this.autoExchangeCubeCount = result.matchData.autoExchangeCubeCount;

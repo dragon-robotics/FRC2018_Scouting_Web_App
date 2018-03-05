@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { Chart } from 'angular-highcharts';
+import { ScoutingDataService } from '../scouting-data.service';
 
 @Component({
 	selector: 'app-statistics-dashboard',
@@ -35,7 +36,6 @@ export class StatisticsDashboardComponent implements OnInit {
 	    },
 
 	    yAxis: {
-	        gridLineInterpolation: 'polygon',
 	        lineWidth: 0,
 	        min: 0
 	    },
@@ -55,11 +55,19 @@ export class StatisticsDashboardComponent implements OnInit {
 	    series: [{
 	        name: 'Team A',
 	        data: [43000, 19000, 60000, 35000, 17000, 10000, 10238, 23400],
-	        pointPlacement: 'on'
 	    }]
 	});
 
-	constructor() { }
+	getYPRAnalytics(){
+		this.scoutingDataService.getYPR()
+			.subscribe((res)=>{
+				console.log(res)
+			})
+	}
+
+	constructor(
+		private scoutingDataService: ScoutingDataService,
+	) { }
 
 	ngOnInit() {
 	}
