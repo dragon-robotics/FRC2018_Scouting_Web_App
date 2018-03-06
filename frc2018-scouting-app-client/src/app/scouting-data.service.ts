@@ -1,5 +1,5 @@
 import { ScoutingData } from './models/scoutingData.model';
-// import { EventDetails } from './models/eventDetails.model';
+import { YPRData } from './models/yprData.model';
 import { Observable } from 'rxjs/Rx';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Response } from '@angular/http';
@@ -22,8 +22,11 @@ export class ScoutingDataService {
 	) { }
 
 	/* YPR Information */
-	getYPR(){
-		return this.http.get(this.scoutingDataURL);
+	getYPR(event: string, eventID: string): Observable<YPRData[]>{
+		return this.http.get(this.scoutingDataURL+'/'+event+'/'+eventID)
+		.map((res) => {
+			return res["data"] as YPRData[];
+		} );
 	}
 
 	/* Blue Alliance Information */
@@ -41,7 +44,7 @@ export class ScoutingDataService {
 	// Grabs scouting form data from a specific match
 	// Takes team, event, and match as arguments
 	getFormScoutingData(event: string, match: string, team: number): Observable<ScoutingData[]>{
-		return this.http.get(this.scoutingDataURL+'/formData?event='+event+'&match='+match+'&team='+team)
+		return this.http.get(this.scoutingDataURL+'/'+event+'/'+match+'/'+team)
 		.map(res  => {
 			//Maps the response object sent from the server
 			return res["data"] as ScoutingData[];

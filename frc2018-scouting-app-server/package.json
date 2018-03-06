@@ -12,6 +12,7 @@
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.15.5",
+    "jStat": "^1.7.1",
     "lodash": "^4.17.5",
     "mongoose": "^5.0.8",
     "mongoose-paginate": "^5.0.3",

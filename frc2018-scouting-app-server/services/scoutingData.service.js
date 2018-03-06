@@ -1,6 +1,8 @@
 // Getting the Newly created Mongoose Model we just created 
 var ScoutingData = require('../models/scoutingData.model');
 var _ = require('lodash');
+var jStat = require('jStat').jStat;
+var requestPromise = require('request-promise');
 
 // Saving the context of this module inside the _the variable
 _this = this;
@@ -97,90 +99,89 @@ var sourceDestinationMap = {
         "aez_aez": 0.25,
 };
 
-exports.getYPRData = async function(){
+exports.getYPRData = async function(query, eventID){
     try {
-        var query = [
-            {
-                "$project" : {
-                    "event": 1,
-                    "team": 1,
-                    "match": 1,
-                    "autoLine": "$matchData.autoLine",
-                    "autoSwitchCubeCount": "$matchData.autoSwitchCubeCount",
-                    "autoScaleCubeCount": "$matchData.autoScaleCubeCount", 
-                    "autoExchangeCubeCount": "$matchData.autoExchangeCubeCount", 
-                    "cubesScored": "$matchData.cubesScored",
-                    "cycleTime": "$matchData.cycleTime", 
-                    "efficiency": "$matchData.efficiency", 
-                    "pickUpWide": "$matchData.pickUpWide", 
-                    "pickUpDiag": "$matchData.pickUpDiag", 
-                    "pickUpTall": "$matchData.pickUpTall",
-                    "pickUpDropOff": "$matchData.pickUpDropOff",
-                    "climbing": "$matchData.climbing",                     
-                }
-            },
-            {
-                "$group" : {
-                    "_id": {"event": "$event", "team": "$team"},
-                    "avgAutoLine" : { "$avg": "$autoLine"},
-                    "avgAutoSwitchCubeCount" : { "$avg": "$autoSwitchCubeCount"},
-                    "avgAutoScaleCubeCount" : { "$avg": "$autoScaleCubeCount"},
-                    "avgAutoExchangeCubeCount" : { "$avg": "$autoExchangeCubeCount"},
-                    "avgCubesScored" : { "$avg": "$cubesScored"},
-                    "avgEfficiency" : { "$avg": "$efficiency"},
-                    "avgCycleTime" : { "$avg": "$cycleTime"},
-                    "avgClimbing" : { "$avg" : "$climbing"},
-                    "totalPickUpWide" : {"$sum" : "$pickUpWide"},
-                    "totalPickUpDiag" : {"$sum" : "$pickUpDiag"},
-                    "totalPickUpTall" : {"$sum" : "$pickUpTall"},
-                    "totalPickUpDropOff" : {"$sum" : "$pickUpDropOff"},
-                }
-            },
-            {
-                "$project" : {
-                    "_id" : 0,
-                    "event" : "$_id.event",
-                    "team" : "$_id.team",
-                    "avgAutoLine" : 1,
-                    "avgAutoSwitchCubeCount" : 1,
-                    "avgAutoScaleCubeCount" : 1,
-                    "avgAutoExchangeCubeCount" : 1,
-                    "avgCubesScored" : 1,
-                    "avgClimbing": 1,
-                    "avgEfficiency" : 1,
-                    "avgCycleTime" : 1,
-                    "totalPickUpWide" : 1,
-                    "totalPickUpDiag" : 1,
-                    "totalPickUpTall" : 1,
-                    "totalPickUpDropOff" : 1,
-                }
-            },
-        ];
+
         var yprDatas = await ScoutingData.aggregate(query)
 
         // Start calculating YPR using LODASH
         var maxYPRDatas = _.chain(yprDatas)
         .reduce(function(result, value, key, arr){
-            result["maxAvgAutoLine"] = key == 0 ? value.avgAutoLine : Math.max(arr[key-1].avgAutoLine, value.avgAutoLine);
-            result["maxAvgAutoSwitchCubeCount"] = key == 0 ? value.avgAutoSwitchCubeCount : Math.max(arr[key-1].avgAutoSwitchCubeCount, value.avgAutoSwitchCubeCount);
-            result["maxAvgAutoScaleCubeCount"] = key == 0 ? value.avgAutoScaleCubeCount : Math.max(arr[key-1].avgAutoScaleCubeCount, value.avgAutoScaleCubeCount);
-            result["maxAvgAutoExchangeCubeCount"] = key == 0 ? value.avgAutoExchangeCubeCount : Math.max(arr[key-1].avgAutoExchangeCubeCount, value.avgAutoExchangeCubeCount);
-            result["maxAvgCubesScored"] = key == 0 ? value.avgCubesScored : Math.max(arr[key-1].avgCubesScored, value.avgCubesScored);
-            result["maxAvgEfficiency"] = key == 0 ? value.avgEfficiency : Math.max(arr[key-1].avgEfficiency, value.avgEfficiency);
-            result["maxAvgCycleTime"] = key == 0 ? value.avgCycleTime : Math.max(arr[key-1].avgCycleTime, value.avgCycleTime);
+            result["maxAvgAutoSwitchCubeCount"] = key == 0 ? value.avgAutoSwitchCubeCount : Math.max(result["maxAvgAutoSwitchCubeCount"], value.avgAutoSwitchCubeCount);
+            result["maxAvgAutoScaleCubeCount"] = key == 0 ? value.avgAutoScaleCubeCount : Math.max(result["maxAvgAutoScaleCubeCount"], value.avgAutoScaleCubeCount);
+            result["maxAvgAutoExchangeCubeCount"] = key == 0 ? value.avgAutoExchangeCubeCount : Math.max(result["maxAvgAutoExchangeCubeCount"], value.avgAutoExchangeCubeCount);
+            result["maxAvgCubesScored"] = key == 0 ? value.avgCubesScored : Math.max(result["maxAvgCubesScored"], value.avgCubesScored);
+            result["maxAvgEfficiency"] = key == 0 ? value.avgEfficiency : Math.max(result["maxAvgEfficiency"], value.avgEfficiency);
+            result["maxAvgCycleTime"] = key == 0 ? value.avgCycleTime : Math.max(result["maxAvgCycleTime"], value.avgCycleTime);
             return result;
         }, {})
-        // .thru(function(maxResults){
-        //     return _.map(yprDatas, function(data){
-        //         return {
-        //             numberOfCubes
-        //         }
-        //     })
-        // })
         .value();
 
-        // Return the todod list that was retured by the mongoose promise
-        return maxYPRDatas;
+        var oprAndDprAndCcwm = await requestPromise({
+            method: 'GET',
+            url: 'https://www.thebluealliance.com/api/v3/event/'+eventID+'/oprs',
+            headers:{
+                'X-TBA-Auth-Key': 'dS9knumpOPRZJkI1FvSCSYhdnIj9dk2mfpqPMb50JbCQc9roaG9Hl3oZKTRYYOe0',
+            },
+        });
+        oprAndDprAndCcwm = JSON.parse(oprAndDprAndCcwm);
+
+        var maxOprAndDprAndCcwm = _.reduce(oprAndDprAndCcwm, function(result, value, key, arr){
+            result["max"+key] = _.reduce(value, function(maxResult, value, key, arr){
+                maxResult = key == 0 ? value : Math.max(value, maxResult);
+                return maxResult;
+            }, 0)
+            return result;
+        }, {});
+
+        var YPR = _.chain(yprDatas)
+        .map(function(result){
+            var maxAvgAutoScaleCubeCount = maxYPRDatas.maxAvgAutoScaleCubeCount == 0 ? 1 : maxYPRDatas.maxAvgAutoScaleCubeCount;
+            var maxAvgAutoSwitchCubeCount = maxYPRDatas.maxAvgAutoSwitchCubeCount == 0 ? 1 : maxYPRDatas.maxAvgAutoSwitchCubeCount; 
+            var maxAvgAutoExchangeCubeCount = maxYPRDatas.maxAvgAutoExchangeCubeCount == 0 ? 1 : maxYPRDatas.maxAvgAutoExchangeCubeCount;
+            var maxAvgCubesScored = maxYPRDatas.maxAvgCubesScored == 0 ? 1 : maxYPRDatas.maxAvgCubesScored;
+            var maxAvgEfficiency = maxYPRDatas.maxAvgEfficiency == 0 ? 1 : maxYPRDatas.maxAvgEfficiency;
+            var maxAvgCycleTime = maxYPRDatas.maxAvgCycleTime == 0 ? 1 : maxYPRDatas.maxAvgCycleTime;            
+
+            var cycleTimeRating = 20 * (result.avgCycleTime / maxAvgCycleTime);
+            var autoRating = result.avgAutoLine * ((5*(result.avgAutoScaleCubeCount / maxAvgAutoScaleCubeCount)) + (3*(result.avgAutoSwitchCubeCount / maxAvgAutoSwitchCubeCount)) + (2*(result.avgAutoExchangeCubeCount / maxAvgAutoExchangeCubeCount)) + 10);
+            
+            var pickUpData = [result.totalPickUpWide, result.totalPickUpDiag, result.totalPickUpTall, result.totalPickUpDropOff];
+            var pickUpMean = jStat.mean(pickUpData);
+            var pickUpMAD = jStat.meandev(pickUpData);
+            var pickUpGini = pickUpMean == 0 ? 0 : (pickUpMAD / pickUpMean) / 2;
+            // // With an array of 4, least versatile = 0.75, most versatile = 0
+            var pickUpRating = pickUpMean == 0 ? 0 : 20 - (pickUpGini * 80 / 3);
+
+            var climbRating = result.avgClimbing * 4;
+            var efficiencyRating = 20 * (result.avgEfficiency / maxAvgEfficiency);
+            var numberOfCubesRating = 20 * (result.avgCubesScored / maxAvgCubesScored);
+            var OPR = oprAndDprAndCcwm.oprs['frc'+result.team] < 0 ? 0 : 20 * (oprAndDprAndCcwm.oprs['frc'+result.team] / maxOprAndDprAndCcwm.maxoprs);
+            var DPR = oprAndDprAndCcwm.dprs['frc'+result.team] < 0 ? 0 : 20 * (oprAndDprAndCcwm.dprs['frc'+result.team] / maxOprAndDprAndCcwm.maxdprs);
+            var CCWM = oprAndDprAndCcwm.ccwms['frc'+result.team] < 0 ? 0 : 20 * (oprAndDprAndCcwm.ccwms['frc'+result.team] / maxOprAndDprAndCcwm.maxccwms); 
+            var YPR = cycleTimeRating + autoRating + pickUpRating + climbRating + efficiencyRating + numberOfCubesRating + OPR + DPR + CCWM;
+
+            return {
+                event: result.event,
+                team: result.team,
+                YPR: YPR,
+                OPR: OPR,
+                DPR: DPR,
+                CCWM: CCWM,
+                cycleTimeRating: cycleTimeRating,
+                autoRating: autoRating,
+                pickUpRating: pickUpRating,
+                climbRating: climbRating,
+                efficiencyRating: efficiencyRating,
+                numberOfCubesRating: numberOfCubesRating,
+            }
+
+        })
+        .orderBy('YPR', 'desc')
+        .value();
+
+        // Return the YPR list that was retured by the mongoose promise
+        return YPR;
 
     } catch (e) {
         // return a Error message describing the reason

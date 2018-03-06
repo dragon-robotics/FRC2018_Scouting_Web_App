@@ -11,11 +11,75 @@ _this = this
 exports.getYPRData = async function (req, res, next){
     
     try{
-        var yprData = await ScoutingDataService.getYPRData({})
+        var eventID = req.params.eventID;
+        var query = [
+            {
+                "$match" :{
+                    "event": req.params.event,
+                },
+            },
+            {
+                "$project" : {
+                    "event": 1,
+                    "team": 1,
+                    "match": 1,
+                    "autoLine": "$matchData.autoLine",
+                    "autoSwitchCubeCount": "$matchData.autoSwitchCubeCount",
+                    "autoScaleCubeCount": "$matchData.autoScaleCubeCount", 
+                    "autoExchangeCubeCount": "$matchData.autoExchangeCubeCount", 
+                    "cubesScored": "$matchData.cubesScored",
+                    "cycleTime": "$matchData.cycleTime", 
+                    "efficiency": "$matchData.efficiency", 
+                    "pickUpWide": "$matchData.pickUpWide", 
+                    "pickUpDiag": "$matchData.pickUpDiag", 
+                    "pickUpTall": "$matchData.pickUpTall",
+                    "pickUpDropOff": "$matchData.pickUpDropOff",
+                    "climbing": "$matchData.climbing",                     
+                },
+            },
+            {
+                "$group" : {
+                    "_id": {"event": "$event", "team": "$team"},
+                    "avgAutoLine" : { "$avg": "$autoLine"},
+                    "avgAutoSwitchCubeCount" : { "$avg": "$autoSwitchCubeCount"},
+                    "avgAutoScaleCubeCount" : { "$avg": "$autoScaleCubeCount"},
+                    "avgAutoExchangeCubeCount" : { "$avg": "$autoExchangeCubeCount"},
+                    "avgCubesScored" : { "$avg": "$cubesScored"},
+                    "avgEfficiency" : { "$avg": "$efficiency"},
+                    "avgCycleTime" : { "$avg": "$cycleTime"},
+                    "avgClimbing" : { "$avg" : "$climbing"},
+                    "totalPickUpWide" : {"$sum" : "$pickUpWide"},
+                    "totalPickUpDiag" : {"$sum" : "$pickUpDiag"},
+                    "totalPickUpTall" : {"$sum" : "$pickUpTall"},
+                    "totalPickUpDropOff" : {"$sum" : "$pickUpDropOff"},
+                },
+            },
+            {
+                "$project" : {
+                    "_id" : 0,
+                    "event" : "$_id.event",
+                    "team" : "$_id.team",
+                    "avgAutoLine" : 1,
+                    "avgAutoSwitchCubeCount" : 1,
+                    "avgAutoScaleCubeCount" : 1,
+                    "avgAutoExchangeCubeCount" : 1,
+                    "avgCubesScored" : 1,
+                    "avgClimbing": 1,
+                    "avgEfficiency" : 1,
+                    "avgCycleTime" : 1,
+                    "totalPickUpWide" : 1,
+                    "totalPickUpDiag" : 1,
+                    "totalPickUpTall" : 1,
+                    "totalPickUpDropOff" : 1,
+                },
+            },
+        ];
+
+        var yprData = await ScoutingDataService.getYPRData(query, eventID);
         
         // Return the scoutingData list with the appropriate HTTP Status Code and Message.
         
-        return res.status(200).json({status: 200, data: yprData, message: "Succesfully Received Scouting Data"});
+        return res.status(200).json({status: 200, data: yprData, message: "Succesfully Received YPR Data"});
         
     }catch(e){
         
@@ -34,9 +98,9 @@ exports.getScoutingData = async function(req, res, next){
 
 
     try{
-        var event = req.query.event;
-        var match = req.query.match;
-        var team = +req.query.team;
+        var event = req.params.event;
+        var match = req.params.match;
+        var team = +req.params.team;
         // var event = "Week 0";
         // var match = "Qual 1";
         // var team = 1729;
