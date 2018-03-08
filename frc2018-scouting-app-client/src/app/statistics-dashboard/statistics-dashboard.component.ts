@@ -17,115 +17,65 @@ export class StatisticsDashboardComponent implements OnInit {
 	objectKeys = Object.keys;
 	
 	events = {
-		// 'AZ North': '2017azfl',
+		'AZ North': '2018azfl',
 		// 'AZ West': '2017azpx',
 		'Week 0': '2018week0',
-		'2018 Dallas Regional': '2018txda',
+		// '2018 Dallas Regional': '2018txda',
 	};
 
-	teamCharts : Chart[];
+	teamRows : any[];
 
-	// chart = new Chart({
-	//     chart: {
-	//         polar: true,
-	//         type: 'line'
-	//     },
-
-	//     title: {
-	//         text: 'YPR',
-	//         x: -80
-	//     },
-
-	//     pane: {
-	//         size: '80%'
-	//     },
-
-	//     xAxis: {
-	//         categories: ['OPR', 'DPR', 'Cycle Time', 'Auto',
-	//                 'Pickup', 'Climb', "Efficiency", "Number of Cubes"],
-	//         tickmarkPlacement: 'on',
-	//         lineWidth: 0
-	//     },
-
-	//     yAxis: {
-	//         lineWidth: 0,
-	//         min: 0
-	//     },
-
-	//     tooltip: {
-	//         shared: true,
-	//         pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>'
-	//     },
-
-	//     legend: {
-	//         align: 'right',
-	//         verticalAlign: 'top',
-	//         y: 70,
-	//         layout: 'vertical'
-	//     },
-
-	//     series: [{
-	//         name: 'Team A',
-	//         data: [43000, 19000, 60000, 35000, 17000, 10000, 10238, 23400],
-	//     }]
-	// });
+  tiles = [
+    {text: 'One', cols: 2, rows: 1, color: 'lightblue'},
+    // {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
+    // {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
+    // {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
+  ];
+  color : string = "lightblue";
 
 	getYPRAnalytics(){
 		this.scoutingDataService.getYPR(this.selectedEvent, this.events[this.selectedEvent])
 			.subscribe((res)=>{
-				console.log(res);
-				this.teamCharts = res.map(function(result){
-					return new Chart({
+				this.teamRows = res.map(function(result){
+					let chart = new Chart({
 						chart: {
 						    polar: true,
-						    type: 'line'
+						    type: 'line',
+						    borderColor: '#000000', 
+						    borderRadius: 1,
+						    borderWidth: 1,
+						    height: 300,
 						},
-
 						title: {
-						    text: result.event+' '+result.team+' YPR',
-						    x: -80
+						    text: '',
 						},
-					    subtitle: {
-					        text: 'YPR = '+result.YPR,
-					        x: -80
-					    },
-						pane: {
-						    size: '80%'
-						},
-
 						xAxis: {
 						    categories: [
 						    	'OPR',
 						    	'DPR',
 						    	'CCWM',
-						    	'Cycle Time', 
-						    	'Auto',
 						    	'Pickup', 
-						    	'Climb', 
+						    	"Number of Cubes",
+						    	'Cycle Time', 
 						    	"Efficiency", 
-						    	"Number of Cubes"
+						    	'Auto',
+						    	'Climb', 
 						    ],
 						    tickmarkPlacement: 'on',
 						    lineWidth: 0
 						},
-
 						yAxis: {
 						    lineWidth: 0,
 						    min: 0,
 						    max: 20,
 						},
-
 						tooltip: {
 						    shared: true,
 						},
 
 						legend: {
-						    align: 'right',
-						    verticalAlign: 'top',
-						    y: 70,
-						    layout: 'vertical'
+							enabled: false,
 						},
-
 						series: [{
 						    name: 'Team '+result.team,
 						    type:'area',
@@ -133,15 +83,32 @@ export class StatisticsDashboardComponent implements OnInit {
 						    	result.OPR,
 						    	result.DPR,
 						    	result.CCWM,
-						    	result.cycleTimeRating, 
-						    	result.autoRating, 
-						    	result.pickUpRating,
-						    	result.climbRating,
-						    	result.efficiencyRating,
-						    	result.numberOfCubesRating,
+						    	result.Pickup, 
+						    	result.NumOfCubes, 
+						    	result.CycleTime,
+						    	result.Efficiency,
+						    	result.Auto,
+						    	result.Climb,
 						    ],
-						}]
+						}],
+						responsive: {
+							rules: [{
+								chartOptions: {
+									width: 300,
+								},
+								condition: {
+									maxWidth: 700,
+								},
+							}],
+						}
 					});
+
+					return {
+						chart: chart,
+						team: result.team,
+						cols: 3,
+						rows: 1,
+					};
 				})
 			})
 	}

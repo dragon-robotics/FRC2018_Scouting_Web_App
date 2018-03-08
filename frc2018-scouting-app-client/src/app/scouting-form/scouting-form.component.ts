@@ -89,10 +89,10 @@ export class ScoutingFormComponent implements OnInit {
 	objectKeys = Object.keys;
 	
 	events = {
-		// 'AZ North': '2017azfl',
+		'AZ North': '2018azfl',
 		// 'AZ West': '2017azpx',
 		'Week 0': '2018week0',
-		'2018 Dallas Regional': '2018txda',
+		// '2018 Dallas Regional': '2018txda',
 	};
 
 	matchesAndTeams = {};
@@ -233,6 +233,7 @@ export class ScoutingFormComponent implements OnInit {
 
 				this.scoutingData.team = +this.selectedTeam;
 				this.scoutingData.event = this.selectedEvent;
+				this.scoutingData.eventID = this.events[this.selectedEvent];
 				this.scoutingData.match = this.selectedMatch;
 
 				this.scoutingData.matchData = {
@@ -254,7 +255,6 @@ export class ScoutingFormComponent implements OnInit {
 					// We create a whole new database
 					this.scoutingDataService.createScoutingData(this.scoutingData)
 						.subscribe((res) => {
-							console.log(res);
 							this.insertedFormSnackBar.open("Form data inserted into database", "OK",{
 								duration: 2000,
 							})
@@ -262,11 +262,10 @@ export class ScoutingFormComponent implements OnInit {
 				}
 				else{
 					// We update the existing database
-					console.log(this._id);
+					console.log(this.scoutingData);
 					this.scoutingData._id = this._id;
 					this.scoutingDataService.editScoutingData(this.scoutingData)
 						.subscribe((res) => {
-							console.log(res);
 							this.insertedFormSnackBar.open("Form data updated into database", "OK",{
 								duration: 2000,
 							})
@@ -369,12 +368,10 @@ export class ScoutingFormComponent implements OnInit {
 	getTeams(){
 		this.blue_alliance = this.matchesAndTeams[this.selectedMatch].alliances.blue;
 		this.red_alliance = this.matchesAndTeams[this.selectedMatch].alliances.red;
-		console.log(this.matchesAndTeams);
 	}
 
 	/* This function will autofill the form information if a team is a no show at the qual */
 	noShow(){
-		console.log("I'm here")
 		if(this.robotStatus == 1){
 			this.initialRobotPlacement = 0;
 

@@ -5,12 +5,12 @@ export class YPRData {
 	OPR: number;
 	DPR: number;
 	CCWM: number;
-	cycleTimeRating: number;
-	autoRating: number;
-	pickUpRating: number;
-	climbRating: number;
-	efficiencyRating: number;
-	numberOfCubesRating: number;
+	Pickup: number;
+	NumOfCubes: number;
+	CycleTime: number;
+	Efficiency: number;
+	Auto: number;
+	Climb: number;
 
 	constructor() {
         this.event = "";
@@ -19,11 +19,11 @@ export class YPRData {
         this.OPR = -1;
         this.DPR = -1;
         this.CCWM = -1;
-        this.cycleTimeRating = -1;
-        this.autoRating = -1;
-        this.pickUpRating = -1;
-        this.climbRating = -1;
-        this.efficiencyRating = -1;
-        this.numberOfCubesRating = -1;
+        this.Pickup = -1;
+        this.NumOfCubes = -1;
+        this.CycleTime = -1;
+        this.Efficiency = -1;
+        this.Auto = -1;
+        this.Climb = -1;
     }
 }

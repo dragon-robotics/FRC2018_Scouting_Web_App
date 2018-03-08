@@ -10,7 +10,8 @@ var CyclePathsSchema = new mongoose.Schema({
 
 var ScoutingDataSchema = new mongoose.Schema({
 	team: Number,						// Indiate Team Number
-	event: String,						// Indicates the event name 
+	event: String,						// Indicates the event name
+	eventID: String,					// Indivates the event ID from "The Blue Alliance"
 	match: String,						// Indicate the Match Number
 	matchData: {
 		readyCode: Number,				// 0 - Ready, 1 - No Show, 2 - Disabled, 3 - Non-functional
@@ -27,27 +28,13 @@ var ScoutingDataSchema = new mongoose.Schema({
 		pickUpWide: Number,				// Pickup count for wide
 		pickUpDiag: Number,				// Pickup count for diagonal
 		pickUpTall: Number,				// Pickup count for tall
-		pickUpDropOff: Number,				// Pickup count for tall
+		pickUpDropOff: Number,			// Pickup count for tall
 		climbing: Number,				// 0pt - No Climb, 1pt - Self-Climb, 2pts - Ramp Climb, 2.5pts - One Robot Ramp Deploy, 3pts - Two Robot Ramp Deploy, 4pts - One Robot Ramp Deploy Climb, 5pts - Two Robot Ramp Deploy Climb
 		climbingType: String,			// 0 - No Climb, 1 - Self-Climb, 2 - Ramp Climb, 3 - One Robot Ramp Deploy, 4 - Two Robot Ramp Deploy, 5 - One Robot Ramp Deploy Climb, 6 - Two Robot Ramp Deploy Climb
 	},
 	comments: String,					// Additional Comments
 });
 
-var yprDataSchema = new mongoose.Schema({
-	event: String,
-	team: Number,
-	OPR: Number,
-	DPR: Number,
-	Pickup: Number,
-	NumOfCubes: Number,
-	CycleTime: Number,
-	Efficiency: Number,
-	Auto: Number,
-})
-
-const ScoutingData = mongoose.model('ScoutingData', ScoutingDataSchema)
-
-
-
+const ScoutingData = mongoose.model('ScoutingData', ScoutingDataSchema);
 module.exports = ScoutingData;
+

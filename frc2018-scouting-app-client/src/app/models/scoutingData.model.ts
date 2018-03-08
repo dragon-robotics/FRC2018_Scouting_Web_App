@@ -1,6 +1,7 @@
 export class ScoutingData {
     _id:						string;		// Indicates the Mongo Object ID
     team: 						number; 	// Indicates the team number
+    eventID:                    string;     // Indivates the event ID from "The Blue Alliance"
     event:						string;		// Indicates the event name
     match:						string; 	// Indicates the match number
     matchData:	{
@@ -25,6 +26,7 @@ export class ScoutingData {
     constructor() {
         this.team = -1;
         this.event = "";
+        this.eventID = "";
         this.match = "";
         this.matchData = {
             readyCode: -1,

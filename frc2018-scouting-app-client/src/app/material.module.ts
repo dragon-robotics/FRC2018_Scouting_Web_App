@@ -18,6 +18,8 @@ import {
   MatGridListModule,
   MatExpansionModule,
   MatSnackBarModule,
+  MatDividerModule,
+  MatListModule,
 
 } from '@angular/material';
 
@@ -38,6 +40,8 @@ import {
   		MatGridListModule,
   		MatExpansionModule,
       MatSnackBarModule,
+      MatDividerModule,
+      MatListModule,
 	],
 	exports: [
 	    MatCheckboxModule,
@@ -55,6 +59,8 @@ import {
   		MatGridListModule,
   		MatExpansionModule,
       MatSnackBarModule,
+      MatDividerModule,
+      MatListModule,
 	],
 })
 

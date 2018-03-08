@@ -19,8 +19,28 @@
 		</mat-error>
 	</mat-form-field>
 
-    <div *ngFor="let chart of teamCharts"
-    	 [chart]="chart">
-    </div>
+<mat-grid-list cols="8" rowHeight="300px">
+	<div *ngFor = "let row of teamRows">
+		<mat-grid-tile
+			[colspan]=5
+			[rowspan]=1
+			[style.background]="color">
+			{{row.team}}
+		</mat-grid-tile>
+		<mat-grid-tile 
+			[colspan]="row.cols"
+			[rowspan]="row.rows"
+			[chart]="row.chart">
+		</mat-grid-tile>		
+	</div>
+</mat-grid-list>
 
+<!-- 	<mat-grid-list cols="3">
+		<mat-grid-tile 
+			*ngFor = "let row of teamRows"
+			[colspan]="row.cols"
+      		[rowspan]="row.rows"
+			[chart]="row.chart">
+		</mat-grid-tile>
+	</mat-grid-list> -->
 </mat-card>
