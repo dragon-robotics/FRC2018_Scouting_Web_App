@@ -58,6 +58,39 @@ export class ScoutingDataService {
 		return this.http.put(editURL, scoutingData);
 	}
 
+	getTeamFromEvent(eventID: string): Observable<any>{
+		return this.http.get(this.teamEventInfoURL+'/'+eventID)
+	}
+
+	/* Chart Getters */
+	/* Per Match Charts */
+	getRobotReadyStatusPerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/readyChartPerMatch/'+event+'/'+team)
+	}
+
+	getRobotPlacementPerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/robotPlacementChartPerMatch/'+event+'/'+team)
+	}
+
+	getFieldConfigurationPerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/fieldConfigurationChartPerMatch/'+event+'/'+team)
+	}
+
+	getAutoLinePerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/autoLineChartPerMatch/'+event+'/'+team)
+	}
+
+	getAutoSwitchScaleExchangeZoneChartPerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/autoSwitchScaleExchangeZoneChartPerMatch/'+event+'/'+team)
+	}
+
+	getClimbPointsChartPerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/climbPointsChartPerMatch/'+event+'/'+team)
+	}
+
+
+	/* Overall Charts*/
+
 	// deleteScoutingData(id:string):any{
 	// 	//Delete the object by the id
 	// 	let deleteURL = `${this.scoutingDataURL}/${id}`

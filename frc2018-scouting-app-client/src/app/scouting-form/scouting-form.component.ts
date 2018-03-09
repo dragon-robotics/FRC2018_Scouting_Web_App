@@ -7,7 +7,6 @@ import { DataTableDirective } from 'angular-datatables';
 import { FormControl, Validators } from '@angular/forms';
 import { ScoutingDataService } from '../scouting-data.service';
 import { ScoutingData } from '../models/scoutingData.model';
-import { MatchDetails } from '../models/matchDetails.model';
 
 @Component({
   selector: 'app-scouting-form',

@@ -32,15 +32,10 @@ exports.getYPRData = async function (req, res, next){
 exports.getScoutingData = async function(req, res, next){
 
     // Check the existence of the query parameters, If the exists doesn't exists assign a default value
-
-
     try{
         var event = req.params.event;
         var match = req.params.match;
         var team = +req.params.team;
-        // var event = "Week 0";
-        // var match = "Qual 1";
-        // var team = 1729;
 
         var query = [{ 
             "$match": {
@@ -136,15 +131,235 @@ exports.updateScoutingData = async function(req, res, next){
     }
 }
 
-exports.removeScoutingData = async function(req, res, next){
+exports.getReadyStatusPerMatch = async function(req, res, next){
 
-    var id = req.params.id;
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+
 
     try{
-        var deleted = await ScoutingDataService.deleteScoutingData(id)
-        return res.status(204).json({status:204, message: "Succesfully Deleted Scouting Data"})
-    }catch(e){
-        return res.status(400).json({status: 400, message: e.message})
-    }
+        var event = req.params.event;
+        var team = +req.params.team;
 
+        var query = [{ 
+            "$match": {
+                "event" : event,
+                "team" : team,
+            },
+        },{ 
+            "$project": {
+                "_id" : 0,
+                // "name": "$match",
+                "name" : "$match",
+                "y": "$matchData.readyCode",
+            }
+        }];
+
+        var readyStatusData = await ScoutingDataService.getReadyStatusPerMatch(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: readyStatusData, message: "Succesfully Received Ready Status Data"});
+        
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+    }
 }
+
+exports.getRobotPlacementPerMatch = async function(req, res, next){
+
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+
+
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [{ 
+            "$match": {
+                "event" : event,
+                "team" : team,
+            },
+        },{ 
+            "$project": {
+                "_id" : 0,
+                // "name": "$match",
+                "name" : "$match",
+                "y": "$matchData.robotPlacement",
+            }
+        }];
+
+        var robotPlacementData = await ScoutingDataService.getRobotPlacementPerMatch(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: robotPlacementData, message: "Succesfully Received Robot Placement Data"});
+        
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+        
+    }
+}
+
+exports.getFieldConfigurationPerMatch = async function(req, res, next){
+
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+
+
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [{ 
+            "$match": {
+                "event" : event,
+                "team" : team,
+            },
+        },{ 
+            "$project": {
+                "_id" : 0,
+                // "name": "$match",
+                "name" : "$match",
+                "y": "$matchData.fieldConfig",
+            }
+        }];
+
+        var fieldConfigurationData = await ScoutingDataService.getFieldConfigurationPerMatch(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: fieldConfigurationData, message: "Succesfully Received Field Configuration Data"});
+        
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+        
+    }
+}
+
+exports.getAutoLinePerMatch = async function(req, res, next){
+
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+
+
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [{ 
+            "$match": {
+                "event" : event,
+                "team" : team,
+            },
+        },{ 
+            "$project": {
+                "_id" : 0,
+                // "name": "$match",
+                "name" : "$match",
+                "y": "$matchData.autoLine",
+            }
+        }];
+
+        var autoLineData = await ScoutingDataService.getAutoLinePerMatch(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: autoLineData, message: "Succesfully Received Auto Cross Data"});
+        
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+        
+    }
+}
+
+exports.getAutoSwitchScaleExchangeZoneChartPerMatch = async function(req, res, next){
+
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+
+
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [{ 
+            "$match": {
+                "event" : event,
+                "team" : team,
+            },
+        },{ 
+            "$project": {
+                "_id" : 0,
+                // "name": "$match",
+                "match" : "$match",
+                "autoSwitchCubeCount": "$matchData.autoSwitchCubeCount",
+                "autoScaleCubeCount": "$matchData.autoScaleCubeCount",
+                "autoExchangeCubeCount": "$matchData.autoExchangeCubeCount",
+            }
+        }];
+
+        var autoSwitchScaleExchangeZoneData = await ScoutingDataService.getAutoSwitchScaleExchangeZoneChartPerMatch(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: autoSwitchScaleExchangeZoneData, message: "Succesfully Received Auto Switch/Scale/Exchange Zone Cube Count Data"});
+        
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+        
+    }
+}
+
+exports.getClimbPointsChartPerMatch = async function(req, res, next){
+
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [{ 
+            "$match": {
+                "event" : event,
+                "team" : team,
+            },
+        },{ 
+            "$project": {
+                "_id" : 0,
+                "name" : "$match",
+                "y": "$matchData.climbing",
+            }
+        }];
+
+        var climbPointsData = await ScoutingDataService.getClimbPointsChartPerMatch(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: climbPointsData, message: "Succesfully Received Climb Point Data"});
+        
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+        
+    }
+}
+
+// exports.removeScoutingData = async function(req, res, next){
+
+//     var id = req.params.id;
+
+//     try{
+//         var deleted = await ScoutingDataService.deleteScoutingData(id)
+//         return res.status(204).json({status:204, message: "Succesfully Deleted Scouting Data"})
+//     }catch(e){
+//         return res.status(400).json({status: 400, message: e.message})
+//     }
+
+// }

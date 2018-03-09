@@ -126,7 +126,7 @@ exports.getScoutingData = async function(query){
     } catch (e) {
 
         // return a Error message describing the reason 
-        throw Error('Error while Paginating Todos')
+        throw Error('Error while obtaining scouting data')
     }
 }
 
@@ -1728,6 +1728,171 @@ exports.updateScoutingData = async function(rawData){
         return savedScoutingData;
     }catch(e){
         throw Error("And Error occured while updating the Todo");
+    }
+}
+
+exports.getReadyStatusPerMatch = async function(query){    
+    // Try Catch the awaited promise to handle the error 
+    
+    try {
+        var readyStatusData = await ScoutingData.aggregate(query)
+        readyStatusData = _.sortBy(readyStatusData, function(res){ return +res.name.split(" ")[1] });
+        
+        // Return the todod list that was retured by the mongoose promise
+        return readyStatusData;
+
+    } catch (e) {
+
+        // return a Error message describing the reason 
+        throw Error('Error while obtaining ready status')
+    }
+}
+
+exports.getRobotPlacementPerMatch = async function(query){    
+    // Try Catch the awaited promise to handle the error 
+    
+    try {
+        var robotPlacementData = await ScoutingData.aggregate(query)
+        robotPlacementData = _.sortBy(robotPlacementData, function(res){ return +res.name.split(" ")[1] });
+
+        // Return the todod list that was retured by the mongoose promise
+        return robotPlacementData;
+
+    } catch (e) {
+
+        // return a Error message describing the reason 
+        throw Error('Error while obtaining robot placement')
+    }
+}
+
+exports.getFieldConfigurationPerMatch = async function(query){    
+    // Try Catch the awaited promise to handle the error 
+    
+    try {
+        var fieldConfigurationData = await ScoutingData.aggregate(query)
+        fieldConfigurationData = _.sortBy(fieldConfigurationData, function(res){ return +res.name.split(" ")[1] });
+
+        // Return the todod list that was retured by the mongoose promise
+        return fieldConfigurationData;
+
+    } catch (e) {
+
+        // return a Error message describing the reason 
+        throw Error('Error while obtaining robot placement')
+    }
+}
+
+exports.getAutoLinePerMatch = async function(query){    
+    // Try Catch the awaited promise to handle the error 
+    
+    try {
+        var autoLineData = await ScoutingData.aggregate(query)
+        autoLineData = _.sortBy(autoLineData, function(res){ return +res.name.split(" ")[1] });
+
+        // Return the todod list that was retured by the mongoose promise
+        return autoLineData;
+
+    } catch (e) {
+
+        // return a Error message describing the reason 
+        throw Error('Error while obtaining robot placement')
+    }
+}
+
+exports.getAutoSwitchScaleExchangeZoneChartPerMatch = async function(query){    
+    // Try Catch the awaited promise to handle the error 
+    
+    try {
+        var autoSwitchScaleExchangeZoneData = await ScoutingData.aggregate(query)
+        autoSwitchScaleExchangeZoneData = _.chain(autoSwitchScaleExchangeZoneData)
+                                            .reduce(function(result, value, key, arr){
+                                                if(key == 0){
+                                                    result[0] = {
+                                                        name: "autoSwitchCubeCount",
+                                                        data: [{
+                                                            name: value.match,
+                                                            y: value.autoSwitchCubeCount,
+                                                        }]
+                                                    }
+                                                    result[1] = {
+                                                        name: "autoScaleCubeCount",
+                                                        data: [{
+                                                            name: value.match,
+                                                            y: value.autoScaleCubeCount,
+                                                        }]
+                                                    }
+                                                    result[2] = {
+                                                        name: "autoExchangeZoneCubeCount",
+                                                        data: [{
+                                                            name: value.match,
+                                                            y: value.autoExchangeCubeCount,
+                                                        }]
+                                                    }
+                                                }
+                                                else{
+                                                    result[0].data = _.concat(result[0].data,
+                                                        [{
+                                                            name: value.match,
+                                                            y: value.autoSwitchCubeCount,
+                                                        }]
+                                                    )
+                                                    result[1].data = _.concat(result[1].data,
+                                                        [{
+                                                            name: value.match,
+                                                            y: value.autoScaleCubeCount,
+                                                        }]
+                                                    )
+                                                    result[2].data = _.concat(result[2].data,
+                                                        [{
+                                                            name: value.match,
+                                                            y: value.autoExchangeCubeCount,
+                                                        }]
+                                                    )
+                                                }
+                                                return result;
+                                                
+                                            }, [{}, {}, {}])
+                                            .thru(function(result){
+                                                var categories = _.chain(autoSwitchScaleExchangeZoneData)
+                                                .map(function(matches){
+                                                    return matches.match;
+                                                })
+                                                .uniq()
+                                                .sortBy(function(res){ return +res.split(" ")[1] })
+                                                .value()
+
+                                                return {
+                                                    categories: categories,
+                                                    result: result,
+                                                }
+                                            })
+                                            .value();
+
+        // Return the todod list that was retured by the mongoose promise
+        return autoSwitchScaleExchangeZoneData;
+
+    } catch (e) {
+
+        // return a Error message describing the reason 
+        // throw Error('Error while obtaining auto switch/scale/exchange zone cube count')
+        throw Error(e.message)
+    }
+}
+
+exports.getClimbPointsChartPerMatch = async function(query){    
+    // Try Catch the awaited promise to handle the error 
+    
+    try {
+        var climbPointsData = await ScoutingData.aggregate(query)
+        climbPointsData = _.sortBy(climbPointsData, function(res){ return +res.name.split(" ")[1] });
+
+        // Return the todod list that was retured by the mongoose promise
+        return climbPointsData;
+
+    } catch (e) {
+
+        // return a Error message describing the reason 
+        throw Error('Error while obtaining climb point data')
     }
 }
 

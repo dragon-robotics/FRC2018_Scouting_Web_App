@@ -7,9 +7,9 @@ import { StatisticsDashboardComponent } from './statistics-dashboard/statistics-
 
 
 const routes: Routes = [
-	{ path: '', redirectTo: '/statistics-dashboard', pathMatch: 'full'},
+	{ path: '', redirectTo: '/team-detailed-statistics-dashboard', pathMatch: 'full'},
 	{ path: 'statistics-dashboard', component: StatisticsDashboardComponent },
-	{ path: 'team-statistics/:eventID/:teamID', component: TeamStatisticsComponent },
+	{ path: 'team-detailed-statistics-dashboard', component: TeamStatisticsComponent },
 	{ path: 'scouting-form', component: ScoutingFormComponent },
 ]
 

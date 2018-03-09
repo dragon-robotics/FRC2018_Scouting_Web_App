@@ -1,3 +1,100 @@
-<p>
-  team-statistics works!
-</p>
+<mat-card>
+	<!-- Event Dropdown -->
+	<mat-form-field>
+		<mat-select placeholder="Event" 
+					[(value)]="selectedEvent"
+					[formControl]="selectEvent"
+					(selectionChange) = "getAllTeamsAtEvent()"
+					required>
+			<mat-option *ngFor="let event of objectKeys(events)" [value]="event">
+				{{event}}
+			</mat-option>
+		</mat-select>
+		<mat-error *ngIf="selectEvent.hasError('required')">
+			Event is required!
+		</mat-error>
+	</mat-form-field>
+
+	<!-- Team Dropdown -->
+	<mat-form-field>
+		<mat-select placeholder="Team"
+					[(value)]="selectedTeam"
+					[formControl]="selectTeam"
+					(selectionChange) = "generateAllCharts()"
+					required>
+			<mat-option *ngFor="let team of allTeams" [value]="team">
+				{{team}}
+			</mat-option>
+
+		</mat-select>
+		<mat-error *ngIf="selectTeam.hasError('required')">
+			Team is required!
+		</mat-error>
+	</mat-form-field>
+
+	<mat-accordion multi="true">
+		<mat-expansion-panel [expanded]="true" hideToggle="true">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					Per Match Charts
+				</mat-panel-title>
+				<mat-panel-description>
+					This section displays per-match statistics
+				</mat-panel-description>
+			</mat-expansion-panel-header>
+
+			<!-- Chart Content -->
+			<mat-grid-list cols="3" rowHeight="300px">
+				<div>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="readyChartPerMatch">
+					</mat-grid-tile>
+					<mat-grid-tile 
+						[colspan]=1
+						[rowspan]=1
+						[chart]="robotPlacementChartPerMatch">
+					</mat-grid-tile>
+					<mat-grid-tile 
+						[colspan]=1
+						[rowspan]=1
+						[chart]="fieldConfigChartPerMatch">
+					</mat-grid-tile>
+				</div>
+			</mat-grid-list>
+			<mat-grid-list cols="3" rowHeight="300px">
+				<div>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="autoLineChartPerMatch">
+					</mat-grid-tile>
+					<mat-grid-tile 
+						[colspan]=1
+						[rowspan]=1
+						[chart]="autoSwitchScaleExchangeZoneChartPerMatch">
+					</mat-grid-tile>
+					<mat-grid-tile 
+						[colspan]=1
+						[rowspan]=1
+						[chart]="climbPointsChartPerMatch">
+					</mat-grid-tile>					
+				</div>
+			</mat-grid-list>
+		</mat-expansion-panel>
+
+		<mat-expansion-panel hideToggle="true">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					Overall Charts
+				</mat-panel-title>
+				<mat-panel-description>
+					This section displays overall charts
+				</mat-panel-description>
+			</mat-expansion-panel-header>
+
+			<!-- Chart Content -->
+		</mat-expansion-panel>
+	</mat-accordion>
+</mat-card>
