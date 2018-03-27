@@ -25,13 +25,13 @@ export class StatisticsDashboardComponent implements OnInit {
 
 	teamRows : any[];
 
-  tiles = [
-    {text: 'One', cols: 2, rows: 1, color: 'lightblue'},
-    // {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-    // {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-    // {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
-  ];
-  color : string = "lightblue";
+	tiles = [
+		{text: 'One', cols: 2, rows: 1, color: 'lightblue'},
+		// {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
+		// {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
+		// {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
+	];
+	color : string = "lightblue";
 
 	getYPRAnalytics(){
 		this.scoutingDataService.getYPR(this.selectedEvent, this.events[this.selectedEvent])
@@ -91,16 +91,6 @@ export class StatisticsDashboardComponent implements OnInit {
 						    	result.Climb,
 						    ],
 						}],
-						responsive: {
-							rules: [{
-								chartOptions: {
-									width: 300,
-								},
-								condition: {
-									maxWidth: 700,
-								},
-							}],
-						}
 					});
 
 					return {

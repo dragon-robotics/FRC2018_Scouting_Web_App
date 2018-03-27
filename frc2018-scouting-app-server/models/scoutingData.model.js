@@ -33,6 +33,7 @@ var ScoutingDataSchema = new mongoose.Schema({
 		climbingType: String,			// 0 - No Climb, 1 - Self-Climb, 2 - Ramp Climb, 3 - One Robot Ramp Deploy, 4 - Two Robot Ramp Deploy, 5 - One Robot Ramp Deploy Climb, 6 - Two Robot Ramp Deploy Climb
 	},
 	comments: String,					// Additional Comments
+	timeOfDataEntry: String,			// Entry time of the data - Used to verify data entry/validity
 });
 
 const ScoutingData = mongoose.model('ScoutingData', ScoutingDataSchema);

@@ -764,6 +764,7 @@ exports.createScoutingData = async function(rawData){
             match: rawData.match,
             matchData: rawData.matchData,
             comments: rawData.comments,
+            timeOfDataEntry: (new Date()).toJSON().slice(0, 19).replace(/[-T]/g, ':'),
         })
 
         // Saving the Todo 
@@ -1573,6 +1574,7 @@ exports.updateScoutingData = async function(rawData){
     oldScoutingData.match = rawData.match
     oldScoutingData.matchData = rawData.matchData
     oldScoutingData.comments = rawData.comments
+    oldScoutingData.timeOfDataEntry = (new Date()).toJSON().slice(0, 19).replace(/[-T]/g, ':')
 
     try{
         var savedScoutingData = await oldScoutingData.save();
@@ -1715,9 +1717,14 @@ exports.updateScoutingData = async function(rawData){
             };
 
             YPRData.update(
-                { event: result.event, team: result.team },
+                { 
+                    event: result.event, 
+                    team: result.team 
+                },
                 yprPerTeam,
-                { upsert: true },
+                { 
+                    upsert: true 
+                },
                 function(error, raw){
                     console.log(raw);
                 }

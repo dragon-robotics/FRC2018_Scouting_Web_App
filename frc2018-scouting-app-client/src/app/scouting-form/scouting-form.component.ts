@@ -82,7 +82,7 @@ export class ScoutingFormComponent implements OnInit {
 	
 	// Datatables Directive
 	@ViewChild(DataTableDirective)
-  	private datatableElement: DataTableDirective;
+  	datatableElement: DataTableDirective;
 
 
 	objectKeys = Object.keys;
