@@ -1738,6 +1738,8 @@ exports.updateScoutingData = async function(rawData){
     }
 }
 
+/* Per Match Chart Service */
+
 exports.getReadyStatusPerMatch = async function(query){    
     // Try Catch the awaited promise to handle the error 
     
@@ -1901,6 +1903,52 @@ exports.getClimbPointsChartPerMatch = async function(query){
         // return a Error message describing the reason 
         throw Error('Error while obtaining climb point data')
     }
+}
+
+exports.getpickUpTypeChartPerMatch = async function(query){
+
+}
+
+exports.getEfficiencyChartPerMatch = async function(query){
+    
+}
+
+exports.getCycleTimeChartPerMatch = async function(query){
+    
+}
+
+exports.getSourceDestinationChartPerMatch = async function(query){
+    
+}
+
+/* Overall Chart Service */
+
+exports.getRobotReadyStatusOverall = async function(query){
+
+}
+
+exports.getRobotPlacementOverall = async function(query){
+    
+}
+
+exports.getAutoLineOverall = async function(query){
+    
+}
+
+exports.getAutoSwitchScaleExchangeZoneChartOverall = async function(query){
+    
+}
+
+exports.getClimbPointsChartOverall = async function(query){
+
+}
+
+exports.getPickUpTypeChartOverall = async function(query){
+    
+}
+
+exports.getSourceDestinationChartOverall = async function(query){
+    
 }
 
 // exports.deleteTodo = async function(id){

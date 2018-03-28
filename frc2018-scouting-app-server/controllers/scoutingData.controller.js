@@ -131,6 +131,8 @@ exports.updateScoutingData = async function(req, res, next){
     }
 }
 
+/* Per Match Chart Controller */
+
 exports.getReadyStatusPerMatch = async function(req, res, next){
 
     // Check the existence of the query parameters, If the exists doesn't exists assign a default value
@@ -349,6 +351,52 @@ exports.getClimbPointsChartPerMatch = async function(req, res, next){
         return res.status(400).json({status: 400, message: e.message});
         
     }
+}
+
+exports.getpickUpTypeChartPerMatch = async function(req, res, next){
+
+}
+
+exports.getEfficiencyChartPerMatch = async function(req, res, next){
+    
+}
+
+exports.getCycleTimeChartPerMatch = async function(req, res, next){
+    
+}
+
+exports.getSourceDestinationChartPerMatch = async function(req, res, next){
+    
+}
+
+/* Overall Chart Controller */
+
+exports.getRobotReadyStatusOverall = async function(req, res, next){
+
+}
+
+exports.getRobotPlacementOverall = async function(req, res, next){
+    
+}
+
+exports.getAutoLineOverall = async function(req, res, next){
+    
+}
+
+exports.getAutoSwitchScaleExchangeZoneChartOverall = async function(req, res, next){
+    
+}
+
+exports.getClimbPointsChartOverall = async function(req, res, next){
+
+}
+
+exports.getPickUpTypeChartOverall = async function(req, res, next){
+    
+}
+
+exports.getSourceDestinationChartOverall = async function(req, res, next){
+    
 }
 
 // exports.removeScoutingData = async function(req, res, next){

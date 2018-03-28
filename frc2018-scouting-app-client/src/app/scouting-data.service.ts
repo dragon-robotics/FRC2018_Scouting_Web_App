@@ -88,8 +88,50 @@ export class ScoutingDataService {
 		return this.http.get(this.scoutingDataURL+'/climbPointsChartPerMatch/'+event+'/'+team)
 	}
 
+	getPickUpTypeChartPerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/pickUpTypeChartPerMatch/'+event+'/'+team)
+	}
+
+	getEfficiencyChartPerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/efficiencyChartPerMatch/'+event+'/'+team)
+	}
+
+	getCycleTimeChartPerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/cycleTimeChartPerMatch/'+event+'/'+team)
+	}
+
+	getSourceDestinationChartPerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/sourceDestinationChartPerMatch/'+event+'/'+team)
+	}	
 
 	/* Overall Charts*/
+	getRobotReadyStatusOverall(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/readyChartOverall/'+event+'/'+team)
+	}
+
+	getRobotPlacementOverall(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/robotPlacementChartOverall/'+event+'/'+team)
+	}
+
+	getAutoLineOverall(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/autoLineChartOverall/'+event+'/'+team)
+	}
+
+	getAutoSwitchScaleExchangeZoneChartOverall(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/autoSwitchScaleExchangeZoneChartOverall/'+event+'/'+team)
+	}
+
+	getClimbPointsChartOverall(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/climbPointsChartOverall/'+event+'/'+team)
+	}	
+
+	getPickUpTypeChartOverall(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/pickUpTypeChartOverall/'+event+'/'+team)
+	}	
+
+	getSourceDestinationChartOverall(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/sourceDestinationChartOverall/'+event+'/'+team)
+	}	
 
 	// deleteScoutingData(id:string):any{
 	// 	//Delete the object by the id

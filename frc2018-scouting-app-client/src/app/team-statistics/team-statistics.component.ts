@@ -220,7 +220,43 @@ export class TeamStatisticsComponent implements OnInit {
 				});
 			})
 
+		// this.scoutingDataService.getPickUpTypeChartPerMatch(event,team)
+		// 	.subscribe();
 
+		// this.scoutingDataService.getEfficiencyChartPerMatch(event,team)
+		// 	.subscribe();
+
+		// this.scoutingDataService.getCycleTimeChartPerMatch(event,team)
+		// 	.subscribe();
+
+		// this.scoutingDataService.getSourceDestinationChartPerMatch(event,team)
+		// 	.subscribe();
+
+		/*==== Overall Charts ====*/
+
+		// this.scoutingDataService.getRobotReadyStatusOverall(event,team)
+		// 	.subscribe();
+
+		// this.scoutingDataService.getRobotPlacementOverall(event,team)
+		// 	.subscribe();
+
+		// this.scoutingDataService.getAutoLineOverall(event,team)
+		// 	.subscribe();
+
+		// this.scoutingDataService.getAutoSwitchScaleExchangeZoneChartOverall(event,team)
+		// 	.subscribe();
+
+		// this.scoutingDataService.getClimbPointsChartOverall(event,team)
+		// 	.subscribe();
+
+		// this.scoutingDataService.getPickUpTypeChartOverall(event,team)
+		// 	.subscribe();
+
+		// this.scoutingDataService.getSourceDestinationChartOverall(event,team)
+		// 	.subscribe();
+
+		// Expand the Per Match Chart
+		// Expand the Overall Charts
 	}
 
 	constructor(
