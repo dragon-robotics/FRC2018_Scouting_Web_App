@@ -19,6 +19,7 @@ router.get('/climbPointsChartPerMatch/:event/:team', ScoutingDataController.getC
 router.get('/pickUpTypeChartPerMatch/:event/:team', ScoutingDataController.getPickUpTypeChartPerMatch)
 router.get('/efficiencyChartPerMatch/:event/:team', ScoutingDataController.getEfficiencyChartPerMatch)
 router.get('/cycleTimeChartPerMatch/:event/:team', ScoutingDataController.getCycleTimeChartPerMatch)
+router.get('/cubesScoredChartPerMatch/:event/:team', ScoutingDataController.getCubesScoredChartPerMatch)
 router.get('/sourceDestinationChartPerMatch/:event/:team', ScoutingDataController.getSourceDestinationChartPerMatch)
 
 /* Overall Chart Data API Calls */
@@ -37,7 +38,6 @@ router.post('/', ScoutingDataController.createScoutingData)
 router.put('/', ScoutingDataController.updateScoutingData)
 
 // router.delete('/:id',ScoutingDataController.removeScoutingData)
-
 
 // Export the Router
 

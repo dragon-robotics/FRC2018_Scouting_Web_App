@@ -100,6 +100,10 @@ export class ScoutingDataService {
 		return this.http.get(this.scoutingDataURL+'/cycleTimeChartPerMatch/'+event+'/'+team)
 	}
 
+	getCubesScoredChartPerMatch(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/cubesScoredChartPerMatch/'+event+'/'+team)
+	}
+
 	getSourceDestinationChartPerMatch(event: string, team: number): Observable<any>{
 		return this.http.get(this.scoutingDataURL+'/sourceDestinationChartPerMatch/'+event+'/'+team)
 	}	

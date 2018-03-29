@@ -1817,21 +1817,21 @@ exports.getAutoSwitchScaleExchangeZoneChartPerMatch = async function(query){
                                             .reduce(function(result, value, key, arr){
                                                 if(key == 0){
                                                     result[0] = {
-                                                        name: "autoSwitchCubeCount",
+                                                        name: "Switch Count",
                                                         data: [{
                                                             name: value.match,
                                                             y: value.autoSwitchCubeCount,
                                                         }]
                                                     }
                                                     result[1] = {
-                                                        name: "autoScaleCubeCount",
+                                                        name: "Scale Count",
                                                         data: [{
                                                             name: value.match,
                                                             y: value.autoScaleCubeCount,
                                                         }]
                                                     }
                                                     result[2] = {
-                                                        name: "autoExchangeZoneCubeCount",
+                                                        name: "Exchange Zone Count",
                                                         data: [{
                                                             name: value.match,
                                                             y: value.autoExchangeCubeCount,
@@ -1881,9 +1881,7 @@ exports.getAutoSwitchScaleExchangeZoneChartPerMatch = async function(query){
         return autoSwitchScaleExchangeZoneData;
 
     } catch (e) {
-
-        // return a Error message describing the reason 
-        // throw Error('Error while obtaining auto switch/scale/exchange zone cube count')
+        // return an Error message describing the reason 
         throw Error(e.message)
     }
 }
@@ -1900,21 +1898,139 @@ exports.getClimbPointsChartPerMatch = async function(query){
 
     } catch (e) {
 
-        // return a Error message describing the reason 
+        // return an Error message describing the reason 
         throw Error('Error while obtaining climb point data')
     }
 }
 
-exports.getpickUpTypeChartPerMatch = async function(query){
+exports.getPickUpTypeChartPerMatch = async function(query){
+    try {
+        var pickUpTypeData = await ScoutingData.aggregate(query)
+        pickUpTypeData = _.chain(pickUpTypeData)
+                            .reduce(function(result, value, key, arr){
+                                if(key == 0){
+                                    result[0] = {
+                                        name: "Wide",
+                                        data: [{
+                                            name: value.match,
+                                            y: value.wide,
+                                        }]
+                                    }
+                                    result[1] = {
+                                        name: "Diagonal",
+                                        data: [{
+                                            name: value.match,
+                                            y: value.diag,
+                                        }]
+                                    }
+                                    result[2] = {
+                                        name: "Tall",
+                                        data: [{
+                                            name: value.match,
+                                            y: value.tall,
+                                        }]
+                                    }
+                                    result[3] = {
+                                        name: "Dropoff",
+                                        data: [{
+                                            name: value.match,
+                                            y: value.dropoff,
+                                        }]
+                                    }
+                                }
+                                else{
+                                    result[0].data = _.concat(result[0].data,
+                                        [{
+                                            name: value.match,
+                                            y: value.wide,
+                                        }]
+                                    )
+                                    result[1].data = _.concat(result[1].data,
+                                        [{
+                                            name: value.match,
+                                            y: value.diag,
+                                        }]
+                                    )
+                                    result[2].data = _.concat(result[2].data,
+                                        [{
+                                            name: value.match,
+                                            y: value.tall,
+                                        }]
+                                    )
+                                    result[3].data = _.concat(result[3].data,
+                                        [{
+                                            name: value.match,
+                                            y: value.dropoff,
+                                        }]
+                                    )
+                                }
+                                return result;
+                                
+                            }, [{}, {}, {}, {}])
+                            .thru(function(result){
+                                var categories = _.chain(pickUpTypeData)
+                                .map(function(matches){
+                                    return matches.match;
+                                })
+                                .uniq()
+                                .sortBy(function(res){ return +res.split(" ")[1] })
+                                .value()
 
+                                return {
+                                    categories: categories,
+                                    result: result,
+                                }
+                            })
+                            .value();
+
+        // Return the todod list that was retured by the mongoose promise
+        return pickUpTypeData;
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }
 }
 
 exports.getEfficiencyChartPerMatch = async function(query){
-    
+    try {
+        var efficiencyData = await ScoutingData.aggregate(query)
+        efficiencyData = _.sortBy(efficiencyData, function(res){ return +res.name.split(" ")[1] });
+
+        // Return the todod list that was retured by the mongoose promise
+        return efficiencyData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }
+}
+
+exports.getCubesScoredChartPerMatch = async function(query){
+    try {
+        var cycleTimeData = await ScoutingData.aggregate(query)
+        cycleTimeData = _.sortBy(cycleTimeData, function(res){ return +res.name.split(" ")[1] });
+
+        // Return the todod list that was retured by the mongoose promise
+        return cycleTimeData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }    
 }
 
 exports.getCycleTimeChartPerMatch = async function(query){
-    
+    try {
+        var cubesScoredData = await ScoutingData.aggregate(query)
+        cubesScoredData = _.sortBy(cubesScoredData, function(res){ return +res.name.split(" ")[1] });
+
+        // Return the todod list that was retured by the mongoose promise
+        return cubesScoredData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }    
 }
 
 exports.getSourceDestinationChartPerMatch = async function(query){

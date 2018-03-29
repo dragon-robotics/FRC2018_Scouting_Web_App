@@ -159,7 +159,7 @@ exports.getReadyStatusPerMatch = async function(req, res, next){
         var readyStatusData = await ScoutingDataService.getReadyStatusPerMatch(query)
         // Return the scoutingData list with the appropriate HTTP Status Code and Message.
         
-        return res.status(200).json({status: 200, data: readyStatusData, message: "Succesfully Received Ready Status Data"});
+        return res.status(200).json({status: 200, data: readyStatusData, message: "Succesfully Received Ready Status Per Match Data"});
         
     }catch(e){
         
@@ -195,7 +195,7 @@ exports.getRobotPlacementPerMatch = async function(req, res, next){
         var robotPlacementData = await ScoutingDataService.getRobotPlacementPerMatch(query)
         // Return the scoutingData list with the appropriate HTTP Status Code and Message.
         
-        return res.status(200).json({status: 200, data: robotPlacementData, message: "Succesfully Received Robot Placement Data"});
+        return res.status(200).json({status: 200, data: robotPlacementData, message: "Succesfully Received Robot Placement Per Match Data"});
         
     }catch(e){
         
@@ -232,7 +232,7 @@ exports.getFieldConfigurationPerMatch = async function(req, res, next){
         var fieldConfigurationData = await ScoutingDataService.getFieldConfigurationPerMatch(query)
         // Return the scoutingData list with the appropriate HTTP Status Code and Message.
         
-        return res.status(200).json({status: 200, data: fieldConfigurationData, message: "Succesfully Received Field Configuration Data"});
+        return res.status(200).json({status: 200, data: fieldConfigurationData, message: "Succesfully Received Field Configuration Per Match Data"});
         
     }catch(e){
         
@@ -269,7 +269,7 @@ exports.getAutoLinePerMatch = async function(req, res, next){
         var autoLineData = await ScoutingDataService.getAutoLinePerMatch(query)
         // Return the scoutingData list with the appropriate HTTP Status Code and Message.
         
-        return res.status(200).json({status: 200, data: autoLineData, message: "Succesfully Received Auto Cross Data"});
+        return res.status(200).json({status: 200, data: autoLineData, message: "Succesfully Received Auto Cross Per Match Data"});
         
     }catch(e){
         
@@ -297,7 +297,6 @@ exports.getAutoSwitchScaleExchangeZoneChartPerMatch = async function(req, res, n
         },{ 
             "$project": {
                 "_id" : 0,
-                // "name": "$match",
                 "match" : "$match",
                 "autoSwitchCubeCount": "$matchData.autoSwitchCubeCount",
                 "autoScaleCubeCount": "$matchData.autoScaleCubeCount",
@@ -308,7 +307,7 @@ exports.getAutoSwitchScaleExchangeZoneChartPerMatch = async function(req, res, n
         var autoSwitchScaleExchangeZoneData = await ScoutingDataService.getAutoSwitchScaleExchangeZoneChartPerMatch(query)
         // Return the scoutingData list with the appropriate HTTP Status Code and Message.
         
-        return res.status(200).json({status: 200, data: autoSwitchScaleExchangeZoneData, message: "Succesfully Received Auto Switch/Scale/Exchange Zone Cube Count Data"});
+        return res.status(200).json({status: 200, data: autoSwitchScaleExchangeZoneData, message: "Succesfully Received Auto Switch/Scale/Exchange Zone Cube Count Per Match Data"});
         
     }catch(e){
         
@@ -342,7 +341,7 @@ exports.getClimbPointsChartPerMatch = async function(req, res, next){
         var climbPointsData = await ScoutingDataService.getClimbPointsChartPerMatch(query)
         // Return the scoutingData list with the appropriate HTTP Status Code and Message.
         
-        return res.status(200).json({status: 200, data: climbPointsData, message: "Succesfully Received Climb Point Data"});
+        return res.status(200).json({status: 200, data: climbPointsData, message: "Succesfully Received Climb Point Per Match Data"});
         
     }catch(e){
         
@@ -353,16 +352,135 @@ exports.getClimbPointsChartPerMatch = async function(req, res, next){
     }
 }
 
-exports.getpickUpTypeChartPerMatch = async function(req, res, next){
+exports.getPickUpTypeChartPerMatch = async function(req, res, next){
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
 
+        var query = [{ 
+            "$match": {
+                "event" : event,
+                "team" : team,
+            },
+        },{ 
+            "$project": {
+                "_id" : 0,
+                match: 1,
+                wide : "$matchData.pickUpWide",
+                diag : "$matchData.pickUpDiag",
+                tall : "$matchData.pickUpTall",
+                dropoff : "$matchData.pickUpDropOff",
+            }
+        }];
+
+        var pickUpTypeData = await ScoutingDataService.getPickUpTypeChartPerMatch(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: pickUpTypeData, message: "Succesfully Received Pickup Type Per Match Data"});
+        
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+        
+    }
 }
 
 exports.getEfficiencyChartPerMatch = async function(req, res, next){
-    
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [{ 
+            "$match": {
+                "event" : event,
+                "team" : team,
+            },
+        },{ 
+            "$project": {
+                "_id" : 0,
+                "name" : "$match",
+                "y": "$matchData.efficiency",
+            }
+        }];
+
+        var efficiencyData = await ScoutingDataService.getEfficiencyChartPerMatch(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: efficiencyData, message: "Succesfully Received Efficiency Per Match Data"});
+        
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+        
+    }
 }
 
 exports.getCycleTimeChartPerMatch = async function(req, res, next){
-    
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [{ 
+            "$match": {
+                "event" : event,
+                "team" : team,
+            },
+        },{ 
+            "$project": {
+                "_id" : 0,
+                "name" : "$match",
+                "y": "$matchData.cycleTime",
+            }
+        }];
+
+        var cycleTimeData = await ScoutingDataService.getEfficiencyChartPerMatch(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: cycleTimeData, message: "Succesfully Received Cycle Time Per Match Data"});
+        
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+        
+    }
+}
+
+exports.getCubesScoredChartPerMatch = async function(req, res, next){
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [{ 
+            "$match": {
+                "event" : event,
+                "team" : team,
+            },
+        },{ 
+            "$project": {
+                "_id" : 0,
+                "name" : "$match",
+                "y": "$matchData.cubesScored",
+            }
+        }];
+
+        var cubesScoredData = await ScoutingDataService.getEfficiencyChartPerMatch(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: cubesScoredData, message: "Succesfully Received Cubes Scored Per Match Data"});
+        
+    }catch(e){
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
 }
 
 exports.getSourceDestinationChartPerMatch = async function(req, res, next){

@@ -82,6 +82,34 @@
 					</mat-grid-tile>					
 				</div>
 			</mat-grid-list>
+			<mat-grid-list cols="3" rowHeight="300px">
+				<div>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="pickUpTypeChartPerMatch">
+					</mat-grid-tile>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="efficiencyChartPerMatch">
+					</mat-grid-tile>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="cycleTimeChartPerMatch">
+					</mat-grid-tile>
+				</div>
+			</mat-grid-list>
+			<mat-grid-list cols="3" rowHeight="300px">
+				<div>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="cubesScoredChartPerMatch">
+					</mat-grid-tile>
+				</div>
+			</mat-grid-list>
 		</mat-expansion-panel>
 
 		<mat-expansion-panel hideToggle="true">

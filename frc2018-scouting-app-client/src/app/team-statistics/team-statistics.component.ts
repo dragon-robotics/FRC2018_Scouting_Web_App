@@ -37,10 +37,23 @@ export class TeamStatisticsComponent implements OnInit {
 	readyChartPerMatch: Chart;
 	robotPlacementChartPerMatch: Chart;
 	fieldConfigChartPerMatch: Chart;
-
 	autoLineChartPerMatch: Chart;
 	autoSwitchScaleExchangeZoneChartPerMatch: Chart;
 	climbPointsChartPerMatch: Chart;
+	pickUpTypeChartPerMatch: Chart;
+	efficiencyChartPerMatch: Chart;
+	cycleTimeChartPerMatch: Chart;
+	cubesScoredChartPerMatch: Chart;
+	sourceToDestinationChartPerMatch: Chart;
+
+	/* Overall Charts */
+	readyChartOverall: Chart;
+	robotPlacementChartOverall: Chart;
+	autoLineChartOverall: Chart;
+	autoSwitchScaleExchangeZoneChartOverall: Chart;
+	climbTypeChartOverall: Chart;
+	pickUpTypeChartOverall: Chart;
+	sourceToDestinationChartOverall: Chart;
 
 	getAllTeamsAtEvent(){
 		let eventID = this.events[this.selectedEvent];
@@ -191,6 +204,7 @@ export class TeamStatisticsComponent implements OnInit {
 					},
 					xAxis: {
 						categories: autoSwitchScaleExchangeZoneChartPerMatchSeries.data.categories,
+						crosshair: true,
 					},
 					series: autoSwitchScaleExchangeZoneChartPerMatchSeries.data.result,
 				});
@@ -220,14 +234,99 @@ export class TeamStatisticsComponent implements OnInit {
 				});
 			})
 
-		// this.scoutingDataService.getPickUpTypeChartPerMatch(event,team)
-		// 	.subscribe();
+		this.scoutingDataService.getPickUpTypeChartPerMatch(event,team)
+			.subscribe((pickUpTypeChartPerMatchSeries) => {
+				console.log(pickUpTypeChartPerMatchSeries.data);
+				this.pickUpTypeChartPerMatch = new Chart({
+					chart: {
+						type: 'column',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Pick Up Type Per Match',
+					},
+					xAxis: {
+						categories: pickUpTypeChartPerMatchSeries.data.categories,
+						crosshair: true,
+					},
+					series: pickUpTypeChartPerMatchSeries.data.result,
+				});
+			});
 
-		// this.scoutingDataService.getEfficiencyChartPerMatch(event,team)
-		// 	.subscribe();
+		this.scoutingDataService.getEfficiencyChartPerMatch(event,team)
+			.subscribe((efficiencyChartPerMatchSeries) => {
+				console.log(efficiencyChartPerMatchSeries.data);
+				this.efficiencyChartPerMatch = new Chart({
+					chart: {
+						type: 'line',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Efficiency Per Match',
+					},
+					xAxis: {
+						categories: efficiencyChartPerMatchSeries.data.map(function(res){
+							return res.name;
+						})
+					},
+					series: [{
+						data: efficiencyChartPerMatchSeries.data,
+					}],
+				});
+			});
 
-		// this.scoutingDataService.getCycleTimeChartPerMatch(event,team)
-		// 	.subscribe();
+
+		this.scoutingDataService.getCycleTimeChartPerMatch(event,team)
+			.subscribe((cycleTimeChartPerMatchSeries) => {
+				console.log(cycleTimeChartPerMatchSeries.data);
+				this.cycleTimeChartPerMatch = new Chart({
+					chart: {
+						type: 'line',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Cycle Time Per Match',
+					},
+					xAxis: {
+						categories: cycleTimeChartPerMatchSeries.data.map(function(res){
+							return res.name;
+						})
+					},
+					series: [{
+						data: cycleTimeChartPerMatchSeries.data,
+					}],
+				});
+			});
+
+		this.scoutingDataService.getCubesScoredChartPerMatch(event,team)
+			.subscribe((cubesScoredChartPerMatchSeries) => {
+				console.log(cubesScoredChartPerMatchSeries.data);
+				this.cubesScoredChartPerMatch = new Chart({
+					chart: {
+						type: 'line',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Cubes Scored Per Match',
+					},
+					xAxis: {
+						categories: cubesScoredChartPerMatchSeries.data.map(function(res){
+							return res.name;
+						})
+					},
+					series: [{
+						data: cubesScoredChartPerMatchSeries.data,
+					}],
+				});
+			});
 
 		// this.scoutingDataService.getSourceDestinationChartPerMatch(event,team)
 		// 	.subscribe();
