@@ -20,14 +20,13 @@ router.get('/pickUpTypeChartPerMatch/:event/:team', ScoutingDataController.getPi
 router.get('/efficiencyChartPerMatch/:event/:team', ScoutingDataController.getEfficiencyChartPerMatch)
 router.get('/cycleTimeChartPerMatch/:event/:team', ScoutingDataController.getCycleTimeChartPerMatch)
 router.get('/cubesScoredChartPerMatch/:event/:team', ScoutingDataController.getCubesScoredChartPerMatch)
-router.get('/sourceDestinationChartPerMatch/:event/:team', ScoutingDataController.getSourceDestinationChartPerMatch)
 
 /* Overall Chart Data API Calls */
 router.get('/readyChartOverall/:event/:team', ScoutingDataController.getRobotReadyStatusOverall)
 router.get('/robotPlacementChartOverall/:event/:team', ScoutingDataController.getRobotPlacementOverall)
 router.get('/autoLineChartOverall/:event/:team', ScoutingDataController.getAutoLineOverall)
 router.get('/autoSwitchScaleExchangeZoneChartOverall/:event/:team', ScoutingDataController.getAutoSwitchScaleExchangeZoneChartOverall)
-router.get('/climbPointsChartOverall/:event/:team', ScoutingDataController.getClimbPointsChartOverall)
+router.get('/climbTypeChartOverall/:event/:team', ScoutingDataController.getClimbTypeChartOverall)
 router.get('/pickUpTypeChartOverall/:event/:team', ScoutingDataController.getPickUpTypeChartOverall)
 router.get('/sourceDestinationChartOverall/:event/:team', ScoutingDataController.getSourceDestinationChartOverall)
 

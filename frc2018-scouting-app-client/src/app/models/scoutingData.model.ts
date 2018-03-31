@@ -8,7 +8,7 @@ export class ScoutingData {
     	readyCode: 				number;		// 0 - Ready, 1 - No Show, 2 - Disabled, 3 - Non-functional
     	robotPlacement: 		number; 	// 0 - Left, 1 - Middle, 2 - Right
     	fieldConfig: 			number; 	// 0 - LOS,LS,LAS; 1 - LOS,RS,LAS; 2 - ROS,LS,RAS; 3 - ROS,RS,RAS;
-    	autoLine: 				number;	    // 1 - Crossed, 0 - Failed 
+    	autoLine: 				number;	    // 0 - Failed, 1 - Crossed 
     	autoSwitchCubeCount: 	number;		// Number of Cubes in Alliance Switch	
     	autoScaleCubeCount:		number;		// Number of Cubes in Alliance Scale
         autoExchangeCubeCount:  number;     // Number of Cubes in Alliance Exchange

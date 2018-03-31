@@ -483,38 +483,362 @@ exports.getCubesScoredChartPerMatch = async function(req, res, next){
     }
 }
 
-exports.getSourceDestinationChartPerMatch = async function(req, res, next){
-    
-}
-
 /* Overall Chart Controller */
 
 exports.getRobotReadyStatusOverall = async function(req, res, next){
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
 
+        var query = [
+                        {
+                            "$match": {
+                                event: event,
+                                team: team       
+                            }
+                        },
+                        {
+                            "$project": {
+                                _id: 0,
+                                event: 1,
+                                team: 1,
+                                readyCode: "$matchData.readyCode" 
+                            }       
+                        },
+                        {
+                            "$group":
+                            {
+                                _id: { event: "$event", team: "$team"},
+                                event: {"$first": "$event"},
+                                team: {"$first": "$team"},
+                                readyCodeList: {"$push": "$readyCode"},
+                            }
+                        },
+                            {
+                            "$project": {
+                                _id: 0,
+                            }
+                        },
+                    ];
+
+        var robotReadyStatusOverallData = await ScoutingDataService.getRobotReadyStatusOverall(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: robotReadyStatusOverallData, message: "Succesfully Received Robot Ready Overall Data"});
+        
+    }catch(e){
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
 }
 
 exports.getRobotPlacementOverall = async function(req, res, next){
-    
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [
+                        {
+                            "$match": {
+                                event: event,
+                                team: team       
+                            }
+                        },
+                        {
+                            "$project": {
+                                _id: 0,
+                                event: 1,
+                                team: 1,
+                                robotPlacement: "$matchData.robotPlacement" 
+                            }       
+                        },
+                        {
+                            "$group":
+                            {
+                                _id: { event: "$event", team: "$team"},
+                                event: {"$first": "$event"},
+                                team: {"$first": "$team"},
+                                robotPlacementList: {"$push": "$robotPlacement"},
+                            }
+                        },
+                            {
+                            "$project": {
+                                _id: 0,
+                            }
+                        },
+                    ];
+
+        var robotPlacementOverallData = await ScoutingDataService.getRobotPlacementOverall(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: robotPlacementOverallData, message: "Succesfully Received Robot Placement Overall Data"});
+        
+    }catch(e){
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
 }
 
 exports.getAutoLineOverall = async function(req, res, next){
-    
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [
+                        {
+                            "$match": {
+                                event: event,
+                                team: team       
+                            }
+                        },
+                        {
+                            "$project": {
+                                _id: 0,
+                                event: 1,
+                                team: 1,
+                                autoLine: "$matchData.autoLine" 
+                            }       
+                        },
+                        {
+                            "$group":
+                            {
+                                _id: { event: "$event", team: "$team"},
+                                event: {"$first": "$event"},
+                                team: {"$first": "$team"},
+                                autoLineList: {"$push": "$autoLine"},
+                            }
+                        },
+                            {
+                            "$project": {
+                                _id: 0,
+                            }
+                        },
+                    ];
+
+        var autoLineOverallData = await ScoutingDataService.getAutoLineOverall(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: autoLineOverallData, message: "Succesfully Received Auto Line Overall Data"});
+        
+    }catch(e){
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
 }
 
 exports.getAutoSwitchScaleExchangeZoneChartOverall = async function(req, res, next){
-    
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [
+                        {
+                            "$match": {
+                                event: event,
+                                team: team       
+                            }
+                        },
+                        {
+                            "$project": {
+                                _id: 0,
+                                event: 1,
+                                team: 1,
+                                autoSwitchCubeCount: "$matchData.autoSwitchCubeCount",
+                                autoScaleCubeCount: "$matchData.autoScaleCubeCount",
+                                autoExchangeCubeCount: "$matchData.autoExchangeCubeCount",
+                            }       
+                        },
+                        {
+                            "$group":
+                            {
+                                _id: { event: "$event", team: "$team"},
+                                event: {"$first": "$event"},
+                                team: {"$first": "$team"},
+                                autoSwitchCubeCountTotal: {"$sum": "$autoSwitchCubeCount"},
+                                autoScaleCubeCountTotal: {"$sum": "$autoScaleCubeCount"},
+                                autoExchangeCubeCountTotal: {"$sum": "$autoExchangeCubeCount"},
+                            }
+                        },
+                            {
+                            "$project": {
+                                _id: 0,
+                            }
+                        },
+                    ];
+
+        var autoSwitchScaleExchangeZoneOverallData = await ScoutingDataService.getAutoSwitchScaleExchangeZoneChartOverall(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: autoSwitchScaleExchangeZoneOverallData, message: "Succesfully Received Auto Switch/Scale/Exchange Zone Overall Data"});
+        
+    }catch(e){
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
 }
 
-exports.getClimbPointsChartOverall = async function(req, res, next){
+exports.getClimbTypeChartOverall = async function(req, res, next){
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
 
+        var query = [
+                        {
+                            "$match": {
+                                event: "AZ North",
+                                team: 254       
+                            }
+                        },
+                        {
+                            "$project": {
+                                _id: 0,
+                                event: 1,
+                                team: 1,
+                                climbing: "$matchData.climbing",
+                            }       
+                        },
+                        {
+                            "$group":
+                            {
+                                _id: { event: "$event", team: "$team"},
+                                event: {"$first": "$event"},
+                                team: {"$first": "$team"},
+                                climbTypeList: {"$push": "$climbing"},
+                            }
+                        },
+                            {
+                            "$project": {
+                                _id: 0,
+                            }
+                        },
+                    ];
+
+        var climbTypeOverallData = await ScoutingDataService.getClimbTypeChartOverall(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: climbTypeOverallData, message: "Succesfully Received Climb Type Overall Data"});
+        
+    }catch(e){
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
 }
 
 exports.getPickUpTypeChartOverall = async function(req, res, next){
-    
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [
+                        {
+                            "$match": {
+                                event: event,
+                                team: team       
+                            }
+                        },
+                        {
+                            "$project": {
+                                _id: 0,
+                                event: 1,
+                                team: 1,
+                                pickUpWide: "$matchData.pickUpWide",
+                                pickUpDiag: "$matchData.pickUpDiag",
+                                pickUpTall: "$matchData.pickUpTall",
+                                pickUpDropOff: "$matchData.pickUpDropOff",
+                            }       
+                        },
+                        {
+                            "$group":
+                            {
+                                _id: { event: "$event", team: "$team"},
+                                event: {"$first": "$event"},
+                                team: {"$first": "$team"},
+                                pickUpWideTotal: {"$sum": "$pickUpWide"},
+                                pickUpDiagTotal: {"$sum": "$pickUpDiag"},
+                                pickUpTallTotal: {"$sum": "$pickUpTall"},
+                                pickUpDropOffTotal: {"$sum": "$pickUpDropOff"},
+                            }
+                        },
+                            {
+                            "$project": {
+                                _id: 0,
+                            }
+                        },
+                    ];
+
+        var pickUpTypeOverallData = await ScoutingDataService.getPickUpTypeChartOverall(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: pickUpTypeOverallData, message: "Succesfully Received Pickup Type Overall Data"});
+        
+    }catch(e){
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
 }
 
 exports.getSourceDestinationChartOverall = async function(req, res, next){
-    
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [
+                        {
+                            "$match": {
+                                event: event,
+                                team: team       
+                            }
+                        },
+                        {
+                            "$unwind": "$matchData.cyclePaths",
+                        },
+                        {
+                            "$project": {
+                                _id: 0,
+                                event: 1,
+                                team: 1,
+                                match: 1,
+                                source: "$matchData.cyclePaths.source",
+                                destination: "$matchData.cyclePaths.destination"
+                            }       
+                        },
+                        {
+                            "$group": {
+                                _id: { event: "$event", team: "$team", match: "$match"},
+                                event: {"$first": "$event"},
+                                team: {"$first": "$team"},
+                                match: {"$first": "$match"},
+                                sourceToDestinationList: {
+                                    "$push": {
+                                        source: "$source",
+                                        destination: "$destination"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "$project": {
+                                _id: 0,
+                            }
+                        },
+                    ];
+
+        var sourceToDestinationOverallData = await ScoutingDataService.getSourceDestinationChartOverall(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: sourceToDestinationOverallData, message: "Succesfully Received Source To Destination Overall Data"});
+        
+    }catch(e){
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
 }
 
 // exports.removeScoutingData = async function(req, res, next){

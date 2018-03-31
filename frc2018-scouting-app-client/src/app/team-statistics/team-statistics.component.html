@@ -123,6 +123,61 @@
 			</mat-expansion-panel-header>
 
 			<!-- Chart Content -->
+			<mat-grid-list cols="3" rowHeight="300px">
+				<div>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="readyChartOverall">
+					</mat-grid-tile>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="robotPlacementChartOverall">
+					</mat-grid-tile>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="autoLineChartOverall">
+					</mat-grid-tile>
+				</div>
+			</mat-grid-list>
+
+			<mat-grid-list cols="3" rowHeight="300px">
+				<div>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="autoSwitchScaleExchangeZoneChartOverall">
+					</mat-grid-tile>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="climbTypeChartOverall">
+					</mat-grid-tile>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="pickUpTypeChartOverall">
+					</mat-grid-tile>
+				</div>
+			</mat-grid-list>
+
+			<mat-grid-list cols="2" rowHeight="300px">
+				<div>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="sourceToDestinationChartOverall">
+					</mat-grid-tile>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="destinationToSourceChartOverall">
+					</mat-grid-tile>
+				</div>
+			</mat-grid-list>
+
 		</mat-expansion-panel>
 	</mat-accordion>
 </mat-card>

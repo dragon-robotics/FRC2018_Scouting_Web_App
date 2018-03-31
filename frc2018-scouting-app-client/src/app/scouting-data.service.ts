@@ -102,10 +102,6 @@ export class ScoutingDataService {
 
 	getCubesScoredChartPerMatch(event: string, team: number): Observable<any>{
 		return this.http.get(this.scoutingDataURL+'/cubesScoredChartPerMatch/'+event+'/'+team)
-	}
-
-	getSourceDestinationChartPerMatch(event: string, team: number): Observable<any>{
-		return this.http.get(this.scoutingDataURL+'/sourceDestinationChartPerMatch/'+event+'/'+team)
 	}	
 
 	/* Overall Charts*/
@@ -125,8 +121,8 @@ export class ScoutingDataService {
 		return this.http.get(this.scoutingDataURL+'/autoSwitchScaleExchangeZoneChartOverall/'+event+'/'+team)
 	}
 
-	getClimbPointsChartOverall(event: string, team: number): Observable<any>{
-		return this.http.get(this.scoutingDataURL+'/climbPointsChartOverall/'+event+'/'+team)
+	getClimbTypeChartOverall(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/climbTypeChartOverall/'+event+'/'+team)
 	}	
 
 	getPickUpTypeChartOverall(event: string, team: number): Observable<any>{

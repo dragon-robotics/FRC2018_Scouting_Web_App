@@ -2030,41 +2030,377 @@ exports.getCycleTimeChartPerMatch = async function(query){
     } catch (e) {
         // return an Error message describing the reason 
         throw Error(e.message)
-    }    
-}
-
-exports.getSourceDestinationChartPerMatch = async function(query){
-    
+    }
 }
 
 /* Overall Chart Service */
 
 exports.getRobotReadyStatusOverall = async function(query){
+    try {
+        var robotReadyStatusOverallData = await ScoutingData.aggregate(query)
+        robotReadyStatusOverallData = _.chain(robotReadyStatusOverallData)
+        .map(function(data){
+            
+            // var tmp = data;
+            return {
+                event: data.event,
+                team: data.team,
+                categories: [
+                    "Good To Go",
+                    "No Show",
+                    "Disabled",
+                    "Non-Functional"
+                ],
+                readyCodeOverallData: {
+                    name: "Count",
+                    data: _.reduce(data.readyCodeList, function(result, value, key){
+                        switch(value){
+                            case 0:
+                                result[0]++;
+                                break;
+                            case 1:
+                                result[1]++;
+                                break;
+                            case 2:
+                                result[2]++;
+                                break;
+                            case 3:
+                                result[3]++;
+                                break;
+                            default:
+                                break;                
+                        }
+                        return result;
+                    }, [0,0,0,0])
+                }
+            };
+        })
+        .value()[0];
 
+        // Return the todod list that was retured by the mongoose promise
+        return robotReadyStatusOverallData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }
 }
 
 exports.getRobotPlacementOverall = async function(query){
-    
+    try {
+        var robotPlacementOverallData = await ScoutingData.aggregate(query)
+        robotPlacementOverallData = _.chain(robotPlacementOverallData)
+        .map(function(data){
+            
+            // var tmp = data;
+            return {
+                event: data.event,
+                team: data.team,
+                categories: [
+                    "Left",
+                    "Middle",
+                    "Right",
+                ],
+                robotPlacementOverallData: {
+                    name: "Count",
+                    data: _.reduce(data.robotPlacementList, function(result, value, key){
+                        switch(value){
+                            case 0:
+                                result[0]++;
+                                break;
+                            case 1:
+                                result[1]++;
+                                break;
+                            case 2:
+                                result[2]++;
+                                break;
+                            default:
+                                break;                
+                        }
+                        return result;
+                    }, [0,0,0])
+                }
+            };
+        })
+        .value()[0];
+
+        // Return the todod list that was retured by the mongoose promise
+        return robotPlacementOverallData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }    
 }
 
 exports.getAutoLineOverall = async function(query){
-    
+    try {
+        var autoLineOverallData = await ScoutingData.aggregate(query)
+        autoLineOverallData = _.chain(autoLineOverallData)
+        .map(function(data){
+            
+            // var tmp = data;
+            return {
+                event: data.event,
+                team: data.team,
+                categories: [
+                    "Yes",
+                    "No",
+                ],
+                autoLineOverallData: {
+                    name: "Count",
+                    data: _.reduce(data.autoLineList, function(result, value, key){
+                        switch(value){
+                            case 1:
+                                result[0]++;
+                                break;
+                            case 0:
+                                result[1]++;
+                                break;
+                            default:
+                                break;                
+                        }
+                        return result;
+                    }, [0,0])
+                }
+            };
+        })
+        .value()[0];
+
+        // Return the todod list that was retured by the mongoose promise
+        return autoLineOverallData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }
 }
 
 exports.getAutoSwitchScaleExchangeZoneChartOverall = async function(query){
-    
+    try {
+        var autoSwitchScaleExchangeZoneOverallData = await ScoutingData.aggregate(query)
+        autoSwitchScaleExchangeZoneOverallData = _.chain(autoSwitchScaleExchangeZoneOverallData)
+        .map(function(data){
+            
+            // var tmp = data;
+            return {
+                event: data.event,
+                team: data.team,
+                categories: [
+                    "Switch Cube Count",
+                    "Scale Cube Count",
+                    "Exchange Zone Cube Count"
+                ],
+                autoSwitchScaleExchangeZoneOverallData: {
+                    name: "Cube Count",
+                    data: [
+                        data.autoSwitchCubeCountTotal,
+                        data.autoScaleCubeCountTotal,
+                        data.autoExchangeCubeCountTotal
+                    ]
+                }
+            };
+        })
+        .value()[0];
+
+        // Return the todod list that was retured by the mongoose promise
+        return autoSwitchScaleExchangeZoneOverallData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }
 }
 
-exports.getClimbPointsChartOverall = async function(query){
+exports.getClimbTypeChartOverall = async function(query){
+    try {
+        var climbTypeOverallData = await ScoutingData.aggregate(query)
+        climbTypeOverallData = _.chain(climbTypeOverallData)
+        .map(function(data){
+            
+            // var tmp = data;
+            return {
+                event: data.event,
+                team: data.team,
+                categories: [
+                    "No Climb",
+                    "Ramp Climb",
+                    "One Robot Ramp Deploy",
+                    "Self-Climb on Rung",
+                    "Two Robot Ramp Deploy",
+                    "One Robot Ramp Deploy + Climb",
+                    "Two Robot Ramp Deploy + Climb",
+                ],
+                climbTypeOverallData: {
+                    name: "Count",
+                    data: _.reduce(data.climbTypeList, function(result, value, key){
+                        switch(value){
+                            case 0:
+                                result[0]++;
+                                break;
+                            case 1:
+                                result[1]++;
+                                break;
+                            case 2:
+                                result[2]++;
+                                break;
+                            case 2.5:
+                                result[3]++;
+                                break;
+                            case 3:
+                                result[4]++;
+                                break;
+                            case 4:
+                                result[5]++;
+                                break;
+                            case 5:
+                                result[6]++;
+                                break;
+                            default:
+                                break;                
+                        }
+                        return result;
+                    }, [0,0,0,0,0,0,0])
+                }
+            };
+        })
+        .value()[0];
 
+        // Return the todod list that was retured by the mongoose promise
+        return climbTypeOverallData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }
 }
 
 exports.getPickUpTypeChartOverall = async function(query){
-    
+    try {
+        var pickUpTypeOverallData = await ScoutingData.aggregate(query)
+        pickUpTypeOverallData = _.chain(pickUpTypeOverallData)
+        .map(function(data){
+            
+            // var tmp = data;
+            return {
+                event: data.event,
+                team: data.team,
+                categories: [
+                    "Wide",
+                    "Diagonal",
+                    "Tall",
+                    "Dropoff"
+                ],
+                pickUpTypeOverallData: {
+                    name: "Pickup Count",
+                    data: [
+                        data.pickUpWideTotal,
+                        data.pickUpDiagTotal,
+                        data.pickUpTallTotal,
+                        data.pickUpDropOffTotal
+                    ]
+                }
+            };
+        })
+        .value()[0];
+
+        // Return the todod list that was retured by the mongoose promise
+        return pickUpTypeOverallData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }
 }
 
 exports.getSourceDestinationChartOverall = async function(query){
-    
+    try {
+        var sourceToDestinationOverallData = await ScoutingData.aggregate(query)
+        sourceToDestinationOverallData = _.chain(sourceToDestinationOverallData)
+        .map(function(data){
+
+            data.sourceToDestinationList = _.map(data.sourceToDestinationList, function(res){
+                if(res.source == res.destination)
+                {
+                    res.source = "Source "+res.source;
+                    res.destination = "Destination "+res.destination;
+                }
+                return res;
+            })
+
+            data.destinationToSourceList = _.chain(data.sourceToDestinationList)
+            .map(function(res, key, arr){
+                if(key > 0){
+                    return {
+                        source: arr[key-1].destination,
+                        destination: res.source
+                    }
+                }
+                else{
+                    return {}
+                }
+            })
+            .drop()
+            .value();
+
+            return data;
+        })
+        .reduce(function(result,value,key){
+            result.event = value.event;
+            result.team = value.team;
+            result.sourceToDestinationList = key == 0 ? value.sourceToDestinationList
+                                                : _.concat(result.sourceToDestinationList, value.sourceToDestinationList);
+            result.destinationToSourceList = key == 0 ? value.destinationToSourceList
+                                                : _.concat(result.destinationToSourceList, value.destinationToSourceList);
+            return result;
+        },{})
+        .thru(function(data){
+            return [
+                {
+                    keys: ['from', 'to', 'weight'],
+                    data: _.chain(data.sourceToDestinationList)
+                        .countBy(function(counter){
+                            return [counter.source, counter.destination];
+                        })
+                        .toPairs()
+                        .map(function(res){
+                            return _.split(res[0], ',').concat(res[1]); 
+                        })
+                        .sortBy(function(res){
+                            return res[0];
+                        })
+                        .value(),
+                    type: 'sankey',
+                    name: 'Source To Destination Sankey Series'
+                },
+                {
+                    keys: ['from', 'to', 'weight'],
+                    data: _.chain(data.destinationToSourceList)
+                        .countBy(function(counter){
+                            return [counter.source, counter.destination];
+                        })
+                        .toPairs()
+                        .map(function(res){
+                            return _.split(res[0], ',').concat(res[1]); 
+                        })
+                        .sortBy(function(res){
+                            return res[0];
+                        })
+                        .value(),
+                    type: 'sankey',
+                    name: 'Destination To Source Sankey Series'
+                },
+            ]
+        })
+        .value();
+
+        // Return the todod list that was retured by the mongoose promise
+        return sourceToDestinationOverallData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }
 }
 
 // exports.deleteTodo = async function(id){

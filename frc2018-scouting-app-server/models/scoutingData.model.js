@@ -17,7 +17,7 @@ var ScoutingDataSchema = new mongoose.Schema({
 		readyCode: Number,				// 0 - Ready, 1 - No Show, 2 - Disabled, 3 - Non-functional
 		robotPlacement: Number,			// 0 - Left, 1 - Middle, 2 - Right
 		fieldConfig: Number,			// 0 - LOS,LS,LAS; 1 - LOS,RS,LAS; 2 - ROS,LS,RAS; 3 - ROS,RS,RAS;
-		autoLine: Number,				// 1 - Crossed, 0 - Failed
+		autoLine: Number,				// 0 - Failed, 1 - Crossed
 		autoSwitchCubeCount: Number,	// Number of Cubes in Alliance Switch
 		autoScaleCubeCount: Number,		// Number of Cubes in Alliance Scale
 		autoExchangeCubeCount: Number,	// Number of Cubes in Exchange Zone

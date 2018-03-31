@@ -54,6 +54,7 @@ export class TeamStatisticsComponent implements OnInit {
 	climbTypeChartOverall: Chart;
 	pickUpTypeChartOverall: Chart;
 	sourceToDestinationChartOverall: Chart;
+	destinationToSourceChartOverall: Chart;
 
 	getAllTeamsAtEvent(){
 		let eventID = this.events[this.selectedEvent];
@@ -70,7 +71,6 @@ export class TeamStatisticsComponent implements OnInit {
 		// Ready Status Chart //
 		this.scoutingDataService.getRobotReadyStatusPerMatch(event, team)
 			.subscribe((readyChartPerMatchseries) => {
-				console.log(readyChartPerMatchseries.data);
 				this.readyChartPerMatch = new Chart({
 					chart: {
 						type: 'line',
@@ -101,7 +101,6 @@ export class TeamStatisticsComponent implements OnInit {
 
 		this.scoutingDataService.getRobotPlacementPerMatch(event, team)
 			.subscribe((robotPlacementChartPerMatchSeries) => {
-				console.log(robotPlacementChartPerMatchSeries.data);
 				this.robotPlacementChartPerMatch = new Chart({
 					chart: {
 						type: 'line',
@@ -131,7 +130,6 @@ export class TeamStatisticsComponent implements OnInit {
 
 		this.scoutingDataService.getFieldConfigurationPerMatch(event, team)
 			.subscribe((fieldConfigurationChartPerMatchSeries) => {
-				console.log(fieldConfigurationChartPerMatchSeries.data);
 				this.fieldConfigChartPerMatch = new Chart({
 					chart: {
 						type: 'line',
@@ -161,7 +159,6 @@ export class TeamStatisticsComponent implements OnInit {
 
 		this.scoutingDataService.getAutoLinePerMatch(event, team)
 			.subscribe((autoLineChartPerMatchSeries) => {
-				console.log(autoLineChartPerMatchSeries.data);
 				this.autoLineChartPerMatch = new Chart({
 					chart: {
 						type: 'line',
@@ -191,7 +188,6 @@ export class TeamStatisticsComponent implements OnInit {
 
 		this.scoutingDataService.getAutoSwitchScaleExchangeZoneChartPerMatch(event, team)
 			.subscribe((autoSwitchScaleExchangeZoneChartPerMatchSeries) => {
-				console.log(autoSwitchScaleExchangeZoneChartPerMatchSeries.data);
 				this.autoSwitchScaleExchangeZoneChartPerMatch = new Chart({
 					chart: {
 						type: 'column',
@@ -212,7 +208,6 @@ export class TeamStatisticsComponent implements OnInit {
 
 		this.scoutingDataService.getClimbPointsChartPerMatch(event, team)
 			.subscribe((climbPointsChartPerMatchSeries) => {
-				console.log(climbPointsChartPerMatchSeries.data);
 				this.climbPointsChartPerMatch = new Chart({
 					chart: {
 						type: 'line',
@@ -236,7 +231,6 @@ export class TeamStatisticsComponent implements OnInit {
 
 		this.scoutingDataService.getPickUpTypeChartPerMatch(event,team)
 			.subscribe((pickUpTypeChartPerMatchSeries) => {
-				console.log(pickUpTypeChartPerMatchSeries.data);
 				this.pickUpTypeChartPerMatch = new Chart({
 					chart: {
 						type: 'column',
@@ -257,7 +251,6 @@ export class TeamStatisticsComponent implements OnInit {
 
 		this.scoutingDataService.getEfficiencyChartPerMatch(event,team)
 			.subscribe((efficiencyChartPerMatchSeries) => {
-				console.log(efficiencyChartPerMatchSeries.data);
 				this.efficiencyChartPerMatch = new Chart({
 					chart: {
 						type: 'line',
@@ -282,7 +275,6 @@ export class TeamStatisticsComponent implements OnInit {
 
 		this.scoutingDataService.getCycleTimeChartPerMatch(event,team)
 			.subscribe((cycleTimeChartPerMatchSeries) => {
-				console.log(cycleTimeChartPerMatchSeries.data);
 				this.cycleTimeChartPerMatch = new Chart({
 					chart: {
 						type: 'line',
@@ -306,7 +298,6 @@ export class TeamStatisticsComponent implements OnInit {
 
 		this.scoutingDataService.getCubesScoredChartPerMatch(event,team)
 			.subscribe((cubesScoredChartPerMatchSeries) => {
-				console.log(cubesScoredChartPerMatchSeries.data);
 				this.cubesScoredChartPerMatch = new Chart({
 					chart: {
 						type: 'line',
@@ -328,31 +319,152 @@ export class TeamStatisticsComponent implements OnInit {
 				});
 			});
 
-		// this.scoutingDataService.getSourceDestinationChartPerMatch(event,team)
-		// 	.subscribe();
-
 		/*==== Overall Charts ====*/
 
-		// this.scoutingDataService.getRobotReadyStatusOverall(event,team)
-		// 	.subscribe();
+		this.scoutingDataService.getRobotReadyStatusOverall(event,team)
+			.subscribe((robotReadyStatusChartOverallSeries) => {
+				this.readyChartOverall = new Chart({
+					chart: {
+						type: 'column',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Overall Robot Ready Status',
+					},
+					xAxis: {
+						categories: robotReadyStatusChartOverallSeries.data.categories
+					},
+					series: [robotReadyStatusChartOverallSeries.data.readyCodeOverallData],
+				});
+			});
 
-		// this.scoutingDataService.getRobotPlacementOverall(event,team)
-		// 	.subscribe();
+		this.scoutingDataService.getRobotPlacementOverall(event,team)
+			.subscribe((robotPlacementChartOverallSeries) => {
+				this.robotPlacementChartOverall = new Chart({
+					chart: {
+						type: 'column',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Overall Robot Placement',
+					},
+					xAxis: {
+						categories: robotPlacementChartOverallSeries.data.categories
+					},
+					series: [robotPlacementChartOverallSeries.data.robotPlacementOverallData],
+				});
+			});
 
-		// this.scoutingDataService.getAutoLineOverall(event,team)
-		// 	.subscribe();
+		this.scoutingDataService.getAutoLineOverall(event,team)
+			.subscribe((autoLineChartOverallSeries) => {
+				this.autoLineChartOverall = new Chart({
+					chart: {
+						type: 'column',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Overall Auto Line Cross',
+					},
+					xAxis: {
+						categories: autoLineChartOverallSeries.data.categories
+					},
+					series: [autoLineChartOverallSeries.data.autoLineOverallData],
+				});
+			});
 
-		// this.scoutingDataService.getAutoSwitchScaleExchangeZoneChartOverall(event,team)
-		// 	.subscribe();
+		this.scoutingDataService.getAutoSwitchScaleExchangeZoneChartOverall(event,team)
+			.subscribe((autoSwitchScaleExchangeZoneChartOverallSeries) => {
+				this.autoSwitchScaleExchangeZoneChartOverall = new Chart({
+					chart: {
+						type: 'column',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Overall Auto Cube Count',
+					},
+					xAxis: {
+						categories: autoSwitchScaleExchangeZoneChartOverallSeries.data.categories
+					},
+					series: [autoSwitchScaleExchangeZoneChartOverallSeries.data.autoSwitchScaleExchangeZoneOverallData],
+				});
+			});
 
-		// this.scoutingDataService.getClimbPointsChartOverall(event,team)
-		// 	.subscribe();
+		this.scoutingDataService.getClimbTypeChartOverall(event,team)
+			.subscribe((climbTypeChartOverallSeries) => {
+				this.climbTypeChartOverall = new Chart({
+					chart: {
+						type: 'column',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Overall Climb Type',
+					},
+					xAxis: {
+						categories: climbTypeChartOverallSeries.data.categories
+					},
+					series: [climbTypeChartOverallSeries.data.climbTypeOverallData],
+				});
+			});
 
-		// this.scoutingDataService.getPickUpTypeChartOverall(event,team)
-		// 	.subscribe();
+		this.scoutingDataService.getPickUpTypeChartOverall(event,team)
+			.subscribe((pickUpTypeChartOverallSeries) => {
+				this.pickUpTypeChartOverall = new Chart({
+					chart: {
+						type: 'column',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Overall Pickup Type Count',
+					},
+					xAxis: {
+						categories: pickUpTypeChartOverallSeries.data.categories
+					},
+					series: [pickUpTypeChartOverallSeries.data.pickUpTypeOverallData],
+				});
+			});
 
-		// this.scoutingDataService.getSourceDestinationChartOverall(event,team)
-		// 	.subscribe();
+		this.scoutingDataService.getSourceDestinationChartOverall(event,team)
+			.subscribe((sourceToDestinationChartOverallSeries) => {
+				this.sourceToDestinationChartOverall = new Chart({
+					chart: {
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Source to Destination Sankey Diagram',
+					},
+					series: [
+						sourceToDestinationChartOverallSeries.data[0]
+					],
+				});
+
+				this.destinationToSourceChartOverall = new Chart({
+					chart: {
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Destination to Source Sankey Diagram',
+					},
+					series: [
+						sourceToDestinationChartOverallSeries.data[1]
+					],
+				});
+			});
 
 		// Expand the Per Match Chart
 		// Expand the Overall Charts
