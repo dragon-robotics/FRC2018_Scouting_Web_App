@@ -24,6 +24,7 @@ router.get('/cubesScoredChartPerMatch/:event/:team', ScoutingDataController.getC
 /* Overall Chart Data API Calls */
 router.get('/readyChartOverall/:event/:team', ScoutingDataController.getRobotReadyStatusOverall)
 router.get('/robotPlacementChartOverall/:event/:team', ScoutingDataController.getRobotPlacementOverall)
+router.get('/fieldConfigurationChartOverall/:event/:team', ScoutingDataController.getFieldConfigurationOverall)
 router.get('/autoLineChartOverall/:event/:team', ScoutingDataController.getAutoLineOverall)
 router.get('/autoSwitchScaleExchangeZoneChartOverall/:event/:team', ScoutingDataController.getAutoSwitchScaleExchangeZoneChartOverall)
 router.get('/climbTypeChartOverall/:event/:team', ScoutingDataController.getClimbTypeChartOverall)

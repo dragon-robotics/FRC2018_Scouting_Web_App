@@ -581,6 +581,54 @@ exports.getRobotPlacementOverall = async function(req, res, next){
     }
 }
 
+exports.getFieldConfigurationOverall = async function(req, res, next){
+    // Check the existence of the query parameters, If the exists doesn't exists assign a default value
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [
+                        {
+                            "$match": {
+                                event: event,
+                                team: team       
+                            }
+                        },
+                        {
+                            "$project": {
+                                _id: 0,
+                                event: 1,
+                                team: 1,
+                                fieldConfig: "$matchData.fieldConfig" 
+                            }       
+                        },
+                        {
+                            "$group":
+                            {
+                                _id: { event: "$event", team: "$team"},
+                                event: {"$first": "$event"},
+                                team: {"$first": "$team"},
+                                fieldConfigurationList: {"$push": "$fieldConfig"},
+                            }
+                        },
+                            {
+                            "$project": {
+                                _id: 0,
+                            }
+                        },
+                    ];
+
+        var fieldConfigurationOverallData = await ScoutingDataService.getFieldConfigurationOverall(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: fieldConfigurationOverallData, message: "Succesfully Received Robot Placement Overall Data"});
+        
+    }catch(e){
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
+}
+
 exports.getAutoLineOverall = async function(req, res, next){
     // Check the existence of the query parameters, If the exists doesn't exists assign a default value
     try{

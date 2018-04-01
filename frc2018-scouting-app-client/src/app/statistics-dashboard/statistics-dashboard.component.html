@@ -19,7 +19,12 @@
 		</mat-error>
 	</mat-form-field>
 
-	<mat-grid-list cols="8" rowHeight="300px">
+	<mat-card>	
+		<table datatable [dtOptions]="dtOptions" class="display cell-border compact hover" style="width:100%">
+		</table>
+	</mat-card>
+
+<!-- 	<mat-grid-list cols="8" rowHeight="300px">
 		<div *ngFor = "let row of teamRows">
 			<mat-grid-tile
 				[colspan]=5
@@ -31,7 +36,7 @@
 				[colspan]="row.cols"
 				[rowspan]="row.rows"
 				[chart]="row.chart">
-			</mat-grid-tile>		
+			</mat-grid-tile>
 		</div>
-	</mat-grid-list>
+	</mat-grid-list> -->
 </mat-card>

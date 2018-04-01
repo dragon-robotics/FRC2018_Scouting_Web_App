@@ -104,7 +104,23 @@ exports.getYPRData = async function(event){
     try {
 
         // Return the YPR list that was retured by the mongoose promise
-        var YPR = YPRData.find({event: event}).sort({YPR: -1});
+        var YPR = await YPRData.find({event: event}).sort({YPR: -1});
+        YPR = _.map(YPR,function(result){
+            return {
+                'event': result.event,
+                'team': result.team,
+                'YPR': _.round(result.YPR, 3),
+                'OPR': _.round(result.OPR, 3),
+                'DPR': _.round(result.DPR, 3),
+                'CCWM': _.round(result.CCWM, 3),
+                'Pickup': _.round(result.Pickup, 3),
+                'NumOfCubes': _.round(result.NumOfCubes, 3),
+                'CycleTime': _.round(result.CycleTime, 3),
+                'Efficiency': _.round(result.Efficiency, 3),
+                'Auto': _.round(result.Auto, 3),
+                'Climb': _.round(result.Climb, 3)
+            }
+        })
         return YPR;
 
     } catch (e) {
@@ -2126,6 +2142,57 @@ exports.getRobotPlacementOverall = async function(query){
 
         // Return the todod list that was retured by the mongoose promise
         return robotPlacementOverallData;
+
+    } catch (e) {
+        // return an Error message describing the reason 
+        throw Error(e.message)
+    }    
+}
+
+exports.getFieldConfigurationOverall = async function(query){
+    try {
+        var fieldConfigurationOverallData = await ScoutingData.aggregate(query)
+        fieldConfigurationOverallData = _.chain(fieldConfigurationOverallData)
+        .map(function(data){
+            
+            // var tmp = data;
+            return {
+                event: data.event,
+                team: data.team,
+                categories: [
+                    "LAS-LS-LOS",
+                    "LAS-RS-LOS",
+                    "RAS-LS-ROS",
+                    "RAS-RS-ROS",
+                ],
+                fieldConfigurationOverallData: {
+                    name: "Count",
+                    data: _.reduce(data.fieldConfigurationList, function(result, value, key){
+                        switch(value){
+                            case 0:
+                                result[0]++;
+                                break;
+                            case 1:
+                                result[1]++;
+                                break;
+                            case 2:
+                                result[2]++;
+                                break;
+                            case 3:
+                                result[3]++;
+                                break;                                
+                            default:
+                                break;                
+                        }
+                        return result;
+                    }, [0,0,0,0])
+                }
+            };
+        })
+        .value()[0];
+
+        // Return the todod list that was retured by the mongoose promise
+        return fieldConfigurationOverallData;
 
     } catch (e) {
         // return an Error message describing the reason 

@@ -113,6 +113,10 @@ export class ScoutingDataService {
 		return this.http.get(this.scoutingDataURL+'/robotPlacementChartOverall/'+event+'/'+team)
 	}
 
+	getFieldConfigurationOverall(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/fieldConfigurationChartOverall/'+event+'/'+team)
+	}
+
 	getAutoLineOverall(event: string, team: number): Observable<any>{
 		return this.http.get(this.scoutingDataURL+'/autoLineChartOverall/'+event+'/'+team)
 	}

@@ -36,7 +36,7 @@ export class TeamStatisticsComponent implements OnInit {
 	/* Per Match Charts */
 	readyChartPerMatch: Chart;
 	robotPlacementChartPerMatch: Chart;
-	fieldConfigChartPerMatch: Chart;
+	fieldConfigurationChartPerMatch: Chart;
 	autoLineChartPerMatch: Chart;
 	autoSwitchScaleExchangeZoneChartPerMatch: Chart;
 	climbPointsChartPerMatch: Chart;
@@ -49,6 +49,7 @@ export class TeamStatisticsComponent implements OnInit {
 	/* Overall Charts */
 	readyChartOverall: Chart;
 	robotPlacementChartOverall: Chart;
+	fieldConfigurationChartOverall: Chart;
 	autoLineChartOverall: Chart;
 	autoSwitchScaleExchangeZoneChartOverall: Chart;
 	climbTypeChartOverall: Chart;
@@ -130,7 +131,7 @@ export class TeamStatisticsComponent implements OnInit {
 
 		this.scoutingDataService.getFieldConfigurationPerMatch(event, team)
 			.subscribe((fieldConfigurationChartPerMatchSeries) => {
-				this.fieldConfigChartPerMatch = new Chart({
+				this.fieldConfigurationChartPerMatch = new Chart({
 					chart: {
 						type: 'line',
 						borderColor: '#000000', 
@@ -356,6 +357,25 @@ export class TeamStatisticsComponent implements OnInit {
 						categories: robotPlacementChartOverallSeries.data.categories
 					},
 					series: [robotPlacementChartOverallSeries.data.robotPlacementOverallData],
+				});
+			});
+
+		this.scoutingDataService.getFieldConfigurationOverall(event,team)
+			.subscribe((fieldConfigurationChartOverallSeries) => {
+				this.fieldConfigurationChartOverall = new Chart({
+					chart: {
+						type: 'column',
+						borderColor: '#000000', 
+						borderRadius: 1,
+						borderWidth: 1,						
+					},
+					title: {
+						text: 'Overall Robot Placement',
+					},
+					xAxis: {
+						categories: fieldConfigurationChartOverallSeries.data.categories
+					},
+					series: [fieldConfigurationChartOverallSeries.data.fieldConfigurationOverallData],
 				});
 			});
 

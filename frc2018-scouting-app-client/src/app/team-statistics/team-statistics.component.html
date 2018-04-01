@@ -44,7 +44,8 @@
 			</mat-expansion-panel-header>
 
 			<!-- Chart Content -->
-			<mat-grid-list cols="3" rowHeight="300px">
+			<label>Pre-Match Stats</label>
+			<mat-grid-list cols="3" rowHeight="400px">
 				<div>
 					<mat-grid-tile
 						[colspan]=1
@@ -59,11 +60,17 @@
 					<mat-grid-tile 
 						[colspan]=1
 						[rowspan]=1
-						[chart]="fieldConfigChartPerMatch">
+						[chart]="fieldConfigurationChartPerMatch">
 					</mat-grid-tile>
 				</div>
 			</mat-grid-list>
-			<mat-grid-list cols="3" rowHeight="300px">
+
+			<br/>
+			<mat-divider [inset]="true"></mat-divider>
+			<br/>
+
+			<label>Auto Stats</label>
+			<mat-grid-list cols="2" rowHeight="400px">
 				<div>
 					<mat-grid-tile
 						[colspan]=1
@@ -75,14 +82,15 @@
 						[rowspan]=1
 						[chart]="autoSwitchScaleExchangeZoneChartPerMatch">
 					</mat-grid-tile>
-					<mat-grid-tile 
-						[colspan]=1
-						[rowspan]=1
-						[chart]="climbPointsChartPerMatch">
-					</mat-grid-tile>					
 				</div>
 			</mat-grid-list>
-			<mat-grid-list cols="3" rowHeight="300px">
+
+			<br/>
+			<mat-divider [inset]="true"></mat-divider>
+			<br/>
+
+			<label>Teleop Stats</label>
+			<mat-grid-list cols="3" rowHeight="400px">
 				<div>
 					<mat-grid-tile
 						[colspan]=1
@@ -101,12 +109,17 @@
 					</mat-grid-tile>
 				</div>
 			</mat-grid-list>
-			<mat-grid-list cols="3" rowHeight="300px">
+			<mat-grid-list cols="2" rowHeight="400px">
 				<div>
 					<mat-grid-tile
 						[colspan]=1
 						[rowspan]=1
 						[chart]="cubesScoredChartPerMatch">
+					</mat-grid-tile>
+					<mat-grid-tile 
+						[colspan]=1
+						[rowspan]=1
+						[chart]="climbPointsChartPerMatch">
 					</mat-grid-tile>
 				</div>
 			</mat-grid-list>
@@ -123,7 +136,8 @@
 			</mat-expansion-panel-header>
 
 			<!-- Chart Content -->
-			<mat-grid-list cols="3" rowHeight="300px">
+			<label>Pre-Match Stats</label>
+			<mat-grid-list cols="3" rowHeight="400px">
 				<div>
 					<mat-grid-tile
 						[colspan]=1
@@ -138,18 +152,38 @@
 					<mat-grid-tile
 						[colspan]=1
 						[rowspan]=1
-						[chart]="autoLineChartOverall">
+						[chart]="fieldConfigurationChartOverall">
 					</mat-grid-tile>
 				</div>
 			</mat-grid-list>
 
-			<mat-grid-list cols="3" rowHeight="300px">
+			<br/>
+			<mat-divider [inset]="true"></mat-divider>
+			<br/>
+
+			<label>Auto Stats</label>
+			<mat-grid-list cols="2" rowHeight="400px">
 				<div>
+					<mat-grid-tile
+						[colspan]=1
+						[rowspan]=1
+						[chart]="autoLineChartOverall">
+					</mat-grid-tile>
 					<mat-grid-tile
 						[colspan]=1
 						[rowspan]=1
 						[chart]="autoSwitchScaleExchangeZoneChartOverall">
 					</mat-grid-tile>
+				</div>
+			</mat-grid-list>
+
+			<br/>
+			<mat-divider [inset]="true"></mat-divider>
+			<br/>
+
+			<label>Teleop Stats</label>
+			<mat-grid-list cols="2" rowHeight="400px">
+				<div>
 					<mat-grid-tile
 						[colspan]=1
 						[rowspan]=1
@@ -162,8 +196,7 @@
 					</mat-grid-tile>
 				</div>
 			</mat-grid-list>
-
-			<mat-grid-list cols="2" rowHeight="300px">
+			<mat-grid-list cols="2" rowHeight="400px">
 				<div>
 					<mat-grid-tile
 						[colspan]=1

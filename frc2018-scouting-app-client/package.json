@@ -25,7 +25,7 @@
     "@angular/router": "^5.2.9",
     "angular-datatables": "^5.0.0",
     "angular-highcharts": "^5.2.10",
-    "core-js": "^2.4.1",
+    "core-js": "^2.5.4",
     "datatables.net": "^1.10.16",
     "datatables.net-buttons": "^1.5.1",
     "datatables.net-buttons-dt": "^1.5.1",
@@ -36,15 +36,15 @@
     "highcharts": "^6.0.7",
     "jquery": "^3.3.1",
     "rxjs": "^5.5.8",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.22"
   },
   "devDependencies": {
     "@angular/cli": "1.6.7",
     "@angular/compiler-cli": "^5.2.9",
     "@angular/language-service": "^5.2.9",
-    "@types/datatables.net": "^1.10.8",
+    "@types/datatables.net": "^1.10.9",
     "@types/datatables.net-buttons": "^1.4.0",
-    "@types/datatables.net-select": "^1.2.3",
+    "@types/datatables.net-select": "^1.2.4",
     "@types/highcharts": "^5.0.20",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
