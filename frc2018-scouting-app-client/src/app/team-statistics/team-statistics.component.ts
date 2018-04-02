@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ScoutingDataService } from '../scouting-data.service';
 import { ScoutingData } from '../models/scoutingData.model';
+import { DataTableDirective } from 'angular-datatables';
 import { Chart } from 'angular-highcharts';
 
 
@@ -57,6 +58,9 @@ export class TeamStatisticsComponent implements OnInit {
 	sourceToDestinationChartOverall: Chart;
 	destinationToSourceChartOverall: Chart;
 
+	@ViewChild(DataTableDirective)
+  	datatableElement: DataTableDirective;
+
 	getAllTeamsAtEvent(){
 		let eventID = this.events[this.selectedEvent];
 		this.scoutingDataService.getTeamFromEvent(eventID)
@@ -65,9 +69,21 @@ export class TeamStatisticsComponent implements OnInit {
 			})
 	}
 
-	generateAllCharts(){
+	generateAllChartsAndTable(){
 		let event = this.selectedEvent;
 		let team = this.selectedTeam;
+
+		/*==== Raw Data Table ====*/
+		this.scoutingDataService.getTeamEventRawData(event, team)
+			.subscribe((teamEventRawData) => {
+				// Add the raw data to the raw data table
+				this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+					console.log(teamEventRawData);
+					dtInstance.clear();	// Removes previous data
+					dtInstance.rows.add(teamEventRawData.data).draw()
+				});
+			});
+
 		/*==== Per Match Charts ====*/
 		// Ready Status Chart //
 		this.scoutingDataService.getRobotReadyStatusPerMatch(event, team)
@@ -494,6 +510,92 @@ export class TeamStatisticsComponent implements OnInit {
 		private scoutingDataService: ScoutingDataService,
 	) { }
 
+	dtOptions: any = {};
 	ngOnInit() {
+		this.dtOptions = {
+			dom: 'Brt',
+			buttons: [
+	            {
+	                extend: 'csvHtml5',
+	                text: 'Download Team Data in CSV',
+	                exportOptions: {
+	                    columns: ':(visible)',
+	                }
+	            },
+	        ],
+			columnDefs:[{
+				targets: [0,1],
+				visible: false,	// Makes Team and Event columns inivisble, but will be displayed when data is downloaded
+			}],
+			// order: [
+			// 	[ 1, "desc" ]
+			// ],
+			fixedColumns:   {
+            	heightMatch: 'auto'
+        	},
+			columns: [{
+				title: "Team",
+				data: "team",
+			},{
+				title: "Event",
+				data: "event",
+			},{
+				title: "Match",
+				data: "match",
+			},{
+				title: "Robot Readiness",
+				data: "readyCode",
+			},{
+				title: "Robot Placement",
+				data: "robotPlacement",
+			},{
+				title: "Field Config",
+				data: "fieldConfig",
+			},{
+				title: "Auto Line Cross",
+				data: "autoLine",
+			},{
+				title: "Auto Switch Cube Count",
+				data: "autoSwitchCubeCount",
+			},{
+				title: "Auto Scale Cube Count",
+				data: "autoScaleCubeCount",
+			},{
+				title: "Auto Exchange Zone Cube Count",
+				data: "autoExchangeCubeCount",
+			},{
+				title: "Cubes Scored",
+				data: "cubesScored",
+			},{
+				title: "Cycle Time",
+				data: "cycleTime",
+			},{
+				title: "Efficiency",
+				data: "efficiency",
+				// render: "Climb",
+			},{
+				title: "Wide Pickup",
+				data: "pickUpWide",
+				// render: "Climb",
+			},{
+				title: "Diagonal Pickup",
+				data: "pickUpDiag",
+				// render: "Climb",
+			},{
+				title: "Tall Pickup",
+				data: "pickUpTall",
+				// render: "Climb",
+			},{
+				title: "Dropoff",
+				data: "pickUpDropOff",
+				// render: "Climb",
+			},{
+				title: "Climb Type",
+				data: "climbingType",
+			},],
+			lengthMenu: [[-1],["All"]],	// Displays all rows
+			// scrollY: "35vh",
+			// scrollCollapse: true,
+		};		
 	}
 }

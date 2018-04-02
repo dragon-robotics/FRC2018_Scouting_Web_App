@@ -38,13 +38,14 @@ export class StatisticsDashboardComponent implements OnInit {
 	// Datatables Directive
 	@ViewChild(DataTableDirective)
   	datatableElement: DataTableDirective;
+  	tableDraw : Boolean = true;	// Used to only generate charts once per event load
 
 	getYPRAnalytics(){
 		this.scoutingDataService.getYPR(this.selectedEvent, this.events[this.selectedEvent])
 			.subscribe((res)=>{
-
 				// Add YPR information to the table
 				this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+					dtInstance.clear().draw();	// Removes previous data
 					dtInstance.rows.add(res.map(function(result, key){
 						return {
 							'team': result.team,
@@ -59,129 +60,9 @@ export class StatisticsDashboardComponent implements OnInit {
 							'Auto': result.Auto,
 							'Climb': result.Climb,
 							'yprChart': result
-							// 'yprChart': new Chart({
-							// 				chart: {
-							// 				    polar: true,
-							// 				    type: 'line',
-							// 				    borderColor: '#000000', 
-							// 				    borderRadius: 1,
-							// 				    borderWidth: 1,
-							// 				    height: 300,
-							// 				},
-							// 				title: {
-							// 				    text: '',
-							// 				},
-							// 				xAxis: {
-							// 				    categories: [
-							// 				    	'OPR',
-							// 				    	'DPR',
-							// 				    	'CCWM',
-							// 				    	'Pickup', 
-							// 				    	"Number of Cubes",
-							// 				    	'Cycle Time', 
-							// 				    	"Efficiency", 
-							// 				    	'Auto',
-							// 				    	'Climb', 
-							// 				    ],
-							// 				    tickmarkPlacement: 'on',
-							// 				    lineWidth: 0
-							// 				},
-							// 				yAxis: {
-							// 				    lineWidth: 0,
-							// 				    min: 0,
-							// 				    max: 20,
-							// 				},
-							// 				tooltip: {
-							// 				    shared: true,
-							// 				},
-
-							// 				legend: {
-							// 					enabled: false,
-							// 				},
-							// 				series: [{
-							// 				    name: 'Team '+result.team,
-							// 				    type:'area',
-							// 				    data: [
-							// 				    	result.OPR,
-							// 				    	result.DPR,
-							// 				    	result.CCWM,
-							// 				    	result.Pickup, 
-							// 				    	result.NumOfCubes, 
-							// 				    	result.CycleTime,
-							// 				    	result.Efficiency,
-							// 				    	result.Auto,
-							// 				    	result.Climb,
-							// 				    ],
-							// 				}],
-							// 			})
 						}
 					})).draw()
 				});
-
-				this.teamRows = res.map(function(result){
-					let chart = new Chart({
-						chart: {
-						    polar: true,
-						    type: 'line',
-						    borderColor: '#000000', 
-						    borderRadius: 1,
-						    borderWidth: 1,
-						    height: 300,
-						},
-						title: {
-						    text: '',
-						},
-						xAxis: {
-						    categories: [
-						    	'OPR',
-						    	'DPR',
-						    	'CCWM',
-						    	'Pickup', 
-						    	"Number of Cubes",
-						    	'Cycle Time', 
-						    	"Efficiency", 
-						    	'Auto',
-						    	'Climb', 
-						    ],
-						    tickmarkPlacement: 'on',
-						    lineWidth: 0
-						},
-						yAxis: {
-						    lineWidth: 0,
-						    min: 0,
-						    max: 20,
-						},
-						tooltip: {
-						    shared: true,
-						},
-
-						legend: {
-							enabled: false,
-						},
-						series: [{
-						    name: 'Team '+result.team,
-						    type:'area',
-						    data: [
-						    	result.OPR,
-						    	result.DPR,
-						    	result.CCWM,
-						    	result.Pickup, 
-						    	result.NumOfCubes, 
-						    	result.CycleTime,
-						    	result.Efficiency,
-						    	result.Auto,
-						    	result.Climb,
-						    ],
-						}],
-					});
-
-					return {
-						chart: chart,
-						team: result.team,
-						cols: 3,
-						rows: 1,
-					};
-				})
 			})
 	}
 
@@ -192,17 +73,30 @@ export class StatisticsDashboardComponent implements OnInit {
 
 	dtOptions: any = {};
 	ngOnInit() {
+		let tableDraw = this.tableDraw;
 		this.dtOptions = {
-			dom: 'rt',
+			dom: 'Brt',
+			buttons: [
+	            {
+	                extend: 'csvHtml5',
+	                text: 'Download YPR in CSV',
+	                exportOptions: {
+	                    columns: [0,1,2,3,4,5,6,7,8,9,10]
+	                }
+	            },
+	        ],
 			columnDefs:[{
 				targets: -1,
 				"createdCell": function(td, cellData, rowData, row, col){
-					$(td).attr('id', 'highcharts '+row)
+					$(td).attr('id', 'highcharts '+rowData.team)
 				}
 			},{
 				targets: [0,1,2,3,4,5,6,7,8,9,10],
-				width: "100px",
-			}],        
+				width: "10px",
+			}],
+			order: [
+				[ 1, "desc" ]
+			],      
 			fixedColumns:   {
             	heightMatch: 'auto'
         	},
@@ -247,70 +141,75 @@ export class StatisticsDashboardComponent implements OnInit {
 			},],
 			drawCallback: function(){
 				var api = this.api();
- 
 		        // Output the data for the visible rows to the browser's console
-		        api.rows().data().map(function(chart, key){
-		        	// chart.yprChart.update({chart: {renderTo: 'highcharts'+key}})
-		        	// chart.yprChart.options.chart.renderTo = 'highcharts '+key;
-					// Highcharts.chart(chart.yprChart);
-					new Highcharts.Chart('highcharts '+key, {
-						chart: {
-						    polar: true,
-						    type: 'line',
-						    borderColor: '#000000', 
-						    borderRadius: 1,
-						    borderWidth: 1,
-						    height: 300,
-						},
-						title: {
-						    text: 'Hell Yeah',
-						},
-						xAxis: {
-						    categories: [
-						    	'OPR',
-						    	'DPR',
-						    	'CCWM',
-						    	'Pickup', 
-						    	"Number of Cubes",
-						    	'Cycle Time', 
-						    	"Efficiency", 
-						    	'Auto',
-						    	'Climb', 
-						    ],
-						    tickmarkPlacement: 'on',
-						    lineWidth: 0
-						},
-						yAxis: {
-						    lineWidth: 0,
-						    min: 0,
-						    max: 20,
-						},
-						tooltip: {
-						    shared: true,
-						},
+		        if(tableDraw && api.rows().data().length > 0){
+			        api.rows().data().map(function(chart, key){
+			        	// chart.yprChart.update({chart: {renderTo: 'highcharts'+key}})
+			        	// chart.yprChart.options.chart.renderTo = 'highcharts '+key;
+						// Highcharts.chart(chart.yprChart);
+						new Highcharts.Chart('highcharts '+chart.yprChart.team, {
+							chart: {
+							    polar: true,
+							    type: 'line',
+							    borderColor: '#000000', 
+							    borderRadius: 1,
+							    borderWidth: 1,
+							    height: 300,
+							},
+							title: {
+							    text: 'Team '+chart.yprChart.team+' Spider Chart',
+							},
+							xAxis: {
+							    categories: [
+							    	'OPR',
+							    	'DPR',
+							    	'CCWM',
+							    	'Pickup', 
+							    	"Number of Cubes",
+							    	'Cycle Time', 
+							    	"Efficiency", 
+							    	'Auto',
+							    	'Climb', 
+							    ],
+							    tickmarkPlacement: 'on',
+							    lineWidth: 0
+							},
+							yAxis: {
+							    lineWidth: 0,
+							    min: 0,
+							    max: 20,
+							},
+							tooltip: {
+							    shared: true,
+							},
 
-						legend: {
-							enabled: false,
-						},
-						series: [{
-						    name: 'Team '+chart.yprChart.team,
-						    type:'area',
-						    data: [
-						    	chart.yprChart.OPR,
-						    	chart.yprChart.DPR,
-						    	chart.yprChart.CCWM,
-						    	chart.yprChart.Pickup, 
-						    	chart.yprChart.NumOfCubes, 
-						    	chart.yprChart.CycleTime,
-						    	chart.yprChart.Efficiency,
-						    	chart.yprChart.Auto,
-						    	chart.yprChart.Climb,
-						    ],
-						}],
-					});
-		        	// console.log(chart.yprChart);
-		        	// console.log(key);
-		        })
+							legend: {
+								enabled: false,
+							},
+							series: [{
+							    name: 'Team '+chart.yprChart.team,
+							    type:'area',
+							    data: [
+							    	chart.yprChart.OPR,
+							    	chart.yprChart.DPR,
+							    	chart.yprChart.CCWM,
+							    	chart.yprChart.Pickup, 
+							    	chart.yprChart.NumOfCubes, 
+							    	chart.yprChart.CycleTime,
+							    	chart.yprChart.Efficiency,
+							    	chart.yprChart.Auto,
+							    	chart.yprChart.Climb,
+							    ],
+							}],
+						});
+			        	// console.log(chart.yprChart);
+			        	// console.log(key);
+			        })
+			        tableDraw = false;
+		        }
+		        else if (api.rows().data().length < 1){
+		        	tableDraw = true;
+		        }
 			},
 			lengthMenu: [[-1],["All"]],	// Displays all rows
 			// scrollY: "35vh",

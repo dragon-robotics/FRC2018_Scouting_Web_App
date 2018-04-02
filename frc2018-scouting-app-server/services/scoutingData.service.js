@@ -1754,6 +1754,23 @@ exports.updateScoutingData = async function(rawData){
     }
 }
 
+/* Raw Team Event Data */
+exports.getTeamEventRawData = async function(query){    
+    // Try Catch the awaited promise to handle the error 
+    
+    try {
+        var rawTeamEventData = await ScoutingData.aggregate(query)
+        
+        // Return the todod list that was retured by the mongoose promise
+        return rawTeamEventData;
+
+    } catch (e) {
+
+        // return a Error message describing the reason 
+        throw Error('Error while obtaining raw team event data')
+    }
+}
+
 /* Per Match Chart Service */
 
 exports.getReadyStatusPerMatch = async function(query){    

@@ -131,6 +131,55 @@ exports.updateScoutingData = async function(req, res, next){
     }
 }
 
+exports.getTeamEventRawData = async function(req, res, next){
+    try{
+        var event = req.params.event;
+        var team = +req.params.team;
+
+        var query = [
+            {
+                "$match": {
+                    "event": event,
+                    "team": team,
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    event: 1,
+                    team: 1,
+                    match: 1,
+                    readyCode: "$matchData.readyCode",
+                    robotPlacement: "$matchData.robotPlacement",
+                    fieldConfig: "$matchData.fieldConfig",
+                    autoLine: "$matchData.autoLine",
+                    autoSwitchCubeCount: "$matchData.autoSwitchCubeCount",
+                    autoScaleCubeCount: "$matchData.autoScaleCubeCount",
+                    autoExchangeCubeCount: "$matchData.autoExchangeCubeCount",
+                    cubesScored: "$matchData.cubesScored",
+                    cycleTime: "$matchData.cycleTime",
+                    efficiency: "$matchData.efficiency",
+                    pickUpWide: "$matchData.pickUpWide",
+                    pickUpDiag: "$matchData.pickUpDiag",
+                    pickUpTall: "$matchData.pickUpTall",
+                    pickUpDropOff: "$matchData.pickUpDropOff",
+                    climbingType: "$matchData.climbingType",
+                }
+            }
+        ];
+
+        var rawTeamEventData = await ScoutingDataService.getTeamEventRawData(query)
+        // Return the scoutingData list with the appropriate HTTP Status Code and Message.
+        
+        return res.status(200).json({status: 200, data: rawTeamEventData, message: "Succesfully Received Team Event Raw Data"});
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        
+        return res.status(400).json({status: 400, message: e.message});
+    }
+}
+
 /* Per Match Chart Controller */
 
 exports.getReadyStatusPerMatch = async function(req, res, next){

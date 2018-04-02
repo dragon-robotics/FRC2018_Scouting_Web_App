@@ -62,6 +62,11 @@ export class ScoutingDataService {
 		return this.http.get(this.teamEventInfoURL+'/'+eventID)
 	}
 
+	/* Get Raw Data from Team at a specific event */
+	getTeamEventRawData(event: string, team: number): Observable<any>{
+		return this.http.get(this.scoutingDataURL+'/teamEventRawData/'+event+'/'+team)
+	}
+
 	/* Chart Getters */
 	/* Per Match Charts */
 	getRobotReadyStatusPerMatch(event: string, team: number): Observable<any>{

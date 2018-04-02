@@ -9,6 +9,9 @@ var ScoutingDataController = require('../../controllers/scoutingData.controller'
 
 // Map each API to the Controller FUnctions
 
+/* Raw Team Event Data */
+router.get('/teamEventRawData/:event/:team', ScoutingDataController.getTeamEventRawData)
+
 /* Per Match Chart Data API Calls */
 router.get('/readyChartPerMatch/:event/:team', ScoutingDataController.getReadyStatusPerMatch)
 router.get('/robotPlacementChartPerMatch/:event/:team', ScoutingDataController.getRobotPlacementPerMatch)
