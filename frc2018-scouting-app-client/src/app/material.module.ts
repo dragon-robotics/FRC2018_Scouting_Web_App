@@ -15,7 +15,7 @@ import {
   MatRadioModule,
   MatButtonToggleModule,
   MatTableModule,
-  MatProgressBarModule
+  MatProgressBarModule,
   // MatTableDataSource,
   // MatSort,
   MatGridListModule,
