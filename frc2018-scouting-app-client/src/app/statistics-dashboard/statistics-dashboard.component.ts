@@ -40,7 +40,10 @@ export class StatisticsDashboardComponent implements OnInit {
   	datatableElement: DataTableDirective;
   	tableDraw : Boolean = true;	// Used to only generate charts once per event load
 
+  	triggerProgressSpinner : boolean = false;
+
 	getYPRAnalytics(){
+		this.triggerProgressSpinner = true;
 		this.scoutingDataService.getYPR(this.selectedEvent, this.events[this.selectedEvent])
 			.subscribe((res)=>{
 				// Add YPR information to the table
@@ -62,6 +65,7 @@ export class StatisticsDashboardComponent implements OnInit {
 							'yprChart': result
 						}
 					})).draw()
+					this.triggerProgressSpinner = false;
 				});
 			})
 	}

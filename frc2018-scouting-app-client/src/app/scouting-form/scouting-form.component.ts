@@ -152,6 +152,8 @@ export class ScoutingFormComponent implements OnInit {
 	this.step--;
 	}
 
+	triggerProgressSpinner : boolean = false;
+
 	/** Adds the row to the datatable **/
 	addCycle(datatableElement: DataTableDirective): void {
 
@@ -209,8 +211,7 @@ export class ScoutingFormComponent implements OnInit {
 		}
 
 		// Teleop Information
-		this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) =>
-			{
+		this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
 				// Calculate custom climbing score
 				let climbScore = 0;
 				if(this.climbingType == 0)
@@ -253,6 +254,7 @@ export class ScoutingFormComponent implements OnInit {
 					// We create a whole new database
 					this.scoutingDataService.createScoutingData(this.scoutingData)
 						.subscribe((res) => {
+							this.triggerProgressSpinner = false;
 							this.insertedFormSnackBar.open("Form data inserted into database", "OK",{
 								duration: 2000,
 							})
@@ -264,6 +266,7 @@ export class ScoutingFormComponent implements OnInit {
 					this.scoutingData._id = this._id;
 					this.scoutingDataService.editScoutingData(this.scoutingData)
 						.subscribe((res) => {
+							this.triggerProgressSpinner = false;
 							this.insertedFormSnackBar.open("Form data updated into database", "OK",{
 								duration: 2000,
 							})
@@ -271,6 +274,7 @@ export class ScoutingFormComponent implements OnInit {
 
 				}
 
+				this.triggerProgressSpinner = true;
 			}
 		);	// Datatable data
 	}

@@ -15,6 +15,7 @@ import {
   MatRadioModule,
   MatButtonToggleModule,
   MatTableModule,
+  MatProgressBarModule
   // MatTableDataSource,
   // MatSort,
   MatGridListModule,
@@ -39,6 +40,7 @@ import {
   		MatRadioModule,
   		MatButtonToggleModule,
   		MatTableModule,
+      MatProgressBarModule,
       // MatTableDataSource,
       // MatSort,
   		MatGridListModule,
@@ -60,6 +62,7 @@ import {
   		MatRadioModule,
   		MatButtonToggleModule,
   		MatTableModule,
+      MatProgressBarModule,
       // MatTableDataSource,
       // MatSort,
   		MatGridListModule,

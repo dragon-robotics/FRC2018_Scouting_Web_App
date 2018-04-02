@@ -527,6 +527,7 @@ export class TeamStatisticsComponent implements OnInit {
 				targets: [0,1],
 				visible: false,	// Makes Team and Event columns inivisble, but will be displayed when data is downloaded
 			}],
+			responsive: true,
 			// order: [
 			// 	[ 1, "desc" ]
 			// ],
