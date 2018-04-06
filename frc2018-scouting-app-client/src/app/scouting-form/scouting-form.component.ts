@@ -258,6 +258,8 @@ export class ScoutingFormComponent implements OnInit {
 							this.insertedFormSnackBar.open("Form data inserted into database", "OK",{
 								duration: 2000,
 							})
+       console.log(res.data)
+              this._id = res.data;                               
 							this.scoutingDataService.createYPRData(this.scoutingData.event, this.scoutingData.eventID)
 								.subscribe((res) => console.log(res))
 					});
@@ -355,6 +357,8 @@ export class ScoutingFormComponent implements OnInit {
 							dtInstance.clear().draw();
 							this.climbingRadioGroup.reset();
 							this.comments = "";
+							
+              this._id = ""; // Reset ID       
 						}
 					}
 				);	// Datatable data

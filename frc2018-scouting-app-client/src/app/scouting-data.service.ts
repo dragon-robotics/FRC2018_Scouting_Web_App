@@ -10,8 +10,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ScoutingDataService {
 
-	// api_url = 'http://52.53.114.205:3000';
-	api_url = 'http://192.168.50.195:3000';
+	api_url = 'http://52.53.114.205:3000';
+	// api_url = 'http://192.168.50.195:3000';
 	// api_url = 'http://localhost:3000';
 	// api_url = 'http://192.168.43.115:3000';										// Start of the URL
 	scoutingDataURL = `${this.api_url}/api/scoutingData`;						// Appends Initial URL with api URL
