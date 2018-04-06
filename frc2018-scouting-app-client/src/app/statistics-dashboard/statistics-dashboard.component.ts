@@ -20,20 +20,10 @@ export class StatisticsDashboardComponent implements OnInit {
 	
 	events = {
 		'AZ North': '2018azfl',
+		'AZ West': '2018azpx',
 		'Week 0': '2018week0',
-		// 'AZ West': '2018azpx',
 		// '2018 Dallas Regional': '2018txda',
 	};
-
-	teamRows : any[];
-
-	tiles = [
-		{text: 'One', cols: 2, rows: 1, color: 'lightblue'},
-		// {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-		// {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-		// {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
-	];
-	color : string = "lightblue";
 
 	// Datatables Directive
 	@ViewChild(DataTableDirective)
@@ -89,21 +79,19 @@ export class StatisticsDashboardComponent implements OnInit {
 	                }
 	            },
 	        ],
+	        autowidth: false,
 			columnDefs:[{
-				targets: -1,
-				"createdCell": function(td, cellData, rowData, row, col){
+				targets: [-1],
+				createdCell: function(td, cellData, rowData, row, col){
 					$(td).attr('id', 'highcharts '+rowData.team)
 				}
-			},{
+			}/*,{
 				targets: [0,1,2,3,4,5,6,7,8,9,10],
-				width: "10px",
-			}],
+				width: "100px",
+			}*/],
 			order: [
 				[ 1, "desc" ]
-			],      
-			fixedColumns:   {
-            	heightMatch: 'auto'
-        	},
+			],
 			columns: [{
 				title: "Team",
 				data: "team",
@@ -120,37 +108,34 @@ export class StatisticsDashboardComponent implements OnInit {
 				title: "CCWM",
 				data: "CCWM",
 			},{
-				title: "Pickup Rating",
+				title: "Pickup<br>Rating",
 				data: "Pickup",
 			},{
-				title: "Cube Count Rating",
+				title: "Cube<br>Count<br>Rating",
 				data: "NumOfCubes",
 			},{
-				title: "Cycle Time Rating",
+				title: "Cycle<br>Time<br>Rating",
 				data: "CycleTime",
 			},{
-				title: "Efficiency Rating",
+				title: "Efficiency<br>Rating",
 				data: "Efficiency",
 			},{
-				title: "Auto Rating",
+				title: "Auto<br>Rating",
 				data: "Auto",
 			},{
-				title: "Climb Rating",
+				title: "Climb<br>Rating",
 				data: "Climb",
 			},{
 				title: "Spider Chart",
+				width: "400px",
 				sortable: false,
 				data: "yprChart",
-				// render: "Climb",
 			},],
 			drawCallback: function(){
 				var api = this.api();
 		        // Output the data for the visible rows to the browser's console
 		        if(tableDraw && api.rows().data().length > 0){
 			        api.rows().data().map(function(chart, key){
-			        	// chart.yprChart.update({chart: {renderTo: 'highcharts'+key}})
-			        	// chart.yprChart.options.chart.renderTo = 'highcharts '+key;
-						// Highcharts.chart(chart.yprChart);
 						new Highcharts.Chart('highcharts '+chart.yprChart.team, {
 							chart: {
 							    polar: true,
@@ -158,7 +143,7 @@ export class StatisticsDashboardComponent implements OnInit {
 							    borderColor: '#000000', 
 							    borderRadius: 1,
 							    borderWidth: 1,
-							    height: 300,
+							    height: 400,
 							},
 							title: {
 							    text: 'Team '+chart.yprChart.team+' Spider Chart',
@@ -206,8 +191,6 @@ export class StatisticsDashboardComponent implements OnInit {
 							    ],
 							}],
 						});
-			        	// console.log(chart.yprChart);
-			        	// console.log(key);
 			        })
 			        tableDraw = false;
 		        }
@@ -216,8 +199,7 @@ export class StatisticsDashboardComponent implements OnInit {
 		        }
 			},
 			lengthMenu: [[-1],["All"]],	// Displays all rows
-			// scrollY: "35vh",
-			// scrollCollapse: true,
+			scrollX: true,
 		};
 	}
 

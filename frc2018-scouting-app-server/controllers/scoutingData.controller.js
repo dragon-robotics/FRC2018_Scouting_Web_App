@@ -99,8 +99,88 @@ exports.createScoutingData = async function(req, res, next){
         
         //Return an Error Response Message with Code and the Error Message.
         
-        return res.status(400).json({status: 400, message: "Scouting Data Creation was Unsuccesful"})
+        return res.status(400).json({status: 400, message: e.message})
+        // return res.status(400).json({status: 400, message: "Scouting Data Creation was Unsuccesful"})
     }
+}
+
+exports.createYPRData = async function(req, res, next){
+    try{
+        
+        // Calling the Service function with the new object from the Request Body
+    
+        // Compile YPR Data
+        var query = [
+            {
+                "$match" :{
+                    "event": req.body.event,
+                },
+            },
+            {
+                "$project" : {
+                    "event": 1,
+                    "team": 1,
+                    "match": 1,
+                    "autoLine": "$matchData.autoLine",
+                    "autoSwitchCubeCount": "$matchData.autoSwitchCubeCount",
+                    "autoScaleCubeCount": "$matchData.autoScaleCubeCount", 
+                    "autoExchangeCubeCount": "$matchData.autoExchangeCubeCount", 
+                    "cubesScored": "$matchData.cubesScored",
+                    "cycleTime": "$matchData.cycleTime", 
+                    "efficiency": "$matchData.efficiency", 
+                    "pickUpWide": "$matchData.pickUpWide", 
+                    "pickUpDiag": "$matchData.pickUpDiag", 
+                    "pickUpTall": "$matchData.pickUpTall",
+                    "pickUpDropOff": "$matchData.pickUpDropOff",
+                    "climbing": "$matchData.climbing",                     
+                },
+            },
+            {
+                "$group" : {
+                    "_id": {"event": "$event", "team": "$team"},
+                    "avgAutoLine" : { "$avg": "$autoLine"},
+                    "avgAutoSwitchCubeCount" : { "$avg": "$autoSwitchCubeCount"},
+                    "avgAutoScaleCubeCount" : { "$avg": "$autoScaleCubeCount"},
+                    "avgAutoExchangeCubeCount" : { "$avg": "$autoExchangeCubeCount"},
+                    "avgCubesScored" : { "$avg": "$cubesScored"},
+                    "avgEfficiency" : { "$avg": "$efficiency"},
+                    "avgCycleTime" : { "$avg": "$cycleTime"},
+                    "avgClimbing" : { "$avg" : "$climbing"},
+                    "totalPickUpWide" : {"$sum" : "$pickUpWide"},
+                    "totalPickUpDiag" : {"$sum" : "$pickUpDiag"},
+                    "totalPickUpTall" : {"$sum" : "$pickUpTall"},
+                    "totalPickUpDropOff" : {"$sum" : "$pickUpDropOff"},
+                },
+            },
+            {
+                "$project" : {
+                    "_id" : 0,
+                    "event" : "$_id.event",
+                    "team" : "$_id.team",
+                    "avgAutoLine" : 1,
+                    "avgAutoSwitchCubeCount" : 1,
+                    "avgAutoScaleCubeCount" : 1,
+                    "avgAutoExchangeCubeCount" : 1,
+                    "avgCubesScored" : 1,
+                    "avgClimbing": 1,
+                    "avgEfficiency" : 1,
+                    "avgCycleTime" : 1,
+                    "totalPickUpWide" : 1,
+                    "totalPickUpDiag" : 1,
+                    "totalPickUpTall" : 1,
+                    "totalPickUpDropOff" : 1,
+                },
+            },
+        ];
+
+        var yprScoutingData = await ScoutingDataService.createYPRData(query, req.body.eventID)
+        return res.status(201).json({status: 201, data: yprScoutingData, message: "Succesfully Created YPR Scouting Data"})
+    }catch(e){
+        
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message})
+        // return res.status(400).json({status: 400, message: "YPR Scouting Data Creation was Unsuccessful"})
+    }    
 }
 
 exports.updateScoutingData = async function(req, res, next){
@@ -164,6 +244,7 @@ exports.getTeamEventRawData = async function(req, res, next){
                     pickUpTall: "$matchData.pickUpTall",
                     pickUpDropOff: "$matchData.pickUpDropOff",
                     climbingType: "$matchData.climbingType",
+                    comments: 1,
                 }
             }
         ];

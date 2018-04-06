@@ -22,23 +22,7 @@
 	</mat-form-field>
 
 	<mat-card>	
-		<table datatable [dtOptions]="dtOptions" class="display cell-border compact hover" style="width:100%">
+		<table datatable [dtOptions]="dtOptions" class="display cell-border compact hover nowrap dt[-head|-body]-nowrap" style="width:100%">
 		</table>
 	</mat-card>
-
-<!-- 	<mat-grid-list cols="8" rowHeight="300px">
-		<div *ngFor = "let row of teamRows">
-			<mat-grid-tile
-				[colspan]=5
-				[rowspan]=1
-				[style.background]="color">
-				{{row.team}}
-			</mat-grid-tile>
-			<mat-grid-tile 
-				[colspan]="row.cols"
-				[rowspan]="row.rows"
-				[chart]="row.chart">
-			</mat-grid-tile>
-		</div>
-	</mat-grid-list> -->
 </mat-card>

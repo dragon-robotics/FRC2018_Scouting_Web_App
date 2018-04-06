@@ -786,70 +786,17 @@ exports.createScoutingData = async function(rawData){
         // Saving the Todo 
         var savedScoutingData = await newScoutingData.save();
 
-        // Compile YPR Data
-        var query = [
-            {
-                "$match" :{
-                    "event": rawData.event,
-                },
-            },
-            {
-                "$project" : {
-                    "event": 1,
-                    "team": 1,
-                    "match": 1,
-                    "autoLine": "$matchData.autoLine",
-                    "autoSwitchCubeCount": "$matchData.autoSwitchCubeCount",
-                    "autoScaleCubeCount": "$matchData.autoScaleCubeCount", 
-                    "autoExchangeCubeCount": "$matchData.autoExchangeCubeCount", 
-                    "cubesScored": "$matchData.cubesScored",
-                    "cycleTime": "$matchData.cycleTime", 
-                    "efficiency": "$matchData.efficiency", 
-                    "pickUpWide": "$matchData.pickUpWide", 
-                    "pickUpDiag": "$matchData.pickUpDiag", 
-                    "pickUpTall": "$matchData.pickUpTall",
-                    "pickUpDropOff": "$matchData.pickUpDropOff",
-                    "climbing": "$matchData.climbing",                     
-                },
-            },
-            {
-                "$group" : {
-                    "_id": {"event": "$event", "team": "$team"},
-                    "avgAutoLine" : { "$avg": "$autoLine"},
-                    "avgAutoSwitchCubeCount" : { "$avg": "$autoSwitchCubeCount"},
-                    "avgAutoScaleCubeCount" : { "$avg": "$autoScaleCubeCount"},
-                    "avgAutoExchangeCubeCount" : { "$avg": "$autoExchangeCubeCount"},
-                    "avgCubesScored" : { "$avg": "$cubesScored"},
-                    "avgEfficiency" : { "$avg": "$efficiency"},
-                    "avgCycleTime" : { "$avg": "$cycleTime"},
-                    "avgClimbing" : { "$avg" : "$climbing"},
-                    "totalPickUpWide" : {"$sum" : "$pickUpWide"},
-                    "totalPickUpDiag" : {"$sum" : "$pickUpDiag"},
-                    "totalPickUpTall" : {"$sum" : "$pickUpTall"},
-                    "totalPickUpDropOff" : {"$sum" : "$pickUpDropOff"},
-                },
-            },
-            {
-                "$project" : {
-                    "_id" : 0,
-                    "event" : "$_id.event",
-                    "team" : "$_id.team",
-                    "avgAutoLine" : 1,
-                    "avgAutoSwitchCubeCount" : 1,
-                    "avgAutoScaleCubeCount" : 1,
-                    "avgAutoExchangeCubeCount" : 1,
-                    "avgCubesScored" : 1,
-                    "avgClimbing": 1,
-                    "avgEfficiency" : 1,
-                    "avgCycleTime" : 1,
-                    "totalPickUpWide" : 1,
-                    "totalPickUpDiag" : 1,
-                    "totalPickUpTall" : 1,
-                    "totalPickUpDropOff" : 1,
-                },
-            },
-        ];
+        return savedScoutingData;
+    }catch(e){
+      
+        // return a Error message describing the reason     
+        // throw Error("Error while Creating ScoutingData");
+        throw Error(e.message);
+    }
+}
 
+exports.createYPRData = async function(query, eventID){
+    try{
         var yprDatas = await ScoutingData.aggregate(query)
 
         // Start calculating YPR using LODASH
@@ -867,11 +814,12 @@ exports.createScoutingData = async function(rawData){
 
         var oprAndDprAndCcwm = await requestPromise({
             method: 'GET',
-            url: 'https://www.thebluealliance.com/api/v3/event/'+rawData.eventID+'/oprs',
+            url: 'https://www.thebluealliance.com/api/v3/event/'+eventID+'/oprs',
             headers:{
                 'X-TBA-Auth-Key': 'dS9knumpOPRZJkI1FvSCSYhdnIj9dk2mfpqPMb50JbCQc9roaG9Hl3oZKTRYYOe0',
             },
         });
+
         oprAndDprAndCcwm = JSON.parse(oprAndDprAndCcwm);
 
         var maxOprAndDprAndCcwm = _.reduce(oprAndDprAndCcwm, function(result, value, key, arr){
@@ -934,11 +882,10 @@ exports.createScoutingData = async function(rawData){
         })
         .value();
 
-        return savedScoutingData;
+        return YPR;
     }catch(e){
-      
         // return a Error message describing the reason     
-        throw Error("Error while Creating ScoutingData");
+        throw Error(e.message);
     }
 }
 

@@ -27,7 +27,7 @@ export class TeamStatisticsComponent implements OnInit {
 	
 	events = {
 		'AZ North': '2018azfl',
-		// 'AZ West': '2017azpx',
+		'AZ West': '2018azpx',
 		'Week 0': '2018week0',
 		// '2018 Dallas Regional': '2018txda',
 	};
@@ -527,13 +527,6 @@ export class TeamStatisticsComponent implements OnInit {
 				targets: [0,1],
 				visible: false,	// Makes Team and Event columns inivisble, but will be displayed when data is downloaded
 			}],
-			responsive: true,
-			// order: [
-			// 	[ 1, "desc" ]
-			// ],
-			fixedColumns:   {
-            	heightMatch: 'auto'
-        	},
 			columns: [{
 				title: "Team",
 				data: "team",
@@ -573,30 +566,27 @@ export class TeamStatisticsComponent implements OnInit {
 			},{
 				title: "Efficiency",
 				data: "efficiency",
-				// render: "Climb",
 			},{
 				title: "Wide Pickup",
 				data: "pickUpWide",
-				// render: "Climb",
 			},{
 				title: "Diagonal Pickup",
 				data: "pickUpDiag",
-				// render: "Climb",
 			},{
 				title: "Tall Pickup",
 				data: "pickUpTall",
-				// render: "Climb",
 			},{
 				title: "Dropoff",
 				data: "pickUpDropOff",
-				// render: "Climb",
 			},{
 				title: "Climb Type",
 				data: "climbingType",
+			},{
+				title: "Comments",
+				data: "comments",
 			},],
 			lengthMenu: [[-1],["All"]],	// Displays all rows
-			// scrollY: "35vh",
-			// scrollCollapse: true,
+			scrollX: true,
 		};		
 	}
 }

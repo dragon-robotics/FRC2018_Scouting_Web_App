@@ -38,6 +38,7 @@ router.get('/:event/:match/:team', ScoutingDataController.getScoutingData)
 router.get('/:event/:eventID', ScoutingDataController.getYPRData)
 
 router.post('/', ScoutingDataController.createScoutingData)
+router.post('/yprData', ScoutingDataController.createYPRData)
 router.put('/', ScoutingDataController.updateScoutingData)
 
 // router.delete('/:id',ScoutingDataController.removeScoutingData)

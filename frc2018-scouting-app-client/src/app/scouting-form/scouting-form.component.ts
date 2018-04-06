@@ -88,7 +88,7 @@ export class ScoutingFormComponent implements OnInit {
 	
 	events = {
 		'AZ North': '2018azfl',
-		// 'AZ West': '2017azpx',
+		'AZ West': '2018azpx',
 		'Week 0': '2018week0',
 		// '2018 Dallas Regional': '2018txda',
 	};
@@ -258,6 +258,8 @@ export class ScoutingFormComponent implements OnInit {
 							this.insertedFormSnackBar.open("Form data inserted into database", "OK",{
 								duration: 2000,
 							})
+							this.scoutingDataService.createYPRData(this.scoutingData.event, this.scoutingData.eventID)
+								.subscribe((res) => console.log(res))
 					});
 				}
 				else{
@@ -270,6 +272,9 @@ export class ScoutingFormComponent implements OnInit {
 							this.insertedFormSnackBar.open("Form data updated into database", "OK",{
 								duration: 2000,
 							})
+							this.scoutingDataService.createYPRData(this.scoutingData.event, this.scoutingData.eventID)
+								.subscribe((res) => console.log(res))
+
 					});
 
 				}
@@ -362,12 +367,20 @@ export class ScoutingFormComponent implements OnInit {
 		let eventID = this.events[this.selectedEvent];
 		this.scoutingDataService.getMatchAndTeamInfo(eventID)
 			.subscribe(matchesAndTeams => {
+				// Clear previous results
+				this.blue_alliance = this.red_alliance = [];
+
 				this.matchesAndTeams = matchesAndTeams;
 			})
 	}
 
 	/* This function gets the team from events */
 	getTeams(){
+		// Clear previous results
+		this.blue_alliance = this.red_alliance = [];
+		console.log(this.blue_alliance);
+		console.log(this.red_alliance);
+
 		this.blue_alliance = this.matchesAndTeams[this.selectedMatch].alliances.blue;
 		this.red_alliance = this.matchesAndTeams[this.selectedMatch].alliances.red;
 	}
@@ -391,7 +404,6 @@ export class ScoutingFormComponent implements OnInit {
 	) { }
 
 	dtOptions: any = {};
-
 	ngOnInit(): void {
 		this.dtOptions = {
 			dom: 'Brt',
@@ -425,6 +437,7 @@ export class ScoutingFormComponent implements OnInit {
 				data: "destination",				
 			},],
 			lengthMenu: [[-1],["All"]],	// Displays all rows
+			scrollX: true,
 			scrollY: "35vh",
 			scrollCollapse: true,
 		};

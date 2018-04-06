@@ -30,6 +30,8 @@
     "datatables.net-buttons": "^1.5.1",
     "datatables.net-buttons-dt": "^1.5.1",
     "datatables.net-dt": "^1.10.16",
+    "datatables.net-responsive": "^2.2.1",
+    "datatables.net-responsive-dt": "^2.2.1",
     "datatables.net-select": "^1.2.5",
     "datatables.net-select-dt": "^1.2.5",
     "hammerjs": "^2.0.8",

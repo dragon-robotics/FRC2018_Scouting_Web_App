@@ -10,7 +10,9 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ScoutingDataService {
 
+	// api_url = 'http://52.53.114.205:3000';
 	api_url = 'http://192.168.50.195:3000';
+	// api_url = 'http://localhost:3000';
 	// api_url = 'http://192.168.43.115:3000';										// Start of the URL
 	scoutingDataURL = `${this.api_url}/api/scoutingData`;						// Appends Initial URL with api URL
 	teamEventInfoURL = `${this.api_url}/api/teamEventInfo`;						// Appends Initial URL with api URL
@@ -39,6 +41,14 @@ export class ScoutingDataService {
 	createScoutingData(scoutingData: ScoutingData): Observable<any>{
 		// returns the observable of http post request
 		return this.http.post(`${this.scoutingDataURL}`, scoutingData);
+	}
+
+	createYPRData(event: string, eventID: string): Observable<any>{
+		var eventObj : any = {
+			event: event,
+			eventID: eventID
+		};
+		return this.http.post(`${this.scoutingDataURL}`+'/yprData', eventObj);
 	}
 
 	// Grabs scouting form data from a specific match
